@@ -4,76 +4,99 @@
     <meta charset="UTF-8">
     <title>RaoH | S2 BPSR 160 Gear Planner Tool</title>
     <style>
-        /* --- CSS STYLES --- */
+        /* =========================================
+           CSS STYLING & LAYOUT
+           ========================================= */
+        
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #13131a; 
+            background: radial-gradient(circle at top, #23232e, #13131a); /* Fundo com gradiente */
             color: #e0e0e0; 
             padding: 20px; 
             display: flex; 
             justify-content: center; 
+            min-height: 100vh;
         }
+
         .main-wrapper { 
             display: flex; 
             flex-direction: row; 
-            gap: 20px; 
+            gap: 25px; 
             width: 100%; 
             max-width: 1600px; 
             flex-wrap: wrap; 
         }
         
-        /* Container Styles */
+        /* --- Painéis Principais --- */
         .panel { 
             background-color: #1e1e2e; 
-            padding: 25px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+            padding: 30px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            border: 1px solid #2f2f40;
         }
         .planner-panel { flex: 3; min-width: 900px; }
-        .calc-panel { flex: 1; min-width: 300px; position: sticky; top: 20px; height: fit-content; }
+        .calc-panel { 
+            flex: 1; 
+            min-width: 300px; 
+            position: sticky; 
+            top: 20px; 
+            height: fit-content; 
+            background: linear-gradient(160deg, #1e1e2e 0%, #16161f 100%);
+        }
 
-        h2 { text-align: center; color: #7aa2f7; margin-top: 0; }
+        h2 { 
+            text-align: center; 
+            color: #7aa2f7; 
+            margin-top: 0; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            font-size: 1.5rem;
+        }
         
-        /* TABS */
+        /* --- Sistema de Abas --- */
         .tab-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border-bottom: 2px solid #333;
         }
         .tab-btn {
             background: none;
             border: none;
-            color: #777;
-            padding: 10px 20px;
+            color: #666;
+            padding: 12px 25px;
             font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
             border-bottom: 3px solid transparent;
-            transition: 0.2s;
+            transition: all 0.3s ease;
         }
-        .tab-btn:hover { color: #e0e0e0; }
+        .tab-btn:hover { color: #fff; }
         .tab-btn.active {
             color: #7aa2f7;
             border-bottom: 3px solid #7aa2f7;
+            text-shadow: 0 0 10px rgba(122, 162, 247, 0.3);
         }
-        .tab-content { display: none; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
 
-        /* Global Controls (Change All) */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Controles Globais --- */
         .global-controls {
-            background-color: #252535;
-            padding: 10px;
+            background: linear-gradient(90deg, #252535 0%, #2a2a3c 100%);
+            padding: 15px;
             border-radius: 8px;
             display: flex;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             align-items: center;
             border: 1px solid #444;
         }
         .global-label { color: #ff9e64; font-weight: bold; font-size: 0.9em; white-space: nowrap; }
 
-        /* Planner Controls */
+        /* --- Grid de Equipamentos --- */
         .controls-row {
             display: flex; 
             gap: 20px; 
@@ -84,58 +107,60 @@
             border-radius: 8px; 
             align-items: center;
             flex-wrap: wrap;
+            border: 1px solid #3b3b4f;
         }
-        .radio-group { display: flex; gap: 15px; }
-        .radio-label { cursor: pointer; font-weight: bold; color: #a9b1d6; display: flex; align-items: center; gap: 8px; }
+        .radio-group { display: flex; gap: 20px; }
+        .radio-label { cursor: pointer; font-weight: bold; color: #a9b1d6; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .radio-label:hover { color: #fff; }
         input[type="radio"] { transform: scale(1.2); accent-color: #7aa2f7; }
         
         .spec-select-group { display: flex; align-items: center; gap: 10px; }
         .spec-select-group label { color: #9ece6a; font-weight: bold; }
 
-        /* Gear Grid */
+        /* Linhas da Tabela */
         .gear-row { 
             display: grid; 
             grid-template-columns: 1fr 0.4fr 0.8fr 0.8fr 0.8fr 1.4fr 1.2fr; 
-            gap: 8px; 
+            gap: 10px; 
             align-items: center; 
-            padding: 8px 0; 
-            border-bottom: 1px solid #333; 
+            padding: 10px 15px; 
+            border-bottom: 1px solid #2f2f40; 
+            transition: background 0.2s;
         }
+        .gear-row:hover { background-color: rgba(255,255,255,0.02); }
         .gear-header { 
             font-weight: bold; 
             color: #9ece6a; 
-            padding-bottom: 5px; 
-            border-bottom: 2px solid #555; 
-            margin-bottom: 5px; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #444; 
+            margin-bottom: 10px; 
             font-size: 0.9em;
+            background-color: transparent !important;
         }
-        .slot-name { font-weight: bold; color: #e0e0e0; font-size: 0.9em; }
+        .slot-name { font-weight: bold; color: #fff; font-size: 0.95em; }
         
-        select { 
+        /* Inputs e Selects */
+        select, input[type="number"] { 
             width: 100%; 
-            padding: 8px; 
-            border-radius: 4px; 
+            padding: 8px 10px; 
+            border-radius: 6px; 
             border: 1px solid #444; 
-            background-color: #181825; 
+            background-color: #13131a; 
             color: white; 
-            font-size: 0.85em;
+            font-size: 0.9em;
+            transition: border 0.2s;
         }
-        select:disabled { opacity: 0.6; cursor: not-allowed; background-color: #1a1a20; color: #888; border-color: #333; }
-        input[type="checkbox"] { transform: scale(1.2); accent-color: #f7768e; cursor: pointer; }
-        input[type="number"] { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #444; background-color: #181825; color: white; box-sizing: border-box; }
+        select:focus, input:focus { border-color: #7aa2f7; outline: none; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; background-color: #1a1a20; border-color: #333; color: #777; }
+        input[type="checkbox"] { transform: scale(1.3); accent-color: #f7768e; cursor: pointer; }
 
-        /* Gem Group */
-        .gem-group { display: flex; gap: 4px; }
-        .gem-color { flex: 2; }
-        .gem-lvl { flex: 1; }
-
-        /* Imagine Section */
+        /* --- Imagine Section --- */
         .imagine-section {
-            margin-top: 20px;
-            background-color: #252535;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #444;
+            margin-top: 25px;
+            background-color: #232330;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #3b3b4f;
         }
         .imagine-row {
             display: grid;
@@ -144,69 +169,84 @@
             align-items: center;
             margin-bottom: 10px;
         }
-        .imagine-title { color: #ff9e64; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px; }
+        .imagine-title { color: #ff9e64; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 5px; }
 
-        /* Legendary Inputs */
-        .leg-group { display: flex; gap: 4px; }
-        .leg-val { width: 45px; text-align: center; }
+        /* --- Legendary & Results --- */
+        .leg-group { display: flex; gap: 5px; }
+        .leg-val { width: 50px; text-align: center; }
 
-        /* Raw Stats Display */
         .raw-gear-stats {
-            background-color: #252535;
-            border: 1px solid #444;
-            padding: 15px;
+            background-color: #13131a;
+            border: 1px solid #333;
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        .raw-row { display: flex; justify-content: space-between; font-size: 0.9em; padding: 2px 0; }
+        .raw-row { display: flex; justify-content: space-between; font-size: 0.95em; padding: 4px 0; border-bottom: 1px solid #1f1f2a; }
         .raw-val { color: #7dcfff; font-weight: bold; }
 
-        /* Base Stats Input */
-        .base-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 0.85em; color: #bb9af7; margin-bottom: 2px; }
+        .base-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.8em; color: #bb9af7; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Results */
+        /* Botões */
         button.calc-btn { 
             width: 100%; 
-            padding: 12px; 
-            background-color: #7aa2f7; 
-            color: #1a1b26; 
+            padding: 14px; 
+            background: linear-gradient(45deg, #7aa2f7, #5c85d6);
+            color: #fff; 
             font-weight: bold; 
             border: none; 
-            border-radius: 6px; 
+            border-radius: 8px; 
             cursor: pointer; 
             font-size: 16px; 
-            margin-top: 10px; 
-            transition: 0.2s; 
+            margin-top: 15px; 
+            transition: transform 0.1s, box-shadow 0.2s; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        button.calc-btn:hover { background-color: #bb9af7; }
+        button.calc-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(122, 162, 247, 0.4); }
         
-        .results-area { margin-top: 20px; border-top: 1px solid #444; padding-top: 15px; }
-        .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; font-size: 1.0em; }
+        .results-area { margin-top: 25px; border-top: 2px solid #333; padding-top: 20px; }
+        .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; font-size: 1.05em; }
         .result-val { font-weight: bold; color: #9ece6a; }
         
-        .legendary-note { font-size: 0.85em; color: #565f89; font-style: italic; margin-top: 15px; line-height: 1.6; background: #252535; padding: 10px; border-radius: 6px; }
+        .legendary-note { font-size: 0.85em; color: #6c7596; font-style: italic; margin-top: 20px; line-height: 1.6; background: #1a1a24; padding: 15px; border-radius: 8px; border-left: 3px solid #7aa2f7; }
 
-        /* OPTIMIZER STYLES */
-        .optimizer-intro { margin-bottom: 20px; color: #a9b1d6; line-height: 1.5; }
-        .opt-input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .opt-input-group label { color: #9ece6a; font-weight: bold; }
+        /* --- OTIMIZADOR --- */
+        .optimizer-intro { margin-bottom: 25px; color: #a9b1d6; line-height: 1.6; background: #232330; padding: 15px; border-radius: 8px;}
+        .opt-input-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .opt-input-group label { color: #9ece6a; font-weight: bold; display: block; margin-bottom: 5px;}
+        
         .optimize-btn {
             width: 100%;
-            padding: 15px;
-            background-color: #f7768e;
-            color: #1a1b26;
+            padding: 16px;
+            background: linear-gradient(45deg, #f7768e, #db4b66);
+            color: white;
             font-weight: bold;
             font-size: 18px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.1s, box-shadow 0.2s;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        .optimize-btn:hover { background-color: #ff9e64; }
-        .opt-status { text-align: center; margin-top: 10px; font-weight: bold; color: #ff9e64; min-height: 24px;}
-        .opt-options { display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap; }
-        .opt-check-label { color: #f7768e; cursor: pointer; font-weight: bold; }
+        .optimize-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(247, 118, 142, 0.4); }
+        
+        .opt-status { text-align: center; margin-top: 15px; font-weight: bold; color: #ff9e64; min-height: 24px; font-size: 1.1em; }
+        .opt-options { display: flex; justify-content: center; gap: 25px; margin-top: 20px; flex-wrap: wrap; background: #232330; padding: 10px; border-radius: 8px;}
+        .opt-check-label { color: #ff9e64; cursor: pointer; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; gap: 6px; }
+
+        /* --- CREDITS FOOTER --- */
+        .footer-credits {
+            width: 100%;
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #565f89;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
 
     </style>
 </head>
@@ -229,7 +269,7 @@
                 <label class="radio-label"><input type="radio" name="buildType" value="Agility" onchange="updateAllRows()"> Agility</label>
             </div>
             
-            <div style="width: 2px; height: 30px; background: #444;"></div>
+            <div style="width: 1px; height: 30px; background: #555; margin: 0 10px;"></div>
 
             <div class="spec-select-group">
                 <label>Class Spec:</label>
@@ -241,8 +281,7 @@
         <div id="tab-planner" class="tab-content active">
             
             <div class="global-controls">
-                <span class="global-label">Change All:</span>
-                
+                <span class="global-label">Quick Actions:</span>
                 <select id="global-reforge" onchange="applyGlobal('reforge', this.value)">
                     <option value="">Reforge (Set All)</option>
                     <option value="Versatility">Versatility</option>
@@ -251,8 +290,6 @@
                     <option value="Crit">Crit</option>
                     <option value="Luck">Luck</option>
                 </select>
-
-
             </div>
 
             <div class="gear-row gear-header">
@@ -270,10 +307,10 @@
         <div id="tab-optimizer" class="tab-content">
             <h3>Target Percentages</h3>
             <div class="optimizer-intro">
-                Enter your targets. The optimizer will simulate setups to match them.<br>
-                <ul style="margin-top:5px; font-size:0.9em; color:#bbb;">
-                    <li><strong>Smart Raid:</strong> Automatically picks Raid pieces (Weapon + Armor) based on limits.</li>
-                    <li><strong>Keep Selected Gear:</strong> If checked, items currently filled in the Planner are LOCKED.</li>
+                Enter your targets below. The algorithm will simulate thousands of combinations to find the closest match.
+                <ul style="margin-top:10px; font-size:0.9em; color:#888; list-style-type: square; padding-left: 20px;">
+                    <li><strong>Smart Raid:</strong> Automatically picks optimal Raid pieces based on limits.</li>
+                    <li><strong>Smart Logic:</strong> Prioritizes stat caps first, then efficiency (lower gem levels), then uniformity.</li>
                 </ul>
             </div>
 
@@ -300,12 +337,14 @@
                 </div>
                 <div class="opt-input-group">
                     <label style="color:#f7768e">Total Agility (For Haste)</label>
-                    <input type="number" id="opt-agi" placeholder="Enter Total Agility">
+                    <input type="number" id="opt-agi" placeholder="Total Agility Stat">
                 </div>
             </div>
 
             <button class="optimize-btn" onclick="runOptimizer()">Run Smart Optimization</button>
             
+            <div class="opt-status" id="opt-status"></div>
+
             <div class="opt-options">
                 <label class="opt-check-label">
                     <input type="checkbox" id="opt-keep-selected"> Keep Selected Gear (Lock P/S)
@@ -317,8 +356,6 @@
                     <input type="checkbox" id="opt-unlimited-raid"> Allow >4 Raid Armor Pieces
                 </label>
             </div>
-            
-            <div class="opt-status" id="opt-status"></div>
         </div>
 
         <div class="imagine-section">
@@ -362,11 +399,15 @@
         </div>
 
         <div class="legendary-note">
-            <strong>Gear Values:</strong><br>
-            • <strong>Raid Weapon:</strong> 2480 Primary / 2480 Secondary / + Bonus (No Reforge, No Legendary)<br>
-            • <strong>Raid Armor:</strong> 954 Primary / 954 Secondary / 286 Reforge (No Legendary)<br>
-            • <strong>Standard Weapon:</strong> 1908 Primary / 954 Secondary / 572 Reforge<br>
-            • <strong>Standard Armor:</strong> 954 Primary / 477 Secondary / 286 Reforge
+            <strong>Gear Values Reference:</strong><br>
+            • <strong>Raid Weapon:</strong> 2480 P / 2480 S / + Bonus (No Reforge)<br>
+            • <strong>Raid Armor:</strong> 954 P / 954 S / 286 Reforge<br>
+            • <strong>Standard Weapon:</strong> 1908 P / 954 S / 572 Reforge<br>
+            • <strong>Standard Armor:</strong> 954 P / 477 S / 286 Reforge
+        </div>
+        
+        <div class="footer-credits">
+            Produzido por Luxxio // Atualizado por: KrowMeLL
         </div>
     </div>
 
@@ -374,7 +415,7 @@
         <h2>Stat Totals</h2>
 
         <div class="raw-gear-stats">
-            <h3 style="margin-top:0; border-bottom:1px solid #444; padding-bottom:5px; font-size:1em;">Total Raw Attributes (All Sources)</h3>
+            <h3 style="margin-top:0; border-bottom:1px solid #444; padding-bottom:10px; font-size:1em; color:#fff;">Total Raw Attributes</h3>
             <div class="raw-row"><span>Versatility:</span> <span class="raw-val" id="raw-vers">0</span></div>
             <div class="raw-row"><span>Mastery:</span> <span class="raw-val" id="raw-mast">0</span></div>
             <div class="raw-row"><span>Haste:</span> <span class="raw-val" id="raw-haste">0</span></div>
@@ -384,49 +425,50 @@
         
         <div class="base-stats">
             <div class="input-group">
-                <label>Base/Extra Vers</label>
+                <label>Base Vers</label>
                 <input type="number" id="base-vers" value="0">
             </div>
             <div class="input-group">
-                <label>Base/Extra Mastery</label>
+                <label>Base Mastery</label>
                 <input type="number" id="base-mast" value="0">
             </div>
             <div class="input-group">
-                <label>Base/Extra Haste</label>
+                <label>Base Haste</label>
                 <input type="number" id="base-haste" value="0">
             </div>
             <div class="input-group">
-                <label>Base/Extra Crit</label>
+                <label>Base Crit</label>
                 <input type="number" id="base-crit" value="0">
             </div>
             <div class="input-group">
-                <label>Base/Extra Luck</label>
+                <label>Base Luck</label>
                 <input type="number" id="base-luck" value="0">
             </div>
             <div class="input-group">
-                <label>Base/Extra Agility</label>
-                <input type="number" id="base-agi" value="0" placeholder="0.2 Haste per pt">
+                <label>Base Agility</label>
+                <input type="number" id="base-agi" value="0" placeholder="0.2 Haste/pt">
             </div>
         </div>
 
-        <button class="calc-btn" onclick="calculateAll()">Calculate Stats</button>
+        <button class="calc-btn" onclick="calculateAll()">Recalculate Stats</button>
 
         <div class="results-area" id="results">
-            <h3>Final Breakdown</h3>
+            <h3>Final Percentages</h3>
             <div class="result-row"><span>Versatility:</span> <span class="result-val" id="r-vers">0%</span></div>
             <div class="result-row"><span>Mastery:</span> <span class="result-val" id="r-mast">6.00%</span></div>
             <div class="result-row"><span>Haste:</span> <span class="result-val" id="r-haste">0%</span></div>
             <div class="result-row"><span>Crit Rate:</span> <span class="result-val" id="r-crit">5.00%</span></div>
             <div class="result-row"><span>Luck:</span> <span class="result-val" id="r-luck">5.00%</span></div>
-            <div class="result-row" id="raid-special-row" style="display:none; border-top: 2px dashed #7aa2f7; margin-top: 10px;">
-        <span id="raid-special-label" style="color:#ff9e64; font-weight:bold;">Raid Bonus:</span>
-        <span class="result-val" id="raid-special-val" style="color:#ff9e64;">0%</span>
-    </div>
+            
+            <div class="result-row" id="raid-special-row" style="display:none; border-top: 2px dashed #7aa2f7; margin-top: 15px; padding-top:10px;">
+                <span id="raid-special-label" style="color:#ff9e64; font-weight:bold;">Raid Bonus:</span>
+                <span class="result-val" id="raid-special-val" style="color:#ff9e64;">0%</span>
+            </div>
             
             <div id="legendary-summary" style="display:none; margin-top:15px; border-top:1px dashed #555; padding-top:10px;">
-                <div style="color:#7aa2f7; font-weight:bold; font-size:0.9em;">Legendary Flat Bonuses</div>
-                <div class="raw-row"><span>Flat Cast Spd:</span> <span id="leg-cast" style="color:#9ece6a">0%</span></div>
-                <div class="raw-row"><span>Flat Atk Spd:</span> <span id="leg-atk" style="color:#9ece6a">0%</span></div>
+                <div style="color:#7aa2f7; font-weight:bold; font-size:0.9em; margin-bottom:5px;">Legendary Bonuses</div>
+                <div class="raw-row"><span>Cast Spd:</span> <span id="leg-cast" style="color:#9ece6a">0%</span></div>
+                <div class="raw-row"><span>Atk Spd:</span> <span id="leg-atk" style="color:#9ece6a">0%</span></div>
             </div>
         </div>
     </div>
@@ -434,11 +476,13 @@
 </div>
 
 <script>
-    // --- DATA DEFINITIONS ---
+    /* =========================================
+       CONSTANTS & DATA DEFINITIONS
+       ========================================= */
     const STATS = ["Versatility", "Mastery", "Haste", "Crit", "Luck"];
     const LEGENDARY_OPTS = ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"];
     
-    // Class Specs (Raid Fixed Stats)
+    // Spec Definitions (Primary/Secondary lock for Raid Gear)
     const CLASS_SPECS = {
         "Vanguard": ["Haste", "Mastery"],
         "Skyward": ["Crit", "Luck"],
@@ -458,24 +502,13 @@
         "Concerto": ["Haste", "Crit"]
     };
 
-    const RAID_SLOT_INDICES = {
-        weapon: 0,
-        armor: [1, 2, 3, 4, 8, 9] // Helm, Chest, Gloves, Boots, BracL, BracR
-    };
     const RAID_SLOT_NAMES = ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Bracelet (L)", "Bracelet (R)"];
-
-   
-    const GEM_COLORS = [
-        { name: "-", stat: null },
-        { name: "Blue (Haste)", stat: "Haste" },
-        { name: "Red (Crit)", stat: "Crit" },
-        { name: "Yellow (Luck)", stat: "Luck" },
-        { name: "Green (Mastery)", stat: "Mastery" }
-    ];
-    const GEM_LEVELS = [5, 6, 7];
+    
+    const GEM_COLORS = ["Haste", "Crit", "Luck", "Mastery"];
     const IMAGINE_TYPES = ["Mastery", "Haste", "Versatility"];
     const IMAGINE_VALS = [3584, 4636, 5688, 6740, 7792, 8960];
     
+    // Stat Restrictions per Slot/Attribute
     const RESTRICTIONS = {
         "Weapon": { "Strength": [], "Intelligence": [], "Agility": [] }, 
         "Helmet": { "Strength": ["Versatility"], "Intelligence": ["Crit"], "Agility": ["Haste"] },
@@ -495,34 +528,36 @@
         "Earrings", "Necklace", "Ring", "Bracelet (L)", "Bracelet (R)", "Charm"
     ];
 
-    // Tabela de bônus específicos para Armas de Raid da Season 2
+    // Raid Bonus Table (Season 2)
     const RAID_SPECIAL_DATA = {
         "Block": { label: "Luck", value: 6.0, type: "percent" },
         "Earthfort": { label: "Shield (Versatility)", value: 0.0, type: "percent" },
         "Iado": { label: "Crit DMG", value: 0.0, type: "percent" },
         "Moonstrike": { label: "Luck", value: 0.0, type: "percent" },
         "Icicle": { label: "Crit DMG", value: 0.0, type: "percent" },
-        "Frostbeam": { label: "Ranged DMG", value: 0, type: "flat" }, // X
-        "Vanguard": { label: "Melee DMG", value: 0, type: "flat" }, // X
+        "Frostbeam": { label: "Ranged DMG", value: 0, type: "flat" }, 
+        "Vanguard": { label: "Melee DMG", value: 0, type: "flat" }, 
         "Skyward": { label: "Lucky Strike DMG Multiplier", value: 20.0, type: "percent" },
-        "Smite": { label: "Ranged DMG", value: 0, type: "flat" }, // X
+        "Smite": { label: "Ranged DMG", value: 0, type: "flat" }, 
         "Lifebind": { label: "Healing Output", value: 0.0, type: "percent" },
-        "Wildpack": { label: "Ranged DMG", value: 0, type: "flat" }, // X
+        "Wildpack": { label: "Ranged DMG", value: 0, type: "flat" }, 
         "Falconry": { label: "Crit DMG", value: 0.0, type: "percent" },
         "Recovery": { label: "DMG Bonus", value: 0.0, type: "percent" },
-        "Shield": { label: "Melee DMG", value: 0, type: "flat" }, // X
+        "Shield": { label: "Melee DMG", value: 0, type: "flat" }, 
         "Concerto": { label: "Crit Healing", value: 0.0, type: "percent" },
-        "Dissonance": { label: "Luck Effect DMG Boost", value: 0, type: "flat" } // X
+        "Dissonance": { label: "Luck Effect DMG Boost", value: 0, type: "flat" } 
     };
 
-    // --- INITIALIZATION ---
+    /* =========================================
+       INITIALIZATION & UI HELPERS
+       ========================================= */
 
     function init() {
         const container = document.getElementById("gear-container");
         if(!container) return; 
         container.innerHTML = ""; 
 
-        // Populate Spec Dropdown
+        // Populate Class Spec Dropdown
         const specSel = document.getElementById("class-spec");
         Object.keys(CLASS_SPECS).forEach(spec => {
             let opt = document.createElement("option");
@@ -531,7 +566,7 @@
             specSel.appendChild(opt);
         });
 
-        // Generate Grid
+        // Generate Gear Grid Rows
         GEAR_SLOTS.forEach((slot, index) => {
             const row = document.createElement("div");
             row.className = "gear-row";
@@ -542,6 +577,7 @@
             nameDiv.innerText = slot;
             row.appendChild(nameDiv);
 
+            // Raid Checkbox
             const raidDiv = document.createElement("div");
             raidDiv.style.textAlign = "center";
             if (RAID_SLOT_NAMES.includes(slot)) {
@@ -554,9 +590,9 @@
                 };
                 raidDiv.appendChild(chk);
             }
-            
             row.appendChild(raidDiv);
 
+            // Selectors: Primary, Secondary, Reforge
             for(let i=1; i<=3; i++) {
                 const sel = document.createElement("select");
                 sel.id = "s" + i + "-" + index;
@@ -564,9 +600,8 @@
                 sel.onchange = function() { updateRowOptions(index); };
                 row.appendChild(sel);
             }
-
             
-            
+            // Legendary (WIP)
             const legDiv = document.createElement("div");
             legDiv.className = "leg-group";
             const legSel = document.createElement("select");
@@ -590,6 +625,7 @@
             container.appendChild(row);
         });
 
+        // Add Listeners to Base Stats Inputs
         document.querySelectorAll('.base-stats input').forEach(input => {
             input.addEventListener('input', calculateAll);
         });
@@ -597,7 +633,9 @@
         updateAllRows();
     }
 
-    // --- LOGIC ---
+    /* =========================================
+       UI INTERACTION LOGIC
+       ========================================= */
 
     function getBuildType() {
         const radios = document.getElementsByName("buildType");
@@ -626,6 +664,7 @@
         calculateAll();
     }
 
+    // Dynamic Options based on Restrictions and Raid status
     function updateRowOptions(index) {
         const slot = GEAR_SLOTS[index];
         const buildType = getBuildType();
@@ -694,11 +733,11 @@
         const chk = document.getElementById("raid-" + index);
         const legType = document.getElementById("leg-type-" + index);
         const legVal = document.getElementById("leg-val-" + index);
-        const s3 = document.getElementById("s3-" + index);
         
         if(!chk) return;
         const isRaid = chk.checked;
         
+        // Disable Legendary inputs if Raid is active
         legType.disabled = isRaid;
         legVal.disabled = isRaid;
         if(isRaid) {
@@ -713,11 +752,7 @@
             if(type === 'reforge') {
                 const s3 = document.getElementById("s3-" + index);
                 if(!s3.disabled) s3.value = value;
-            } /*else if(type === 'gem-color') {
-                document.getElementById("gem-color-" + index).value = value;
-            } else if(type === 'gem-lvl') {
-                document.getElementById("gem-lvl-" + index).value = value;
-            }*/
+            }
         });
         calculateAll();
     }
@@ -730,30 +765,38 @@
             if(raidChk) {
                 raidChk.checked = false;
                 toggleRaid(index, GEAR_SLOTS[index]);
-            }/*
-            document.getElementById("s1-" + index).value = "";
-            document.getElementById("s2-" + index).value = "";
-            document.getElementById("s3-" + index).value = "";
-            document.getElementById("gem-color-" + index).value = "";
-            document.getElementById("gem-lvl-" + index).value = "5";
-            document.getElementById("leg-type-" + index).value = "-";
-            document.getElementById("leg-val-" + index).value = "";
-            */
+            }
         });
         updateAllRows();
     }
 
-    // --- OPTIMIZER (SMART HILL CLIMB) ---
+    /* =========================================
+       OPTIMIZER LOGIC (PERFORMANCE OPTIMIZED)
+       ========================================= */
 
     function runOptimizer() {
-        const targetV = parseFloat(document.getElementById('opt-vers').value) || 0;
-        const targetM = parseFloat(document.getElementById('opt-mast').value) || 0;
-        const targetH = parseFloat(document.getElementById('opt-haste').value) || 0;
-        const targetC = parseFloat(document.getElementById('opt-crit').value) || 0;
-        const targetL = parseFloat(document.getElementById('opt-luck').value) || 0;
+        // 1. PRE-FETCH DATA: Ler o DOM uma única vez para criar um contexto estático.
+        // Isso evita leitura de disco/DOM dentro do loop de 20.000 iterações.
+        const targets = {
+            v: parseFloat(document.getElementById('opt-vers').value) || 0,
+            m: parseFloat(document.getElementById('opt-mast').value) || 0,
+            h: parseFloat(document.getElementById('opt-haste').value) || 0,
+            c: parseFloat(document.getElementById('opt-crit').value) || 0,
+            l: parseFloat(document.getElementById('opt-luck').value) || 0
+        };
+
+        const context = {
+            baseVers: parseFloat(document.getElementById('base-vers').value) || 0,
+            baseMast: parseFloat(document.getElementById('base-mast').value) || 0,
+            baseHaste: parseFloat(document.getElementById('base-haste').value) || 0,
+            baseCrit: parseFloat(document.getElementById('base-crit').value) || 0,
+            baseLuck: parseFloat(document.getElementById('base-luck').value) || 0,
+            extraHaste: (parseFloat(document.getElementById('opt-agi').value) || 0) * 0.2,
+            specName: document.getElementById("class-spec").value,
+            specialBonus: RAID_SPECIAL_DATA[document.getElementById("class-spec").value] || null
+        };
+
         const allowUnlimitedRaid = document.getElementById('opt-unlimited-raid').checked;
-        const optAgi = parseFloat(document.getElementById('opt-agi').value) || 0;
-        
         const keepSelected = document.getElementById('opt-keep-selected').checked;
         const optImagine = document.getElementById('opt-optimize-imagine').checked;
 
@@ -763,11 +806,11 @@
         const statusEl = document.getElementById('opt-status');
         statusEl.innerText = "Optimizing... (Running Intelligent Hill Climb)";
 
-        // Clear only if not keeping selection
+        // Limpa a tela (visual) antes de começar
         clearPlannerForOptimization(keepSelected);
 
+        // setTimeout para dar tempo da UI atualizar a mensagem "Optimizing..."
         setTimeout(() => {
-            // 2. Generate Initial State based on KeepSelected logic
             let bestGlobalLayout = null;
             let bestGlobalDiff = Infinity;
             
@@ -777,15 +820,16 @@
             for(let restart=0; restart < RESTARTS; restart++) {
                 
                 let currentLayout = generateInitialLayout(buildType, specStats, keepSelected, optImagine, allowUnlimitedRaid);
-                let currentStats = calcSimulatedStats(currentLayout, optAgi);
-                let currentDiff = getDiff(currentLayout, currentStats, targetV, targetM, targetH, targetC, targetL);
+                // Calculadora OTIMIZADA recebe o Contexto, não lê o DOM
+                let currentStats = calcSimulatedStats(currentLayout, context);
+                let currentDiff = getDiff(currentLayout, currentStats, targets);
 
                 for(let i=0; i < ITERATIONS; i++) {
                     let mutant = JSON.parse(JSON.stringify(currentLayout));
                     mutateLayout(mutant, buildType, specStats, optImagine);
                     
-                    let mutantStats = calcSimulatedStats(mutant, optAgi);
-                    let mutantDiff = getDiff(mutant, mutantStats, targetV, targetM, targetH, targetC, targetL);
+                    let mutantStats = calcSimulatedStats(mutant, context);
+                    let mutantDiff = getDiff(mutant, mutantStats, targets);
 
                     if(mutantDiff < currentDiff) {
                         currentLayout = mutant;
@@ -799,24 +843,24 @@
                 }
             }
 
-            // 4. APPLY & SWITCH
+            // Aplicar o melhor resultado encontrado
             applyLayout(bestGlobalLayout);
             statusEl.innerText = "Optimization Complete! Results applied.";
             switchTab('planner'); 
             calculateAll();
-        }, 100);
+        }, 50);
     }
 
-    function getDiff(layout, stats, tv, tm, th, tc, tl) {
-        // 1. PRIMARY: Match Stats (Weights ~1.0)
-        let statPenalty = Math.abs(stats.v - tv) + 
-                          Math.abs(stats.m - tm) + 
-                          Math.abs(stats.h - th) + 
-                          Math.abs(stats.c - tc) + 
-                          Math.abs(stats.l - tl);
+    // Função de diferença (Fitness Function)
+    function getDiff(layout, stats, t) {
+        // 1. PRIMARY: Match Stats
+        let statPenalty = Math.abs(stats.v - t.v) + 
+                          Math.abs(stats.m - t.m) + 
+                          Math.abs(stats.h - t.h) + 
+                          Math.abs(stats.c - t.c) + 
+                          Math.abs(stats.l - t.l);
 
-        // 2. SECONDARY: Minimize Gem Levels (Weight ~0.0001)
-        // Prefer level 5 over level 7 if stats are met
+        // 2. SECONDARY: Minimize Gem Levels (Prefer Lv 5 > Lv 7)
         let gemLevelPenalty = 0;
         layout.gears.forEach(g => {
             if(g && g.gLvl) {
@@ -824,8 +868,7 @@
             }
         });
 
-        // 3. TERTIARY: Maximize Uniformity (Weight ~0.00001)
-        // Count frequencies of gem colors
+        // 3. TERTIARY: Maximize Uniformity (Same color gems)
         let colorCounts = {};
         let maxCount = 0;
         layout.gears.forEach(g => {
@@ -834,7 +877,6 @@
                 if(colorCounts[g.g] > maxCount) maxCount = colorCounts[g.g];
             }
         });
-        // Total slots is 11. Penalty decreases as maxCount increases.
         let varietyPenalty = (11 - maxCount) * 0.00001;
 
         return statPenalty + gemLevelPenalty + varietyPenalty;
@@ -842,46 +884,40 @@
 
     function generateInitialLayout(buildType, specStats, keepSelected, optImagine, allowUnlimitedRaid) {
         let layout = { gears: [], imagine: [] };
-
-        // 1. Parse Locked/Existing state if KeepSelected is ON
-        let lockedSlots = []; // indices
+        let lockedSlots = [];
         let raidCount = 0;
 
+        // Se "Keep Selected" estiver marcado, lê o estado atual
         if (keepSelected) {
             GEAR_SLOTS.forEach((slot, index) => {
                 let s1 = document.getElementById("s1-" + index).value;
                 if (s1 !== "") {
-                    // This slot is filled, lock P/S/Raid
                     let isRaid = document.getElementById("raid-" + index)?.checked || false;
                     let p = s1;
                     let s = document.getElementById("s2-" + index).value;
                     let r = document.getElementById("s3-" + index).value;
-                    let g = document.getElementById("gem-color-" + index).value || "Haste";
-                    let gLvl = parseInt(document.getElementById("gem-lvl-" + index).value) || 5;
+                    let g = "Haste"; // Default gem logic simplify
+                    let gLvl = 5;
                     
                     layout.gears.push({ isLocked: true, isRaid, p, s, r, g, gLvl });
                     lockedSlots.push(index);
                     if(isRaid) raidCount++;
                 } else {
-                    layout.gears.push(null); // Place holder
+                    layout.gears.push(null); 
                 }
             });
         } else {
-            // All empty placeholders
             GEAR_SLOTS.forEach(() => layout.gears.push(null));
         }
 
-        // 2. Decide Raid for EMPTY slots
+        // Preenche slots vazios
         let emptyIndices = GEAR_SLOTS.map((_, i) => i).filter(i => !lockedSlots.includes(i));
         
+        // Lógica de Raid
         let weaponLocked = lockedSlots.includes(0);
         let weaponRaidLocked = weaponLocked && layout.gears[0].isRaid;
-        
-        let makeWeaponRaid = false;
-        if (!weaponLocked) makeWeaponRaid = true; 
-        else makeWeaponRaid = weaponRaidLocked; 
+        let makeWeaponRaid = (!weaponLocked) ? true : weaponRaidLocked;
 
-        // Armors
         let armorIndices = [1, 2, 3, 4, 8, 9];
         let lockedRaidArmors = lockedSlots.filter(i => armorIndices.includes(i) && layout.gears[i].isRaid).length;
         
@@ -894,11 +930,10 @@
 
         if(!weaponLocked && makeWeaponRaid) indicesToMakeRaid.push(0);
 
-        // INITIAL GEM SEED: Pick one random color for all empty slots to encourage uniformity start
-        let validGems = ["Haste", "Crit", "Luck", "Mastery"];
-        let seedGem = validGems[Math.floor(Math.random() * validGems.length)];
+        // Seed Gem
+        let seedGem = GEM_COLORS[Math.floor(Math.random() * GEM_COLORS.length)];
 
-        // 3. Fill Empty Slots
+        // Fill Data
         emptyIndices.forEach(index => {
             let slot = GEAR_SLOTS[index];
             let isRaid = indicesToMakeRaid.includes(index);
@@ -918,14 +953,13 @@
             let r = STATS[Math.floor(Math.random() * STATS.length)];
             if(slot === "Weapon" && isRaid) r = ""; 
 
-            // Use seed gem mostly, but start with level 5
             let g = seedGem;
             let gLvl = 5;
 
             layout.gears[index] = { isLocked: false, isRaid, p, s, r, g, gLvl };
         });
 
-        // 4. Handle Imagine
+        // Imagine Logic
         if (optImagine) {
             layout.imagine = [
                 { t: IMAGINE_TYPES[Math.floor(Math.random()*3)], v: IMAGINE_VALS[Math.floor(Math.random()*6)] },
@@ -942,26 +976,20 @@
     }
 
     function mutateLayout(layout, buildType, specStats, optImagine) {
-        // Mutate Gear
         let idx = Math.floor(Math.random() * layout.gears.length);
         let gear = layout.gears[idx];
         let slotName = GEAR_SLOTS[idx];
 
         // Aspects: 0=P, 1=S, 2=R, 3=GemColor, 4=GemLvl
-        // If Raid, cannot change P or S
         let validAspects = [2, 3, 4];
         if (!gear.isLocked && !gear.isRaid) {
             validAspects.push(0, 1);
         }
 
-        // Also mutate Imagine?
         if (optImagine && Math.random() < 0.2) { 
              let imIdx = Math.floor(Math.random() * 2);
-             if(Math.random() < 0.5) {
-                 layout.imagine[imIdx].t = IMAGINE_TYPES[Math.floor(Math.random()*3)];
-             } else {
-                 layout.imagine[imIdx].v = IMAGINE_VALS[Math.floor(Math.random()*6)];
-             }
+             if(Math.random() < 0.5) layout.imagine[imIdx].t = IMAGINE_TYPES[Math.floor(Math.random()*3)];
+             else layout.imagine[imIdx].v = IMAGINE_VALS[Math.floor(Math.random()*6)];
              return;
         }
 
@@ -984,24 +1012,22 @@
                 gear.r = STATS[Math.floor(Math.random() * STATS.length)];
              }
         } else if (aspect === 3) { 
-             let validGems = ["Haste", "Crit", "Luck", "Mastery"];
-             gear.g = validGems[Math.floor(Math.random() * validGems.length)];
+             gear.g = GEM_COLORS[Math.floor(Math.random() * GEM_COLORS.length)];
         } else if (aspect === 4) { 
              gear.gLvl = 5 + Math.floor(Math.random() * 3);
         }
     }
 
-    function calcSimulatedStats(layout, optAgi) {
+    // --- FUNÇÃO OTIMIZADA: Usa CONTEXTO em vez de DOM ---
+    function calcSimulatedStats(layout, context) {
         let raw = { "Versatility": 0, "Mastery": 0, "Haste": 0, "Crit": 0, "Luck": 0 };
 
-        // 1. Soma Bases
-        raw["Versatility"] += parseFloat(document.getElementById('base-vers').value) || 0;
-        raw["Mastery"] += parseFloat(document.getElementById('base-mast').value) || 0;
-        raw["Haste"] += parseFloat(document.getElementById('base-haste').value) || 0;
-        raw["Crit"] += parseFloat(document.getElementById('base-crit').value) || 0;
-        raw["Luck"] += parseFloat(document.getElementById('base-luck').value) || 0;
-        
-        raw["Haste"] += (optAgi * 0.2);
+        // 1. Usa os valores do contexto (RAM)
+        raw["Versatility"] += context.baseVers;
+        raw["Mastery"]     += context.baseMast;
+        raw["Haste"]       += context.baseHaste + context.extraHaste;
+        raw["Crit"]        += context.baseCrit;
+        raw["Luck"]        += context.baseLuck;
 
         // 2. Soma Imagines
         layout.imagine.forEach(im => {
@@ -1010,7 +1036,7 @@
 
         // 3. Soma Equipamentos (Gears)
         layout.gears.forEach((gear, index) => {
-            if (!gear) return; // Segurança caso venha nulo
+            if (!gear) return;
 
             let slot = GEAR_SLOTS[index];
             let isRaid = gear.isRaid;
@@ -1033,25 +1059,19 @@
             if(gear.g) raw[gear.g] += gemVal;
         });
 
-        // --- CORREÇÃO APLICADA AQUI ---
-        // Recupera a classe atual e verifica se tem Arma de Raid equipada
-        const specName = document.getElementById("class-spec").value;
-        const specialBonus = RAID_SPECIAL_DATA[specName] || null;
-        
-        // Verifica se o slot 0 (Arma) é Raid nesta simulação
+        // 4. Aplica Lógica de Raid (Usando Contexto)
+        const specialBonus = context.specialBonus;
+        // Verifica se a arma no layout simulado é Raid
         const hasRaidWeapon = layout.gears[0] && layout.gears[0].isRaid;
 
         if (hasRaidWeapon && specialBonus && specialBonus.type === "percent") {
             if (specialBonus.label === "Luck") {
-                // Aplica o multiplicador de Luck
                 raw["Luck"] = raw["Luck"] * (1 + (specialBonus.value / 100));
             }
             if (specialBonus.label === "Shield (Versatility)") {
-                // Aplica o multiplicador de Vers
                 raw["Versatility"] = raw["Versatility"] * (1 + (specialBonus.value / 100));
             }
         }
-        // -----------------------------
 
         return {
             v: (raw["Versatility"] / (raw["Versatility"] + 11200)) * 100,
@@ -1074,8 +1094,8 @@
             updateRowOptions(index); 
             document.getElementById("s2-" + index).value = gear.s;
             document.getElementById("s3-" + index).value = gear.r;
-            document.getElementById("gem-color-" + index).value = gear.g;
-            document.getElementById("gem-lvl-" + index).value = gear.gLvl;
+            // Gemas não estavam visíveis no HTML original, mas o layout suporta. 
+            // A lógica mantém consistência interna.
         });
 
         document.getElementById("img-type-1").value = layout.imagine[0].t;
@@ -1084,12 +1104,15 @@
         document.getElementById("img-lvl-2").value = layout.imagine[1].v;
     }
 
-    // --- CALCULATION ---
+    /* =========================================
+       MAIN UI CALCULATOR
+       ========================================= */
 
     function calculateAll() {
         let gearTotal = { "Versatility": 0, "Mastery": 0, "Haste": 0, "Crit": 0, "Luck": 0 };
         let legBonuses = { "Attack Speed": 0, "Cast Speed": 0 };
 
+        // Itera sobre o DOM atual para calcular stats
         GEAR_SLOTS.forEach((slot, index) => {
             const s1 = document.getElementById("s1-" + index).value;
             const s2 = document.getElementById("s2-" + index).value;
@@ -1097,34 +1120,28 @@
             const raidEl = document.getElementById("raid-" + index);
             
             let isRaid = raidEl ? raidEl.checked : false;
-
             let v1=0, v2=0, v3=0;
             
-            // --- LÓGICA CORRIGIDA DOS VALORES ---
+            // Lógica de Valores
             if(slot === "Weapon") {
                 if(isRaid) {
                     v1 = 2480; v2 = 2480; v3 = 0; 
-                    // Pega o bônus da classe
                     const specName = document.getElementById("class-spec").value;
                     window.currentRaidBonus = RAID_SPECIAL_DATA[specName] || null;
                 } else {
                     v1 = 1908; v2 = 954; v3 = 572; 
-                    window.currentRaidBonus = null; // Remove bônus se desmarcar Raid
+                    window.currentRaidBonus = null; 
                 }
             } else if (isRaid) {
-                // Armaduras de Raid
                 v1 = 954; v2 = 954; v3 = 286;
             } else {
-                // Armaduras Normais
                 v1 = 954; v2 = 477; v3 = 286;
             }
 
-            // Soma os valores aos totais
             if(s1 && gearTotal[s1] !== undefined) gearTotal[s1] += v1;
             if(s2 && gearTotal[s2] !== undefined) gearTotal[s2] += v2;
             if(s3 && gearTotal[s3] !== undefined) gearTotal[s3] += v3;
 
-            // Soma Lendários (Apenas se não for Raid)
             if(!isRaid) {
                 const lType = document.getElementById("leg-type-" + index).value;
                 const lVal = parseFloat(document.getElementById("leg-val-" + index).value) || 0;
@@ -1133,7 +1150,7 @@
             }
         });
 
-        // Processa os Imagines
+        // Processa Imagines
         const processImagine = (num) => {
             const type = document.getElementById("img-type-" + num).value;
             const val = parseInt(document.getElementById("img-lvl-" + num).value) || 0;
@@ -1141,7 +1158,7 @@
         };
         processImagine(1); processImagine(2);
 
-        // Soma os totais finais com valores base
+        // Soma Bases + Agilidade
         let finalTotal = { ...gearTotal };
         let baseVers = parseFloat(document.getElementById('base-vers').value) || 0;
         let baseMast = parseFloat(document.getElementById('base-mast').value) || 0;
@@ -1151,20 +1168,16 @@
         let agiVal = parseFloat(document.getElementById('base-agi').value) || 0;
         let agiHaste = agiVal * 0.2;
 
-        // ... (o código anterior da função continua igual até aqui)
-
         finalTotal["Versatility"] += baseVers;
         finalTotal["Mastery"] += baseMast;
         finalTotal["Haste"] += baseHaste + agiHaste;
         finalTotal["Crit"] += baseCrit;
         finalTotal["Luck"] += baseLuck;
 
-        // --- CORREÇÃO AQUI: Aplica o bônus de % no STATUS BRUTO (Multiplicador) ---
+        // Aplica Bônus de Raid (Multiplicadores)
         const specialBonus = window.currentRaidBonus;
-        
         if (specialBonus && specialBonus.type === "percent") {
             if (specialBonus.label === "Luck") {
-                // Ex: Se tem 1000 de Luck, vira 1110 (1000 + 11%)
                 finalTotal["Luck"] = finalTotal["Luck"] * (1 + (specialBonus.value / 100));
             }
             if (specialBonus.label === "Shield (Versatility)") {
@@ -1172,37 +1185,34 @@
             }
         }
 
-        // Atualiza display dos valores brutos (Agora já mostrando o valor aumentado)
+        // Atualiza UI com Raw Stats
         document.getElementById("raw-vers").innerText = finalTotal["Versatility"].toFixed(0);
         document.getElementById("raw-mast").innerText = finalTotal["Mastery"].toFixed(0);
         document.getElementById("raw-haste").innerText = finalTotal["Haste"].toFixed(1);
         document.getElementById("raw-crit").innerText = finalTotal["Crit"].toFixed(0);
         document.getElementById("raw-luck").innerText = finalTotal["Luck"].toFixed(0);
 
-        // Calcula as porcentagens (Agora usando o valor bruto já buffado)
+        // Fórmulas de Conversão (%)
         let vPct = (finalTotal["Versatility"] / (finalTotal["Versatility"] + 11200)) * 100;
         let mPct = ((finalTotal["Mastery"] / (finalTotal["Mastery"] + 20000)) * 100) + 6;
         let hPct = (finalTotal["Haste"] / (finalTotal["Haste"] + 20000)) * 100;
         let cPct = ((finalTotal["Crit"] / (finalTotal["Crit"] + 20000)) * 100) + 5;
         let lPct = ((finalTotal["Luck"] / (finalTotal["Luck"] + 16230)) * 100) + 5;
 
-        // Atualiza o texto na tela
+        // Atualiza UI com Porcentagens
         document.getElementById('r-vers').innerText = isNaN(vPct) ? "0%" : vPct.toFixed(2) + "%";
         document.getElementById('r-mast').innerText = isNaN(mPct) ? "6.00%" : mPct.toFixed(2) + "%";
         document.getElementById('r-haste').innerText = isNaN(hPct) ? "0%" : hPct.toFixed(2) + "%";
         document.getElementById('r-crit').innerText = isNaN(cPct) ? "5.00%" : cPct.toFixed(2) + "%";
         document.getElementById('r-luck').innerText = isNaN(lPct) ? "5.00%" : lPct.toFixed(2) + "%";
 
-        // --- EXIBIÇÃO DO BÔNUS DE RAID (Apenas Texto) ---
+        // Exibição de Raid Bônus Texto
         const raidRow = document.getElementById('raid-special-row');
-
         if (specialBonus) {
             raidRow.style.display = 'flex';
             document.getElementById('raid-special-label').innerText = "Raid " + specialBonus.label + ":";
             let suffix = specialBonus.type === "percent" ? "%" : "";
             document.getElementById('raid-special-val').innerText = "+" + specialBonus.value + suffix;
-            
-            // REMOVEMOS A SOMA DAQUI, POIS JÁ FOI FEITA NO VALOR BRUTO ACIMA
         } else {
             raidRow.style.display = 'none';
         }
