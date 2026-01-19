@@ -151,6 +151,7 @@
         .imagine-title { color: var(--accent); font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 5px; }
 
         .footer-credits { width: 100%; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #333; color: #555; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-sub { color: #444; font-size: 0.7em; margin-top: 5px; font-weight: bold; }
         .dynamic-note { font-size: 0.8em; color: #888; margin-top: 20px; background: #121319; padding: 15px; border-radius: var(--radius); border-left: 3px solid #333; line-height: 1.6; }
     </style>
 </head>
@@ -242,7 +243,10 @@
         </div>
 
         <div class="dynamic-note" id="dynamic-footer-note"></div>
-        <div class="footer-credits" id="credits-area"></div>
+        <div class="footer-credits">
+            <div id="credits-area"></div>
+            <div class="footer-sub">Supported by: Boss the Block Father</div>
+        </div>
     </div>
 
     <div class="panel calc-panel">
@@ -287,9 +291,9 @@
 </div>
 
 <script>
-    // --- DATA CONFIGURATION ---
+    // --- 1. DATA CONFIGURATION ---
     const GAME_DATA = {
-        TEXT: { CREDITS: "Produced by Luxxos // Updated by: RaoH", NOTES: `<strong>Gear Values:</strong><br>• Raid Weapon: 2480 Primary / 2480 Secondary / No Reforge<br>• Raid Armor: 954 Primary / 954 Secondary / 286 Reforge <br>• Standard Weapon: 1908 Primary /954 Secondary / 572 Reforge<br>• Standard Armor: 954 Primary / 477 Secondary / 286 Reforge` },
+        TEXT: { CREDITS: "Produced by Luxxio // Updated by: KrowMeLL / RaoH", NOTES: `<strong>Gear Values:</strong><br>• Raid Weapon: 2480 Primary / 2480 Secondary / No Reforge<br>• Raid Armor: 954 Primary / 954 Secondary / 286 Reforge <br>• Standard Weapon: 1908 Primary /954 Secondary / 572 Reforge<br>• Standard Armor: 954 Primary / 477 Secondary / 286 Reforge` },
         STATS: ["Versatility", "Mastery", "Haste", "Crit", "Luck"],
         SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Earrings", "Necklace", "Ring", "Bracelet (L)", "Bracelet (R)", "Charm"],
         RAID_SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Bracelet (L)", "Bracelet (R)"],
@@ -297,7 +301,6 @@
         // --- SEÇÃO DE CONFIGURAÇÃO DOS IMAGINES (ATUALIZADA) ---
         IMAGINE: { 
             SLOT_IDS: ['1', '2'],
-            // Define cada Imagine com seu Status e sua Tabela de Valores
             OPTIONS: {
                 "Phantom Arachnocrab (Mastery)": { stat: "Mastery", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
                 "Celestial Flier (Haste)": { stat: "Haste", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
@@ -326,7 +329,7 @@
     // --- SIGIL DATABASE ---
     const SIGIL_DB = [
         // Weapon
-        { name: "Basilisk Sigil (Legendary)", slots: ["Weapon"], stats: { 1: {"All Element Attack": 70}, 2: {}, 3: {} } },
+        { name: "Basilisk Sigil (Legendary)", slots: ["Weapon"], stats: { 1: {"All Element Attack": 70}, 2: {"All Element Attack": 70}, 3: {"All Element Attack": 70} } },
         { name: "Bluespine Lizard", slots: ["Weapon"], stats: { 1: {"All Element Attack": 20}, 2: {}, 3: {} } },
         { name: "Emerald Caprahorn", slots: ["Weapon","Earrings","Necklace","Ring"], stats: { 1: {Endurance:80, Strength:25}, 2: {}, 3: {} } },
         { name: "Blackstone Commander", slots: ["Weapon","Earrings","Necklace","Ring"], stats: { 1: {Endurance:80, Intellect:25}, 2: {}, 3: {} } },
@@ -380,18 +383,14 @@
             $('dynamic-footer-note').innerHTML = GAME_DATA.TEXT.NOTES;
             $('class-spec').innerHTML = Object.keys(GAME_DATA.SPECS).map(s => createOpt(s)).join('');
             
-            // Gerar Options para os Imagines
             const imgOptions = Object.keys(GAME_DATA.IMAGINE.OPTIONS);
             GAME_DATA.IMAGINE.SLOT_IDS.forEach(n => {
-                // Preenche o Select de Tipos
                 $(`img-type-${n}`).innerHTML = createOpt("", "- None -") + imgOptions.map(k => createOpt(k, k)).join('');
-                // Preenche o Select de Niveis (apenas T0, T1..., o valor depende do tipo escolhido)
                 let lvlHtml = "";
-                for(let i=0; i<6; i++) lvlHtml += createOpt(i, `Tier ${i}`); // Value é o Index (0 a 5)
+                for(let i=0; i<6; i++) lvlHtml += createOpt(i, `Tier ${i}`);
                 $(`img-lvl-${n}`).innerHTML = lvlHtml;
             });
 
-            // Generate Grid
             const container = $('gear-container');
             container.innerHTML = GAME_DATA.SLOTS.map((slot, i) => {
                 const isRaidSlot = GAME_DATA.RAID_SLOTS.includes(slot);
@@ -533,16 +532,13 @@
                 }
             });
 
-            // 3. Imagines (Updated Logic for multiple types)
+            // 3. Imagines
             GAME_DATA.IMAGINE.SLOT_IDS.forEach(n => {
                 const typeKey = $(`img-type-${n}`).value;
-                const lvlIdx = parseInt($(`img-lvl-${n}`).value); // Now returns 0-5
-                
+                const lvlIdx = parseInt($(`img-lvl-${n}`).value);
                 if(typeKey && !isNaN(lvlIdx)) {
                     const imgData = GAME_DATA.IMAGINE.OPTIONS[typeKey];
-                    if(imgData) {
-                        total[imgData.stat] += imgData.vals[lvlIdx];
-                    }
+                    if(imgData) total[imgData.stat] += imgData.vals[lvlIdx];
                 }
             });
 
@@ -573,7 +569,7 @@
             // Extras Display (Unified)
             let extraHTML = `<div style="color:var(--highlight); font-weight:bold; margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:3px;">Extra Bonuses</div>`;
             
-            // Add Raid Bonus to List
+            // Add Raid Bonus (Both Flat and Percent are listed here for clarity, although percent is also applied to math)
             if(raidBonus) {
                 let valStr = `+${raidBonus.v}${raidBonus.t === 'p' ? '%' : ''}`;
                 extraHTML += `<div style="color:var(--text-main); font-size:0.9em; display:flex; justify-content:space-between; margin-bottom:4px;"><span>Raid ${raidBonus.l}:</span> <span style="color:var(--accent); font-weight:bold;">${valStr}</span></div>`;
@@ -590,7 +586,7 @@
         }
     };
 
-    // --- OPTIMIZER (Updated for new Imagine Structure) ---
+    // --- OPTIMIZER ---
     const optimizer = {
         run: () => {
             const targets = {
@@ -599,7 +595,7 @@
             };
             const ctx = {
                 bV: parseFloat($('base-vers').value)||0, bM: parseFloat($('base-mast').value)||0,
-                bH: (parseFloat($('base-haste').value)||0) + ((parseFloat($('opt-agi').value)||0)*0.45),
+                bH: (parseFloat($('base-haste').value)||0) + ((parseFloat($('opt-agi').value)||0)*0.45), // Fixed ratio
                 bC: parseFloat($('base-crit').value)||0, bL: parseFloat($('base-luck').value)||0,
                 spec: $('class-spec').value, bonus: GAME_DATA.RAID_BONUS[$('class-spec').value]
             };
