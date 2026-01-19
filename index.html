@@ -273,7 +273,6 @@
                 Enter your targets. The optimizer will simulate setups to match them.<br>
                 <ul style="margin-top:5px; font-size:0.9em; color:#bbb;">
                     <li><strong>Smart Raid:</strong> Automatically picks Raid pieces (Weapon + Armor) based on limits.</li>
-                    <li><strong>Smart Efficiency:</strong> Prioritizes <strong>Lower Level Gems</strong> and <strong>Uniform Colors</strong> if the stat target is met.</li>
                     <li><strong>Keep Selected Gear:</strong> If checked, items currently filled in the Planner are LOCKED.</li>
                 </ul>
             </div>
@@ -995,6 +994,7 @@
     function calcSimulatedStats(layout, optAgi) {
         let raw = { "Versatility": 0, "Mastery": 0, "Haste": 0, "Crit": 0, "Luck": 0 };
 
+        // 1. Soma Bases
         raw["Versatility"] += parseFloat(document.getElementById('base-vers').value) || 0;
         raw["Mastery"] += parseFloat(document.getElementById('base-mast').value) || 0;
         raw["Haste"] += parseFloat(document.getElementById('base-haste').value) || 0;
@@ -1003,11 +1003,15 @@
         
         raw["Haste"] += (optAgi * 0.2);
 
+        // 2. Soma Imagines
         layout.imagine.forEach(im => {
             if(im.t && raw[im.t] !== undefined) raw[im.t] += im.v;
         });
 
+        // 3. Soma Equipamentos (Gears)
         layout.gears.forEach((gear, index) => {
+            if (!gear) return; // Segurança caso venha nulo
+
             let slot = GEAR_SLOTS[index];
             let isRaid = gear.isRaid;
 
@@ -1028,6 +1032,26 @@
             let gemVal = (gear.gLvl===5)?50 : (gear.gLvl===6)?60 : 70;
             if(gear.g) raw[gear.g] += gemVal;
         });
+
+        // --- CORREÇÃO APLICADA AQUI ---
+        // Recupera a classe atual e verifica se tem Arma de Raid equipada
+        const specName = document.getElementById("class-spec").value;
+        const specialBonus = RAID_SPECIAL_DATA[specName] || null;
+        
+        // Verifica se o slot 0 (Arma) é Raid nesta simulação
+        const hasRaidWeapon = layout.gears[0] && layout.gears[0].isRaid;
+
+        if (hasRaidWeapon && specialBonus && specialBonus.type === "percent") {
+            if (specialBonus.label === "Luck") {
+                // Aplica o multiplicador de Luck
+                raw["Luck"] = raw["Luck"] * (1 + (specialBonus.value / 100));
+            }
+            if (specialBonus.label === "Shield (Versatility)") {
+                // Aplica o multiplicador de Vers
+                raw["Versatility"] = raw["Versatility"] * (1 + (specialBonus.value / 100));
+            }
+        }
+        // -----------------------------
 
         return {
             v: (raw["Versatility"] / (raw["Versatility"] + 11200)) * 100,
