@@ -54,8 +54,9 @@
 
         /* CONTROLES E SELETORES */
         .controls-row {
-            background: #1c1e26; padding: 20px; border-radius: var(--radius); 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; 
+            background: #1c1e26; padding: 25px; border-radius: var(--radius); 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            gap: 30px; /* Aumentado para descer o texto */
             margin-bottom: 20px; border: var(--border);
         }
         
@@ -76,6 +77,7 @@
 
         .class-spec-row {
             display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap;
+            margin-top: 5px; /* Ajuste fino de posicionamento */
         }
         .spec-wrapper { display: flex; align-items: center; gap: 10px; }
 
@@ -157,7 +159,7 @@
         .imagine-row { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px; }
         .imagine-title { color: var(--accent); font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 5px; }
 
-        /* Rules Table (New) */
+        /* Rules Table */
         .res-wrap { background: var(--bg-input); border: 1px solid #333; border-radius: var(--radius); padding: 5px; overflow: hidden; }
         .res-tbl { width: 100%; border-collapse: collapse; }
         .res-tbl th, .res-tbl td { padding: 12px 15px; text-align: left; border: 1px solid #2c3e50; font-size: 0.9rem; }
@@ -358,32 +360,38 @@
         LEGENDARY: ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"],
         RAID_BONUS: {
             "Block": { l: "Luck", v: 6.0, t: "p" }, "Earthfort": { l: "Shield (Vers)", v: 0.0, t: "p" },
-            "Iado": { l: "Crit DMG", v: 0.0, t: "p" }, "Moonstrike": { l: "Luck", v: 0.0, t: "p" },
-            "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, "Frostbeam": { l: "Ranged DMG", v: 0, t: "f" },
-            "Vanguard": { l: "Melee DMG", v: 0, t: "f" }, "Skyward": { l: "Lucky Strike DMG", v: 20.0, t: "p" },
-            "Smite": { l: "Ranged DMG", v: 0, t: "f" }, "Lifebind": { l: "Healing Output", v: 0.0, t: "p" },
+            "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, // Alias for safety
+            "Iaido": { l: "Crit DMG", v: 0.0, t: "p" }, 
+            "Moonblade": { l: "Luck", v: 0.0, t: "p" },
+            "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, "Ray": { l: "Ranged DMG", v: 0, t: "f" },
+            "Vanguard": { l: "Melee DMG", v: 0, t: "f" }, "SkyWard": { l: "Lucky Strike DMG", v: 20.0, t: "p" },
+            "Smite": { l: "Ranged DMG", v: 0, t: "f" }, "Life Bind": { l: "Healing Output", v: 0.0, t: "p" },
             "Wildpack": { l: "Ranged DMG", v: 0, t: "f" }, "Falconry": { l: "Crit DMG", v: 0.0, t: "p" },
             "Recovery": { l: "DMG Bonus", v: 0.0, t: "p" }, "Shield": { l: "Melee DMG", v: 0, t: "f" },
             "Concerto": { l: "Crit Healing", v: 0.0, t: "p" }, "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }
         },
-        // --- NEW CLASS/SPEC MAPPING ---
+        
+        // --- CLASSES AND SPECS MAPPING ---
         CLASSES: {
-            "Heavy Guardian": ["Vanguard", "Shield"],
-            "Shield Knight": ["Earthfort", "Block"],
-            "Verdant Oracle": ["Lifebind", "Concerto"],
-            "Beat Performance": ["Dissonance", "Recovery"],
-            "Storm Blade": ["Icicle", "Frostbeam"],
-            "Marksman": ["Wildpack", "Falconry", "Smite"],
-            "Wind Knight": ["Skyward", "Moonstrike", "Iado"]
+            "Heavy Guardian": ["Block", "Earthforth"],
+            "Shield Knight": ["Recovery", "Shield"],
+            "Verdant Oracle": ["Life Bind", "Smite"],
+            "Beat Performance": ["Dissonance", "Concerto"],
+            "Stormblade": ["Moonblade", "Iaido"],
+            "Frost Mage": ["Icicle", "Ray"],
+            "Wind Knight": ["SkyWard", "Vanguard"]
         },
+        // Stats associated with each Spec (Based on provided data and game logic)
         SPECS: { 
-            "Vanguard": ["Haste", "Mastery"], "Skyward": ["Crit", "Luck"], "Shield": ["Haste", "Mastery"], 
-            "Recovery": ["Crit", "Mastery"], "Iado": ["Crit", "Mastery"], "Moonstrike": ["Haste", "Luck"], 
-            "Icicle": ["Crit", "Luck"], "Frostbeam": ["Haste", "Mastery"], "Smite": ["Mastery", "Luck"], 
-            "Lifebind": ["Haste", "Mastery"], "Earthfort": ["Mastery", "Versatility"], "Block": ["Mastery", "Luck"], 
-            "Wildpack": ["Haste", "Mastery"], "Falconry": ["Crit", "Haste"], "Dissonance": ["Haste", "Luck"], 
-            "Concerto": ["Haste", "Crit"] 
+            "Block": ["Mastery", "Luck"], "Earthforth": ["Mastery", "Versatility"],
+            "Recovery": ["Crit", "Mastery"], "Shield": ["Haste", "Mastery"],
+            "Life Bind": ["Haste", "Mastery"], "Smite": ["Mastery", "Luck"],
+            "Dissonance": ["Haste", "Luck"], "Concerto": ["Haste", "Crit"],
+            "Moonblade": ["Haste", "Luck"], "Iaido": ["Crit", "Mastery"],
+            "Icicle": ["Crit", "Luck"], "Ray": ["Haste", "Mastery"],
+            "SkyWard": ["Crit", "Luck"], "Vanguard": ["Haste", "Mastery"]
         },
+        
         RESTRICTIONS: { "Weapon": { "Strength": [], "Intelligence": [], "Agility": [] }, "Helmet": { "Strength": ["Versatility"], "Intelligence": ["Crit"], "Agility": ["Haste"] }, "Chest": { "Strength": ["Luck"], "Intelligence": ["Crit"], "Agility": ["Mastery"] }, "Gloves": { "Strength": ["Haste"], "Intelligence": ["Versatility"], "Agility": ["Crit"] }, "Boots": { "Strength": ["Mastery"], "Intelligence": ["Luck"], "Agility": ["Crit"] }, "Earrings": { "Strength": ["Mastery"], "Intelligence": ["Versatility"], "Agility": ["Haste"] }, "Necklace": { "Strength": ["Haste"], "Intelligence": ["Luck"], "Agility": ["Mastery"] }, "Ring": { "Strength": ["Luck"], "Intelligence": ["Mastery"], "Agility": ["Versatility"] }, "Bracelet (L)": { "Strength": ["Crit"], "Intelligence": ["Haste"], "Agility": ["Versatility"] }, "Bracelet (R)": { "Strength": ["Crit"], "Intelligence": ["Mastery"], "Agility": ["Luck"] }, "Charm": { "Strength": ["Versatility"], "Intelligence": ["Haste"], "Agility": ["Luck"] } },
         VALUES: { WEAPON_RAID: { p: 2480, s: 2480, r: 0 }, ARMOR_RAID: { p: 954, s: 954, r: 286 }, WEAPON_STD: { p: 1908, s: 954, r: 572 }, ARMOR_STD: { p: 954, s: 477, r: 286 } }
     };
@@ -503,7 +511,12 @@
         updateSpecOptions: () => {
             const selectedClass = $('class-select').value;
             const specs = GAME_DATA.CLASSES[selectedClass];
-            $('spec-select').innerHTML = specs.map(s => createOpt(s)).join('');
+            // Safety check in case selection is empty or invalid
+            if (specs) {
+                $('spec-select').innerHTML = specs.map(s => createOpt(s)).join('');
+            } else {
+                $('spec-select').innerHTML = createOpt("", "None");
+            }
             logic.updateAll(); // Update calculations based on new default spec
         },
 
@@ -539,8 +552,11 @@
             if(isRaid) {
                 const specVal = $('spec-select').value;
                 const specs = GAME_DATA.SPECS[specVal];
-                s1.innerHTML = createOpt(specs[0]); s1.value = specs[0]; s1.disabled = true;
-                s2.innerHTML = createOpt(specs[1]); s2.value = specs[1]; s2.disabled = true;
+                // Added safety check for specs
+                if (specs) {
+                    s1.innerHTML = createOpt(specs[0]); s1.value = specs[0]; s1.disabled = true;
+                    s2.innerHTML = createOpt(specs[1]); s2.value = specs[1]; s2.disabled = true;
+                }
                 s3.disabled = (slot === "Weapon");
                 if(slot === "Weapon") s3.value = ""; else logic.fillSelect(s3, s3.value, null, false);
             } else {
