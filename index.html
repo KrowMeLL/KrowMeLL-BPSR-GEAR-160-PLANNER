@@ -12,12 +12,12 @@
             --bg-panel: #181a21;
             --bg-input: #0b0c10;
             
-            /* Crimson Theme */
+            /* Crimson Theme - Standardized */
             --accent: #ff4757;        
             --accent-hover: #ff6b81;
             
-            --primary: #3498db;       /* Blue */
-            --highlight: #d4af37;     /* Gold */
+            --primary: #3498db;       /* Blue (Only for Update Button) */
+            --highlight: #d4af37;     /* Gold (Secondary Text) */
             
             --text-main: #ecf0f1;
             --text-muted: #7f8c8d;
@@ -54,9 +54,10 @@
 
         /* CONTROLES E SELETORES */
         .controls-row {
-            background: #1c1e26; padding: 25px; border-radius: var(--radius); 
+            background: #1c1e26; padding: 30px; /* Aumentado padding */
+            border-radius: var(--radius); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            gap: 30px; /* Aumentado o espaçamento */
+            gap: 25px; 
             margin-bottom: 20px; border: var(--border);
         }
         
@@ -75,13 +76,13 @@
             box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
         }
 
-        /* ESTÉTICA AJUSTADA: Classe e Spec */
+        /* LINHA DE CLASSE/SPEC (Descida e Centralizada) */
         .class-spec-row {
             display: flex; gap: 40px; justify-content: center; align-items: center; flex-wrap: wrap;
             width: 100%;
-            margin-top: 10px; 
+            margin-top: 15px; /* Empurrando para baixo */
             padding-top: 20px; 
-            border-top: 1px dashed #333; /* Linha sutil para separar visualmente */
+            border-top: 1px dashed #333; /* Separador visual */
         }
         .spec-wrapper { display: flex; align-items: center; gap: 15px; }
 
@@ -199,7 +200,7 @@
             <div class="class-spec-row">
                 <div class="spec-wrapper">
                     <label style="color:var(--text-muted); font-weight:bold;">Class:</label>
-                    <select id="class-select" onchange="ui.updateSpecOptions()" style="width:200px;"></select>
+                    <select id="class-select" onchange="ui.updateSpecOptions()" style="width:200px; border-color: var(--accent); color: var(--accent); font-weight: bold;"></select>
                 </div>
                 <div class="spec-wrapper">
                     <label style="color:var(--text-muted); font-weight:bold;">Spec:</label>
@@ -363,7 +364,7 @@
 
         LEGENDARY: ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"],
         
-        // --- ADDED MISSING CLASSES OBJECT ---
+        // --- CLASSES DEFINITION (FIXED) ---
         CLASSES: {
             "Heavy Guardian": ["Block", "Earthforth"],
             "Shield Knight": ["Recovery", "Shield"],
@@ -374,7 +375,7 @@
             "Wind Knight": ["SkyWard", "Vanguard"]
         },
 
-        // --- UPDATED RAID BONUS (SPELLING & KEYS) ---
+        // --- RAID BONUS DATABASE (MATCHING NEW SPELLING) ---
         RAID_BONUS: {
             "Block": { l: "Luck", v: 6.0, t: "p" }, 
             "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, 
@@ -394,21 +395,23 @@
             "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }
         },
         
-        // --- UPDATED SPECS MAPPING (MATCHING KEYS) ---
+        // --- SPECS STAT DEFINITIONS (MATCHING NEW SPELLING) ---
         SPECS: { 
-            "Vanguard": ["Haste", "Mastery"], "SkyWard": ["Crit", "Luck"], "Shield": ["Haste", "Mastery"], 
-            "Recovery": ["Crit", "Mastery"], "Iaido": ["Crit", "Mastery"], "Moonblade": ["Haste", "Luck"], 
-            "Icicle": ["Crit", "Luck"], "Ray": ["Haste", "Mastery"], "Smite": ["Mastery", "Luck"], 
-            "Life Bind": ["Haste", "Mastery"], "Earthforth": ["Mastery", "Versatility"], "Block": ["Mastery", "Luck"], 
-            "Wildpack": ["Haste", "Mastery"], "Falconry": ["Crit", "Haste"], "Dissonance": ["Haste", "Luck"], 
-            "Concerto": ["Haste", "Crit"] 
+            "Block": ["Mastery", "Luck"], "Earthforth": ["Mastery", "Versatility"],
+            "Recovery": ["Crit", "Mastery"], "Shield": ["Haste", "Mastery"],
+            "Life Bind": ["Haste", "Mastery"], "Smite": ["Mastery", "Luck"],
+            "Dissonance": ["Haste", "Luck"], "Concerto": ["Haste", "Crit"],
+            "Moonblade": ["Haste", "Luck"], "Iaido": ["Crit", "Mastery"],
+            "Icicle": ["Crit", "Luck"], "Ray": ["Haste", "Mastery"],
+            "SkyWard": ["Crit", "Luck"], "Vanguard": ["Haste", "Mastery"],
+            "Wildpack": ["Haste", "Mastery"], "Falconry": ["Crit", "Haste"] 
         },
         
         RESTRICTIONS: { "Weapon": { "Strength": [], "Intelligence": [], "Agility": [] }, "Helmet": { "Strength": ["Versatility"], "Intelligence": ["Crit"], "Agility": ["Haste"] }, "Chest": { "Strength": ["Luck"], "Intelligence": ["Crit"], "Agility": ["Mastery"] }, "Gloves": { "Strength": ["Haste"], "Intelligence": ["Versatility"], "Agility": ["Crit"] }, "Boots": { "Strength": ["Mastery"], "Intelligence": ["Luck"], "Agility": ["Crit"] }, "Earrings": { "Strength": ["Mastery"], "Intelligence": ["Versatility"], "Agility": ["Haste"] }, "Necklace": { "Strength": ["Haste"], "Intelligence": ["Luck"], "Agility": ["Mastery"] }, "Ring": { "Strength": ["Luck"], "Intelligence": ["Mastery"], "Agility": ["Versatility"] }, "Bracelet (L)": { "Strength": ["Crit"], "Intelligence": ["Haste"], "Agility": ["Versatility"] }, "Bracelet (R)": { "Strength": ["Crit"], "Intelligence": ["Mastery"], "Agility": ["Luck"] }, "Charm": { "Strength": ["Versatility"], "Intelligence": ["Haste"], "Agility": ["Luck"] } },
         VALUES: { WEAPON_RAID: { p: 2480, s: 2480, r: 0 }, ARMOR_RAID: { p: 954, s: 954, r: 286 }, WEAPON_STD: { p: 1908, s: 954, r: 572 }, ARMOR_STD: { p: 954, s: 477, r: 286 } }
     };
 
-    // --- SIGIL DATABASE ---
+    // --- SIGIL DATABASE (LEVEL 160) ---
     const SIGIL_DB = [
         { n: "Basilisk Sigil", s: ["Weapon"], d: { 1: {"All Element Attack": 40}, 2: {"All Element Attack": 45}, 3: {"All Element Attack": 50} } },
         { n: "Bluespine Lizard", s: ["Weapon"], d: { 1: {"All Element Attack": 20}, 2: {"All Element Attack": 25}, 3: {"All Element Attack": 30} } },
