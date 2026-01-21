@@ -39,7 +39,7 @@
         }
 
         /* Layout */
-        .main-wrapper { display: flex; flex-wrap: wrap; gap: 25px; width: 100%; max-width: 1700px; }
+        .main-wrapper { display: flex; flex-wrap: wrap; gap: 25px; width: 100%; max-width: 1800px; }
 
         /* Painéis */
         .panel { 
@@ -49,7 +49,9 @@
             box-shadow: var(--shadow); 
             border: var(--border); 
         }
-        .planner-panel { flex: 4; min-width: 950px; }
+        /* AJUSTE 1: Aumentei a largura mínima para evitar que as colunas se esmaguem */
+        .planner-panel { flex: 4; min-width: 1300px; overflow-x: auto; }
+        
         .calc-panel { 
             flex: 1; min-width: 320px; 
             position: sticky; top: 20px; 
@@ -126,28 +128,36 @@
         /* Inputs */
         select, input[type="number"], input[type="text"] { 
             background: var(--bg-input); border: 1px solid #333; color: var(--text-main); 
-            padding: 8px 10px; border-radius: var(--radius); width: 100%; 
+            padding: 8px 6px; /* Padding reduzido para caber mais texto */
+            border-radius: var(--radius); width: 100%; 
             font-size: 0.9em; transition: 0.2s; box-sizing: border-box; font-family: inherit;
+            white-space: nowrap; /* Evita quebra de linha indesejada */
+            text-overflow: ellipsis;
         }
         select:focus, input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 5px rgba(220, 20, 60, 0.2); }
         select:disabled, input:disabled { opacity: 0.3; cursor: not-allowed; }
         .select-high { border-color: var(--accent); color: var(--accent); font-weight: 700; background: #151515; }
 
-        /* Gear Table */
+        /* Gear Table - AJUSTE 2: Grid Proportions */
         .gear-header { 
-            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.6fr; gap: 10px;
+            display: grid; 
+            /* Slot | Raid | P | S | R | Sigil Name (Maior) | Sigil Lvl | Legendary (Maior) */
+            grid-template-columns: 0.6fr 0.3fr 0.7fr 0.7fr 0.7fr 2.2fr 0.6fr 1.8fr; 
+            gap: 10px;
             background: #252525; color: var(--text-main); padding: 12px 10px; 
             border-radius: var(--radius); font-weight: bold; text-transform: uppercase; font-size: 0.8em;
             margin-bottom: 10px; border-bottom: 2px solid var(--accent);
         }
         .gear-row { 
-            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.6fr; gap: 10px;
+            display: grid; 
+            grid-template-columns: 0.6fr 0.3fr 0.7fr 0.7fr 0.7fr 2.2fr 0.6fr 1.8fr; 
+            gap: 10px;
             align-items: center; padding: 10px; border-bottom: 1px solid #2a2a2a;
             background: transparent; transition: background 0.2s;
         }
         .gear-row:hover { background-color: rgba(255,255,255,0.02); }
-        .slot-name { font-weight: 700; color: #ccc; font-size: 0.9em; }
-        .leg-group { display: grid; grid-template-columns: 1.5fr 1fr; gap: 5px; }
+        .slot-name { font-weight: 700; color: #ccc; font-size: 0.85em; } /* Fonte levemente menor */
+        .leg-group { display: grid; grid-template-columns: 1.6fr 0.8fr; gap: 5px; }
 
         /* Optimizer & Rules */
         .opt-input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
@@ -537,7 +547,7 @@ const UI = {
         const tbody = $('rules-body');
         tbody.innerHTML = Object.keys(DATA.RESTRICTIONS).map(slot => {
             const r = DATA.RESTRICTIONS[slot];
-            const fmt = arr => arr.length ? `<span class="ban-badge">${arr.join(", ")}</span>` : `<span style="color:#666">-</span>`;
+            const fmt = arr => arr.length ? `<span class="ban-badge">${arr.join(", ")}</span>` : `<span style="color:#aaa">-</span>`;
             return `<tr>
                 <td style="font-weight:bold; color:var(--text-main);">${slot}</td>
                 <td>${fmt(r.Strength)}</td>
@@ -556,7 +566,7 @@ const UI = {
                 <div class="val-line"><span>Weapon (Primary):</span> <span class="val-num">${v.WEAPON_RAID.p}</span></div>
                 <div class="val-line"><span>Weapon (Secondary):</span> <span class="val-num">${v.WEAPON_RAID.s}</span></div>
                 <div class="val-line"><span>Weapon Bonus:</span> <span class="val-num" style="color:var(--accent)">+ Raid Effect</span></div>
-                <div class="val-line"><span>Weapon Reforge:</span> <span class="val-num" style="color:#666">None</span></div>
+                <div class="val-line"><span>Weapon Reforge:</span> <span class="val-num" style="color:#aaa">None</span></div>
                 <hr style="border:0; border-top:1px dashed #333; margin:8px 0;">
                 <div class="val-line"><span>Armor (Primary):</span> <span class="val-num">${v.ARMOR_RAID.p}</span></div>
                 <div class="val-line"><span>Armor (Secondary):</span> <span class="val-num">${v.ARMOR_RAID.s}</span></div>
