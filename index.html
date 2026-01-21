@@ -414,7 +414,7 @@ const DATA = {
         },
         ACC: {
             opts: [
-                { n: "ATK/MATK", v: [1.0, 1.5, 2.0], u: "%" },
+                { n: "Adaptive Atk", v: [1.0, 1.5, 2.0], u: "%" }, // Dyn ATK/MATK
                 { n: "Attack Speed", v: [1.0, 1.5, 2.0], u: "%" },
                 { n: "Res. Break", v: [3.0, 6.0, 9.0], u: "%" },
                 { n: "Cast Speed", v: [2.0, 3.0, 4.0], u: "%", req: "Intelligence" },
@@ -600,9 +600,20 @@ const UI = {
             
             let legTypeOpts = `<option value="">-</option>`;
             legGroup.opts.forEach(opt => {
-                if (opt.req && opt.req !== build) return; // Skip cast speed for non-int
-                const name = opt.n === "Main Stat %" ? `${build} %` : opt.n;
-                legTypeOpts += `<option value="${opt.n}">${name}</option>`;
+                if (opt.req && opt.req !== build) return; 
+                let name = opt.n;
+                let val = opt.n;
+
+                if (opt.n === "Main Stat %") {
+                    name = `${build} %`;
+                    val = name; // The option value should match the display for calculation
+                }
+                if (opt.n === "Adaptive Atk") {
+                    name = (build === "Intelligence") ? "MATK" : "ATK";
+                    val = name;
+                }
+
+                legTypeOpts += `<option value="${val}">${name}</option>`;
             });
 
             return `
@@ -628,6 +639,7 @@ const UI = {
         const slot = DATA.SLOTS[idx];
         const type = $(`leg-type-${idx}`).value;
         const valSelect = $(`leg-val-${idx}`);
+        const build = Logic.getBuildType();
         
         if (!type) {
             valSelect.innerHTML = `<option value="0">-</option>`;
@@ -636,7 +648,15 @@ const UI = {
 
         const isArmorGroup = DATA.SLOT_CATS.ARMOR.includes(slot);
         const legGroup = isArmorGroup ? DATA.LEGENDARY_DATA.ARMOR : DATA.LEGENDARY_DATA.ACC;
-        const optData = legGroup.opts.find(o => o.n === type);
+        
+        // Find option data based on original name or adapted name
+        let optData = legGroup.opts.find(o => o.n === type); 
+        
+        // Check for dynamic names if standard check fails
+        if (!optData) {
+             if (type.includes("%")) optData = legGroup.opts.find(o => o.n === "Main Stat %");
+             if (type === "ATK" || type === "MATK") optData = legGroup.opts.find(o => o.n === "Adaptive Atk");
+        }
 
         if (optData) {
             valSelect.innerHTML = optData.v.map(val => `<option value="${val}">${val}${optData.u}</option>`).join('');
@@ -650,7 +670,7 @@ const UI = {
         $(`leg-val-${idx}`).disabled = isRaid;
         if(isRaid) { 
             $(`leg-type-${idx}`).value = ""; 
-            UI.updateLegValues(idx); // Clear values
+            UI.updateLegValues(idx); 
         }
         Logic.updateRow(idx);
     }
@@ -670,7 +690,7 @@ const Logic = {
     getBuildType: () => document.querySelector('input[name="buildType"]:checked').value,
 
     updateAll: () => {
-        UI.renderGearRows(); // Re-render to update Legendary options based on Build (Int/Str/Agi)
+        UI.renderGearRows(); 
         DATA.SLOTS.forEach((_, i) => Logic.updateRow(i));
         Logic.calculate();
     },
@@ -781,7 +801,7 @@ const Logic = {
                 const lType = $(`leg-type-${i}`).value;
                 const lVal = parseFloat($(`leg-val-${i}`).value) || 0;
                 if (lType) {
-                    let displayName = lType === "Main Stat %" ? `${build}` : lType;
+                    let displayName = lType;
                     // Aggregate percentage vs flat
                     if (["Max HP", "Armor", "All Elem Res"].includes(lType)) {
                         extraDisplays[displayName] = (extraDisplays[displayName] || 0) + lVal;
