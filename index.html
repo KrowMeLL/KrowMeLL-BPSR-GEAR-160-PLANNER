@@ -5,16 +5,20 @@
     <title>BPSR | GEAR STAT PLANNER | LEVEL 160</title>
     <style>
         /* =========================================
-           VISUAL THEME: MIDNIGHT GOLD
+           VISUAL THEME: ABYSSAL CRIMSON (LEVEL 160)
            ========================================= */
         :root {
             --bg-body: #0f1014;
             --bg-panel: #181a21;
             --bg-input: #0b0c10;
-            --accent: #d4af37;        /* Gold */
-            --accent-hover: #f1c40f;
-            --primary: #3498db;       /* Blue */
-            --highlight: #e74c3c;     /* Red */
+            
+            /* Changed from Gold (#d4af37) to Crimson (#ff4757) for differentiation */
+            --accent: #ff4757;        
+            --accent-hover: #ff6b81;
+            
+            --primary: #3498db;       /* Blue buttons kept for consistency */
+            --highlight: #d4af37;     /* Gold used as secondary highlight now */
+            
             --text-main: #ecf0f1;
             --text-muted: #7f8c8d;
             --border: 1px solid #2c3e50;
@@ -66,8 +70,8 @@
         }
         .build-label:hover { border-color: var(--accent); color: var(--text-main); }
         .build-selector input[type="radio"]:checked + .build-label {
-            background-color: var(--accent); color: #0f1014; border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            background-color: var(--accent); color: #fff; border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
         }
 
         .spec-wrapper { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
@@ -127,19 +131,19 @@
             padding: 10px 30px; font-size: 1rem; font-weight: 600; cursor: pointer;
             transition: 0.2s; border-radius: var(--radius);
         }
-        .tab-btn.active { background-color: var(--accent); color: #000; border-color: var(--accent); }
+        .tab-btn.active { background-color: var(--accent); color: #fff; border-color: var(--accent); }
         .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         button.action-btn { 
             width: 100%; padding: 14px; border: none; border-radius: var(--radius); 
-            font-weight: bold; font-size: 1rem; cursor: pointer; color: #0f1014;
+            font-weight: bold; font-size: 1rem; cursor: pointer; color: #fff;
             transition: 0.2s; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px;
         }
         .btn-gold { background: var(--accent); }
-        .btn-blue { background: var(--primary); color: #fff !important; }
-        .btn-blue:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .btn-blue { background: var(--primary); }
+        .btn-blue:hover, .btn-gold:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
         .opt-input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
         .opt-input-group label { color: var(--accent); font-size: 0.8em; font-weight: bold; display: block; margin-bottom: 5px; text-transform: uppercase; }
@@ -283,8 +287,6 @@
                 </div>
             
             <div id="legendary-summary" style="display:none; margin-top:15px; font-size:0.9em; border-top:1px solid #333; padding-top:10px;">
-                <div class="raw-row"><span>Cast Spd:</span> <span id="leg-cast" style="color:var(--accent)">0%</span></div>
-                <div class="raw-row"><span>Atk Spd:</span> <span id="leg-atk" style="color:var(--accent)">0%</span></div>
             </div>
         </div>
     </div>
@@ -293,12 +295,20 @@
 <script>
     // --- 1. DATA CONFIGURATION ---
     const GAME_DATA = {
-        TEXT: { CREDITS: "Produced by Luxxio // Updated by: KrowMeLL / RaoH", NOTES: `<strong>Gear Values:</strong><br>• Raid Weapon: 2480 Primary / 2480 Secondary / No Reforge<br>• Raid Armor: 954 Primary / 954 Secondary / 286 Reforge <br>• Standard Weapon: 1908 Primary /954 Secondary / 572 Reforge<br>• Standard Armor: 954 Primary / 477 Secondary / 286 Reforge` },
+        TEXT: { CREDITS: "Produced by Luxxio // Updated by: KrowMeLL / RaoH", NOTES: `<strong>Gear Values (Lvl 160):</strong><br>• Raid Weapon: 2480 Primary / 2480 Secondary / No Reforge<br>• Raid Armor: 954 Primary / 954 Secondary / 286 Reforge <br>• Standard Weapon: 1908 Primary / 954 Secondary / 572 Reforge<br>• Standard Armor: 954 Primary / 477 Secondary / 286 Reforge` },
         STATS: ["Versatility", "Mastery", "Haste", "Crit", "Luck"],
         SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Earrings", "Necklace", "Ring", "Bracelet (L)", "Bracelet (R)", "Charm"],
         RAID_SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Bracelet (L)", "Bracelet (R)"],
         
-        // --- SEÇÃO DE CONFIGURAÇÃO DOS IMAGINES (ATUALIZADA) ---
+        // --- ADDED TIERS FOR DIMINISHING RETURNS CALCULATION ---
+        TIERS: {
+            "Versatility": [[0,0], [589,5], [1244,10], [1976,15], [2800,20], [3733,25], [4800,30], [6031,35], [7467,40], [9164,45], [11200,50], [13689,55], [16800,60], [20800,65], [26133,70], [33600,75], [44800,80]],
+            "Mastery":     [[0,6], [832,10], [1976,15], [3252,20], [4685,25], [6308,30], [8159,35], [10290,40], [12771,45], [15695,50], [19192,55], [23449,60], [28745,65], [35511,70], [44460,75], [56852,80]],
+            "Haste":       [[0,0], [1051,5], [2219,10], [3525,15], [4994,20], [6658,25], [8561,30], [10756,35], [13317,40], [16343,45], [19975,50], [24414,55], [29963,60], [37096,65], [46608,70], [59925,75], [79900,80]],
+            "Crit":        [[0,5], [1051,10], [2219,15], [3525,20], [4994,25], [6658,30], [8561,35], [10756,40], [13317,45], [16343,50], [19975,55], [24414,60], [29963,65], [37096,70], [46608,75], [59925,80]],
+            "Luck":        [[0,5], [854,10], [1803,15], [2864,20], [4058,25], [5410,30], [6956,35], [8739,40], [10820,45], [13279,50], [16230,55], [19837,60], [24345,65], [30141,70], [37870,75], [48690,80]]
+        },
+
         IMAGINE: { 
             SLOT_IDS: ['1', '2'],
             OPTIONS: {
@@ -308,7 +318,6 @@
                 "Bluespine Lizard (Versatility)": { stat: "Versatility", vals: [2016, 2615, 3214, 3813, 4412, 5040] }
             }
         },
-        // ------------------------------------------
 
         LEGENDARY: ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"],
         RAID_BONUS: {
@@ -326,7 +335,7 @@
         VALUES: { WEAPON_RAID: { p: 2480, s: 2480, r: 0 }, ARMOR_RAID: { p: 954, s: 954, r: 286 }, WEAPON_STD: { p: 1908, s: 954, r: 572 }, ARMOR_STD: { p: 954, s: 477, r: 286 } }
     };
 
-    // --- SIGIL DATABASE ---
+    // --- SIGIL DATABASE (LEVEL 160) ---
     const SIGIL_DB = [
         // Weapon
         { name: "Basilisk Sigil (Legendary)", slots: ["Weapon"], stats: { 1: {"All Element Attack": 70}, 2: {"All Element Attack": 70}, 3: {"All Element Attack": 70} } },
@@ -387,6 +396,7 @@
             GAME_DATA.IMAGINE.SLOT_IDS.forEach(n => {
                 $(`img-type-${n}`).innerHTML = createOpt("", "- None -") + imgOptions.map(k => createOpt(k, k)).join('');
                 let lvlHtml = "";
+                // Tiers 0 to 5 generated here
                 for(let i=0; i<6; i++) lvlHtml += createOpt(i, `Tier ${i}`);
                 $(`img-lvl-${n}`).innerHTML = lvlHtml;
             });
@@ -479,6 +489,22 @@
             logic.calculate();
         },
 
+        // --- NEW CURVE LOGIC ---
+        getStatPercent: (stat, val) => {
+            const tiers = GAME_DATA.TIERS[stat];
+            if (!tiers || val <= 0) return tiers[0][1];
+            if (val >= tiers[tiers.length-1][0]) return tiers[tiers.length-1][1];
+
+            for (let i = 0; i < tiers.length - 1; i++) {
+                let [v1, p1] = tiers[i];
+                let [v2, p2] = tiers[i+1];
+                if (val >= v1 && val < v2) {
+                    return p1 + (val - v1) / (v2 - v1) * (p2 - p1);
+                }
+            }
+            return 0;
+        },
+
         calculate: () => {
             const total = { Versatility:0, Mastery:0, Haste:0, Crit:0, Luck:0 };
             const leg = { "Attack Speed":0, "Cast Speed":0 };
@@ -507,7 +533,8 @@
 
                 if(!isRaid) {
                     const lType = $(`leg-type-${i}`).value;
-                    if(leg[lType] !== undefined) leg[lType] += parseFloat($(`leg-val-${i}`).value)||0;
+                    const lVal = parseFloat($(`leg-val-${i}`).value)||0;
+                    if(leg[lType] !== undefined) leg[lType] += lVal;
                 }
 
                 // Process Sigil
@@ -542,7 +569,7 @@
                 }
             });
 
-            // 4. Agility to Haste Conversion (Fixed: 0.45)
+            // 4. Agility to Haste Conversion
             total.Haste += (baseAgi * 0.45);
 
             // 5. Percent Bonuses
@@ -551,38 +578,33 @@
                 if(raidBonus.l.includes("Shield")) total.Versatility *= (1 + raidBonus.v/100);
             }
 
-            // Display
+            // Display Raw
             ['vers','mast','haste','crit','luck'].forEach((k,i) => $(`raw-${k}`).innerText = total[GAME_DATA.STATS[i]].toFixed(0));
 
-            const vPct = (total.Versatility / (total.Versatility + 11200)) * 100;
-            const mPct = ((total.Mastery / (total.Mastery + 20000)) * 100) + 6;
-            const hPct = (total.Haste / (total.Haste + 20000)) * 100;
-            const cPct = ((total.Crit / (total.Crit + 20000)) * 100) + 5;
-            const lPct = ((total.Luck / (total.Luck + 16230)) * 100) + 5;
+            // Display Final (Using Curve Logic)
+            $('r-vers').innerText = logic.getStatPercent("Versatility", total.Versatility).toFixed(2) + "%";
+            $('r-mast').innerText = logic.getStatPercent("Mastery", total.Mastery).toFixed(2) + "%";
+            $('r-haste').innerText = logic.getStatPercent("Haste", total.Haste).toFixed(2) + "%";
+            $('r-crit').innerText = logic.getStatPercent("Crit", total.Crit).toFixed(2) + "%";
+            $('r-luck').innerText = logic.getStatPercent("Luck", total.Luck).toFixed(2) + "%";
 
-            $('r-vers').innerText = vPct.toFixed(2) + "%";
-            $('r-mast').innerText = mPct.toFixed(2) + "%";
-            $('r-haste').innerText = hPct.toFixed(2) + "%";
-            $('r-crit').innerText = cPct.toFixed(2) + "%";
-            $('r-luck').innerText = lPct.toFixed(2) + "%";
-
-            // Extras Display (Unified)
+            // Extras Display
             let extraHTML = `<div style="color:var(--highlight); font-weight:bold; margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:3px;">Extra Bonuses</div>`;
-            
-            // Add Raid Bonus (Both Flat and Percent are listed here for clarity, although percent is also applied to math)
             if(raidBonus) {
                 let valStr = `+${raidBonus.v}${raidBonus.t === 'p' ? '%' : ''}`;
                 extraHTML += `<div style="color:var(--text-main); font-size:0.9em; display:flex; justify-content:space-between; margin-bottom:4px;"><span>Raid ${raidBonus.l}:</span> <span style="color:var(--accent); font-weight:bold;">${valStr}</span></div>`;
             }
-            
             for (const [stat, val] of Object.entries(extraStats)) {
                 if(val > 0) extraHTML += `<div style="color:var(--text-muted); font-size:0.9em; display:flex; justify-content:space-between; margin-bottom:4px;"><span>${stat}:</span> <span style="color:var(--accent); font-weight:bold;">+${val}</span></div>`;
             }
             $('extra-bonuses').innerHTML = extraHTML;
 
-            $('legendary-summary').style.display = (leg["Attack Speed"]>0 || leg["Cast Speed"]>0) ? 'block' : 'none';
-            $('leg-cast').innerText = `+${leg["Cast Speed"]}%`;
-            $('leg-atk').innerText = `+${leg["Attack Speed"]}%`;
+            // Legendary Display Dynamic (FIXED)
+            let legHTML = "";
+            if (leg["Cast Speed"] > 0) legHTML += `<div class="raw-row"><span>Cast Spd:</span> <span style="color:var(--accent)">+${leg["Cast Speed"]}%</span></div>`;
+            if (leg["Attack Speed"] > 0) legHTML += `<div class="raw-row"><span>Atk Spd:</span> <span style="color:var(--accent)">+${leg["Attack Speed"]}%</span></div>`;
+            $('legendary-summary').innerHTML = legHTML;
+            $('legendary-summary').style.display = legHTML ? 'block' : 'none';
         }
     };
 
@@ -595,7 +617,7 @@
             };
             const ctx = {
                 bV: parseFloat($('base-vers').value)||0, bM: parseFloat($('base-mast').value)||0,
-                bH: (parseFloat($('base-haste').value)||0) + ((parseFloat($('opt-agi').value)||0)*0.45), // Fixed ratio
+                bH: (parseFloat($('base-haste').value)||0) + ((parseFloat($('opt-agi').value)||0)*0.45),
                 bC: parseFloat($('base-crit').value)||0, bL: parseFloat($('base-luck').value)||0,
                 spec: $('class-spec').value, bonus: GAME_DATA.RAID_BONUS[$('class-spec').value]
             };
@@ -630,7 +652,6 @@
         },
         calc: (layout, ctx) => {
             let raw = { Versatility: ctx.bV, Mastery: ctx.bM, Haste: ctx.bH, Crit: ctx.bC, Luck: ctx.bL };
-            // Calc Imagines based on stored Keys and Index
             layout.img.forEach(im => { 
                 const data = GAME_DATA.IMAGINE.OPTIONS[im.key];
                 if(data) raw[data.stat] += data.vals[im.idx];
@@ -644,9 +665,13 @@
                 if(ctx.bonus.l === "Luck") raw.Luck *= (1 + ctx.bonus.v/100);
                 if(ctx.bonus.l.includes("Shield")) raw.Versatility *= (1 + ctx.bonus.v/100);
             }
+            // Uses Curve Logic for Optimizer
             return {
-                v: (raw.Versatility/11200)*100, m: (raw.Mastery/20000)*100+6,
-                h: (raw.Haste/20000)*100, c: (raw.Crit/20000)*100+5, l: (raw.Luck/16230)*100+5
+                v: logic.getStatPercent("Versatility", raw.Versatility),
+                m: logic.getStatPercent("Mastery", raw.Mastery),
+                h: logic.getStatPercent("Haste", raw.Haste),
+                c: logic.getStatPercent("Crit", raw.Crit),
+                l: logic.getStatPercent("Luck", raw.Luck)
             };
         },
         getDiff: (s, t) => Math.abs(s.v-t.v) + Math.abs(s.m-t.m) + Math.abs(s.h-t.h) + Math.abs(s.c-t.c) + Math.abs(s.l-t.l),
@@ -683,7 +708,6 @@
                 layout.gear[i] = { raid: isRaid, p, s, r, locked: false };
             });
             
-            // Generate Imagines (Key + Index)
             const keys = Object.keys(GAME_DATA.IMAGINE.OPTIONS);
             if(optImg) {
                 layout.img = GAME_DATA.IMAGINE.SLOT_IDS.map(() => ({ 
@@ -716,7 +740,6 @@
                 if(!(idx===0 && g.raid)) g.r = GAME_DATA.STATS[Math.floor(Math.random()*5)];
             }
             if(optImg && Math.random() < 0.1) {
-                // Mutate Imagine
                 const keys = Object.keys(GAME_DATA.IMAGINE.OPTIONS);
                 let im = l.img[Math.floor(Math.random()*l.img.length)];
                 if(Math.random()<0.5) im.key = keys[Math.floor(Math.random()*keys.length)];
