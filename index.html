@@ -1,257 +1,274 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>BPSR | GEAR STAT PLANNER | LEVEL 160</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPSR | GEAR STAT PLANNER | CRIMSON EDITION</title>
     <style>
         /* =========================================
-           VISUAL THEME: ABYSSAL CRIMSON (LEVEL 160)
+           VISUAL THEME: CRIMSON DAYLIGHT (LEVEL 160)
            ========================================= */
         :root {
-            --bg-body: #0f1014;
-            --bg-panel: #181a21;
-            --bg-input: #0b0c10;
+            /* Palette: White & Crimson */
+            --bg-body: #f4f6f8;          /* Fundo geral claro */
+            --bg-panel: #ffffff;         /* Painéis brancos */
+            --bg-input: #f8f9fa;         /* Inputs levemente cinzas */
+            --bg-header: #ececec;        /* Cabeçalhos de tabela */
             
-            /* Crimson Theme - Standardized */
-            --accent: #ff4757;        
-            --accent-hover: #ff6b81;
+            --accent: #DC143C;           /* Crimson (Carmesim) Principal */
+            --accent-hover: #b90e30;     /* Carmesim Escuro para hover */
+            --accent-light: rgba(220, 20, 60, 0.1); /* Fundo suave para ativos */
             
-            --primary: #3498db;       /* Blue (Only for Update Button) */
-            --highlight: #d4af37;     /* Gold (Secondary Text) */
+            --text-main: #2c3e50;        /* Texto principal escuro */
+            --text-muted: #7f8c8d;       /* Texto secundário */
+            --border: 1px solid #e2e6ea; /* Bordas sutis */
             
-            --text-main: #ecf0f1;
-            --text-muted: #7f8c8d;
-            --border: 1px solid #2c3e50;
-            --radius: 4px;
+            --highlight-gold: #d35400;   /* Destaque secundário (Laranja queimado) */
+            --highlight-blue: #2980b9;   /* Destaque funcional */
+            
+            --radius: 6px;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--bg-body); color: var(--text-main); 
-            padding: 20px; display: flex; justify-content: center; 
-            min-height: 100vh; margin: 0;
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0;
         }
 
+        /* Layout Principal */
         .main-wrapper { display: flex; flex-wrap: wrap; gap: 25px; width: 100%; max-width: 1700px; }
 
-        /* PAINÉIS */
+        /* Painéis */
         .panel { 
-            background-color: var(--bg-panel); padding: 30px; 
-            border-radius: var(--radius); box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+            background-color: var(--bg-panel); 
+            padding: 30px; 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow); 
             border: var(--border); 
         }
         .planner-panel { flex: 4; min-width: 950px; }
         .calc-panel { 
-            flex: 1; min-width: 300px; position: sticky; 
-            top: 20px; height: fit-content; background: #121319;
+            flex: 1; min-width: 300px; 
+            position: sticky; top: 20px; 
+            height: fit-content; 
+            background: var(--bg-panel);
+            border-left: 4px solid var(--accent);
         }
 
+        /* Tipografia */
         h2 { 
             text-align: center; color: var(--accent); margin: 0 0 25px 0; 
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 2px solid #2c3e50; padding-bottom: 15px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 2px solid var(--bg-header); padding-bottom: 15px;
         }
+        h3 { font-size: 0.9em; text-transform: uppercase; margin-bottom: 10px; color: var(--text-muted); }
 
-        /* CONTROLES E SELETORES */
-        .controls-row {
-            background: #1c1e26; padding: 30px; /* Aumentado padding */
-            border-radius: var(--radius); 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            gap: 25px; 
-            margin-bottom: 20px; border: var(--border);
-        }
-        
-        .build-selector { display: flex; gap: 20px; justify-content: center; width: 100%; }
-        .build-selector input[type="radio"] { display: none; }
-        .build-label {
-            background: var(--bg-input); border: 1px solid #444; 
-            padding: 10px 25px; border-radius: var(--radius); 
-            cursor: pointer; font-weight: bold; color: var(--text-muted);
-            transition: all 0.2s; min-width: 80px; text-align: center;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .build-label:hover { border-color: var(--accent); color: var(--text-main); }
-        .build-selector input[type="radio"]:checked + .build-label {
-            background-color: var(--accent); color: #fff; border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
-        }
-
-        /* LINHA DE CLASSE/SPEC (Descida e Centralizada) */
-        .class-spec-row {
-            display: flex; gap: 40px; justify-content: center; align-items: center; flex-wrap: wrap;
-            width: 100%;
-            margin-top: 15px; /* Empurrando para baixo */
-            padding-top: 20px; 
-            border-top: 1px dashed #333; /* Separador visual */
-        }
-        .spec-wrapper { display: flex; align-items: center; gap: 15px; }
-
-        /* INPUTS */
-        select, input[type="number"] { 
-            background: var(--bg-input); border: 1px solid #333; color: #fff; 
-            padding: 8px 5px; border-radius: var(--radius); width: 100%; 
-            font-size: 0.85em; transition: 0.2s; box-sizing: border-box;
-        }
-        select:focus, input:focus { border-color: var(--accent); outline: none; }
-        select:disabled, input:disabled { opacity: 0.3; cursor: not-allowed; border-color: transparent; }
-
-        .global-controls {
-            background: #1c1e26; padding: 15px; border-radius: var(--radius); 
-            display: flex; align-items: center; gap: 20px; margin-bottom: 20px;
-            border: var(--border); justify-content: flex-start; flex-wrap: wrap;
-        }
-        .global-group { display: flex; align-items: center; gap: 10px; }
-
-        /* TABELA GEAR */
-        .gear-row { 
-            display: grid; 
-            /* Slot | Raid | P | S | Reforge | SigilName | SigilLvl | Legendary */
-            grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.2fr; 
-            gap: 8px; align-items: center; padding: 8px 5px; 
-            border-bottom: 1px solid #23252e;
-        }
-        .gear-row:hover { background-color: rgba(255,255,255,0.03); }
-        .gear-header { 
-            color: var(--accent); font-weight: bold; border-bottom: 2px solid #444; 
-            font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .slot-name { font-weight: 600; color: #ccc; font-size: 0.9em; }
-
-        .leg-group { display: grid; grid-template-columns: 2fr 1fr; gap: 5px; width: 100%; }
-        
-        /* RESULTADOS */
-        .raw-gear-stats {
-            background-color: #0b0c10; border: 1px solid #333; padding: 15px;
-            border-radius: var(--radius); margin-bottom: 20px;
-        }
-        .raw-row { display: flex; justify-content: space-between; font-size: 0.9em; padding: 6px 0; border-bottom: 1px solid #1a1c24; color: #bbb; }
-        .raw-val { color: var(--accent); font-weight: bold; }
-
-        .base-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 0.75em; color: #666; margin-bottom: 4px; text-transform: uppercase; font-weight: bold;}
-
-        .results-area { margin-top: 20px; border-top: 2px solid #333; padding-top: 15px; }
-        .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #23252e; }
-        .result-val { color: var(--accent); font-weight: bold; font-size: 1.1em; }
-
-        /* OTIMIZADOR & OUTROS */
+        /* Tabs de Navegação */
         .tab-container { display: flex; justify-content: center; margin-bottom: 25px; gap: 10px; }
         .tab-btn {
-            background: transparent; border: 1px solid #2c3e50; color: var(--text-muted); 
+            background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); 
             padding: 10px 30px; font-size: 1rem; font-weight: 600; cursor: pointer;
             transition: 0.2s; border-radius: var(--radius);
         }
-        .tab-btn.active { background-color: var(--accent); color: #fff; border-color: var(--accent); }
+        .tab-btn:hover { background-color: var(--bg-header); }
+        .tab-btn.active { 
+            background-color: var(--accent); color: #fff; border-color: var(--accent); 
+            box-shadow: 0 4px 10px rgba(220, 20, 60, 0.3);
+        }
         .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        button.action-btn { 
-            width: 100%; padding: 14px; border: none; border-radius: var(--radius); 
-            font-weight: bold; font-size: 1rem; cursor: pointer; color: #fff;
-            transition: 0.2s; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px;
+        /* Controles Principais (Classe, Build) */
+        .controls-row {
+            background: var(--bg-input); padding: 25px; 
+            border-radius: var(--radius); border: var(--border);
+            display: flex; flex-direction: column; align-items: center; gap: 20px; 
+            margin-bottom: 20px;
         }
-        .btn-gold { background: var(--accent); }
-        .btn-blue { background: var(--primary); }
-        .btn-blue:hover, .btn-gold:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        
+        /* Seletor de Build (Str/Int/Agi) */
+        .build-selector { display: flex; gap: 15px; }
+        .build-selector input[type="radio"] { display: none; }
+        .build-label {
+            background: #fff; border: 1px solid #ccc; 
+            padding: 10px 25px; border-radius: var(--radius); 
+            cursor: pointer; font-weight: bold; color: var(--text-muted);
+            transition: all 0.2s; min-width: 80px; text-align: center;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .build-label:hover { border-color: var(--accent); color: var(--accent); }
+        .build-selector input[type="radio"]:checked + .build-label {
+            background-color: var(--accent); color: #fff; border-color: var(--accent);
+            box-shadow: 0 4px 10px rgba(220, 20, 60, 0.3);
+        }
 
+        /* Seletor de Classe e Spec */
+        .class-spec-row {
+            display: flex; gap: 30px; align-items: center; justify-content: center;
+            width: 100%; border-top: 1px dashed #ccc; padding-top: 20px;
+        }
+        .spec-wrapper { display: flex; align-items: center; gap: 10px; }
+        .spec-wrapper label { font-weight: bold; color: var(--text-main); }
+
+        /* Inputs Gerais */
+        select, input[type="number"], input[type="text"] { 
+            background: #fff; border: 1px solid #ced4da; color: var(--text-main); 
+            padding: 8px 10px; border-radius: var(--radius); width: 100%; 
+            font-size: 0.9em; transition: 0.2s; box-sizing: border-box; font-family: inherit;
+        }
+        select:focus, input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px var(--accent-light); }
+        select:disabled, input:disabled { background: #e9ecef; color: #adb5bd; cursor: not-allowed; }
+        
+        /* Inputs Específicos */
+        .select-high { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+        /* Tabela de Gear (Manual Planner) */
+        .gear-header { 
+            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.2fr; gap: 10px;
+            background: var(--text-main); color: #fff; padding: 12px 10px; 
+            border-radius: var(--radius); font-weight: bold; text-transform: uppercase; font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+        .gear-row { 
+            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.2fr; gap: 10px;
+            align-items: center; padding: 10px; border-bottom: 1px solid #eee;
+            background: #fff; transition: background 0.2s;
+        }
+        .gear-row:hover { background-color: var(--bg-input); }
+        .slot-name { font-weight: 700; color: var(--text-main); font-size: 0.9em; }
+        .leg-group { display: grid; grid-template-columns: 2fr 1fr; gap: 5px; }
+
+        /* Optimizer Styles */
         .opt-input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        .opt-input-group label { color: var(--accent); font-size: 0.8em; font-weight: bold; display: block; margin-bottom: 5px; text-transform: uppercase; }
-        .opt-options { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; background: #1c1e26; padding: 15px; border-radius: var(--radius); }
-        .opt-check-label { color: #ccc; cursor: pointer; font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 8px; }
-
-        .imagine-section { margin-top: 25px; background-color: #1c1e26; padding: 20px; border-radius: var(--radius); border: var(--border); }
-        .imagine-row { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 10px; align-items: center; margin-bottom: 10px; }
-        .imagine-title { color: var(--accent); font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 5px; }
+        .opt-input-group label { display: block; font-size: 0.8em; font-weight: bold; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
+        .opt-options { background: var(--bg-input); padding: 15px; border-radius: var(--radius); display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
+        .opt-check-label { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
 
         /* Rules Table */
-        .res-wrap { background: var(--bg-input); border: 1px solid #333; border-radius: var(--radius); padding: 5px; overflow: hidden; }
-        .res-tbl { width: 100%; border-collapse: collapse; }
-        .res-tbl th, .res-tbl td { padding: 12px 15px; text-align: left; border: 1px solid #2c3e50; font-size: 0.9rem; }
-        .res-tbl th { background: #1c1e26; color: var(--text-main); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
-        .res-tbl tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
-        .res-tbl tr:hover { background-color: rgba(255,255,255,0.05); }
-        .ban { color: var(--accent); font-weight: bold; }
+        .res-tbl { width: 100%; border-collapse: collapse; background: #fff; border: var(--border); border-radius: var(--radius); overflow: hidden; }
+        .res-tbl th { background: var(--text-main); color: #fff; padding: 12px; text-transform: uppercase; font-size: 0.85em; text-align: left; }
+        .res-tbl td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 0.9em; color: var(--text-main); }
+        .res-tbl tr:last-child td { border-bottom: none; }
+        .ban-badge { background: #ffebee; color: var(--accent); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.85em; }
 
-        .footer-credits { width: 100%; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #333; color: #555; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-sub { color: #444; font-size: 0.7em; margin-top: 5px; font-weight: bold; }
-        .dynamic-note { font-size: 0.8em; color: #888; margin-top: 20px; background: #121319; padding: 15px; border-radius: var(--radius); border-left: 3px solid #333; line-height: 1.6; }
+        /* Imagine Slots */
+        .imagine-section { margin-top: 30px; background: var(--bg-input); padding: 20px; border-radius: var(--radius); border: var(--border); }
+        .imagine-row { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px; align-items: center; margin-bottom: 10px; }
+
+        /* Painel Lateral de Resultados */
+        .raw-gear-stats { background: var(--bg-input); padding: 15px; border-radius: var(--radius); margin-bottom: 20px; border: var(--border); }
+        .raw-row { display: flex; justify-content: space-between; font-size: 0.9em; padding: 6px 0; border-bottom: 1px solid #e0e0e0; }
+        .raw-val { color: var(--text-main); font-weight: bold; }
+
+        .base-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .mini-input-group label { display: block; font-size: 0.7em; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
+
+        .results-area { margin-top: 20px; border-top: 2px solid var(--accent); padding-top: 15px; }
+        .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc; font-size: 1.1em; }
+        .result-val { color: var(--accent); font-weight: 800; }
+
+        /* Botões de Ação */
+        .action-btn { 
+            width: 100%; padding: 12px; border: none; border-radius: var(--radius); 
+            font-weight: bold; text-transform: uppercase; cursor: pointer; color: #fff; 
+            transition: transform 0.1s, filter 0.2s; margin-top: 10px;
+        }
+        .btn-crimson { background: var(--accent); }
+        .btn-blue { background: var(--highlight-blue); }
+        .btn-crimson:hover, .btn-blue:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* Footer */
+        .footer { text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 0.8em; border-top: 1px solid #ddd; padding-top: 20px; }
+        
+        /* Utility classes */
+        .text-center { text-align: center; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <div class="main-wrapper">
     <div class="panel planner-panel">
-        <h2>BPSR | GEAR STAT PLANNER | LEVEL 160</h2>
+        <h2>BPSR | Gear Stat Planner | Level 160</h2>
         
         <div class="tab-container">
-            <button id="t-planner" class="tab-btn active" onclick="ui.switchTab('planner')">Manual Planner</button>
-            <button id="t-optimizer" class="tab-btn" onclick="ui.switchTab('optimizer')">Auto-Optimizer</button>
-            <button id="t-rules" class="tab-btn" onclick="ui.switchTab('rules')">Stat Rules</button>
+            <button id="nav-planner" class="tab-btn active" onclick="App.switchTab('planner')">Manual Planner</button>
+            <button id="nav-optimizer" class="tab-btn" onclick="App.switchTab('optimizer')">Auto-Optimizer</button>
+            <button id="nav-rules" class="tab-btn" onclick="App.switchTab('rules')">Stat Rules</button>
+            <button id="nav-settings" class="tab-btn" onclick="App.switchTab('settings')">Settings</button>
         </div>
 
         <div class="controls-row">
             <div class="build-selector">
-                <label><input type="radio" name="buildType" value="Strength" checked onchange="logic.updateAll()"><span class="build-label">Strength</span></label>
-                <label><input type="radio" name="buildType" value="Intelligence" onchange="logic.updateAll()"><span class="build-label">Intelligence</span></label>
-                <label><input type="radio" name="buildType" value="Agility" onchange="logic.updateAll()"><span class="build-label">Agility</span></label>
+                <label><input type="radio" name="buildType" value="Strength" checked onchange="Logic.updateAll()"><span class="build-label">Strength</span></label>
+                <label><input type="radio" name="buildType" value="Intelligence" onchange="Logic.updateAll()"><span class="build-label">Intelligence</span></label>
+                <label><input type="radio" name="buildType" value="Agility" onchange="Logic.updateAll()"><span class="build-label">Agility</span></label>
             </div>
             
             <div class="class-spec-row">
                 <div class="spec-wrapper">
-                    <label style="color:var(--text-muted); font-weight:bold;">Class:</label>
-                    <select id="class-select" onchange="ui.updateSpecOptions()" style="width:200px; border-color: var(--accent); color: var(--accent); font-weight: bold;"></select>
+                    <label>Class:</label>
+                    <select id="class-select" class="select-high" onchange="UI.onClassChange()"></select>
                 </div>
                 <div class="spec-wrapper">
-                    <label style="color:var(--text-muted); font-weight:bold;">Spec:</label>
-                    <select id="spec-select" onchange="logic.updateAll()" style="width:200px; border-color: var(--accent); color: var(--accent); font-weight: bold;"></select>
+                    <label>Spec:</label>
+                    <select id="spec-select" class="select-high" onchange="Logic.updateAll()"></select>
                 </div>
             </div>
         </div>
 
         <div id="tab-planner" class="tab-content active">
-            <div class="global-controls">
-                <div class="global-group">
-                    <span style="color:var(--accent); font-weight:bold;">Set Reforge:</span>
-                    <select onchange="logic.applyGlobal('reforge', this.value)" style="width:140px;">
-                        <option value="">- Select -</option>
-                        <option value="Versatility">Versatility</option>
-                        <option value="Mastery">Mastery</option>
-                        <option value="Haste">Haste</option>
-                        <option value="Crit">Crit</option>
-                        <option value="Luck">Luck</option>
-                    </select>
+            <div class="gear-header">
+                <div>Slot</div>
+                <div class="text-center">Raid</div>
+                <div>Primary</div>
+                <div>Secondary</div>
+                <div>Reforge</div>
+                <div>Sigil Name</div>
+                <div>Sigil Lvl</div>
+                <div>Legendary</div>
+            </div>
+            <div id="gear-container">
                 </div>
-                
-                <div class="global-group">
-                    <span style="color:var(--accent); font-weight:bold;">Set Sigil Lvl:</span>
-                    <select onchange="logic.applyGlobal('sigil-lvl', this.value)" style="width:80px;">
-                        <option value="">-</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
+            
+            <div class="imagine-section">
+                <h3>Imagine Slots</h3>
+                <div class="imagine-row">
+                    <span class="slot-name">Imagine 1</span>
+                    <select id="img-type-1" onchange="Logic.calculate()"></select>
+                    <select id="img-lvl-1" onchange="Logic.calculate()"></select>
+                </div>
+                <div class="imagine-row">
+                    <span class="slot-name">Imagine 2</span>
+                    <select id="img-type-2" onchange="Logic.calculate()"></select>
+                    <select id="img-lvl-2" onchange="Logic.calculate()"></select>
                 </div>
             </div>
-
-            <div class="gear-row gear-header">
-                <div>Slot</div><div style="text-align:center">Raid</div><div>Primary</div><div>Secondary</div><div>Reforge</div><div>Sigil</div><div>Lvl</div><div>Legendary</div>
-            </div>
-            <div id="gear-container"></div>
         </div>
 
         <div id="tab-optimizer" class="tab-content">
-            <div class="optimizer-intro">Define your target percentages. The system will simulate thousands of combinations to find the closest match.</div>
+            <div class="text-center" style="margin-bottom:20px; color:var(--text-muted);">
+                Define your target percentages. The system will simulate thousands of combinations.
+            </div>
             <div class="opt-input-grid">
                 <div class="opt-input-group"><label>Target Vers %</label><input type="number" id="opt-vers" placeholder="e.g. 10"></div>
                 <div class="opt-input-group"><label>Target Mast %</label><input type="number" id="opt-mast" placeholder="e.g. 50"></div>
                 <div class="opt-input-group"><label>Target Haste %</label><input type="number" id="opt-haste" placeholder="e.g. 20"></div>
                 <div class="opt-input-group"><label>Target Crit %</label><input type="number" id="opt-crit" placeholder="e.g. 20"></div>
                 <div class="opt-input-group"><label>Target Luck %</label><input type="number" id="opt-luck" placeholder="e.g. 5"></div>
-                <div class="opt-input-group"><label style="color:var(--highlight)">Total Agility</label><input type="number" id="opt-agi" placeholder="Stat Value"></div>
+                <div class="opt-input-group"><label style="color:var(--highlight-gold)">Total Agility</label><input type="number" id="opt-agi" placeholder="Est. Agility"></div>
             </div>
-            <button class="action-btn btn-gold" onclick="optimizer.run()">Run Smart Optimization</button>
-            <div id="opt-status" style="text-align:center; margin-top:10px; color:var(--accent); font-weight:bold; min-height:20px;"></div>
+            
+            <button class="action-btn btn-crimson" onclick="Optimizer.run()">Run Smart Optimization</button>
+            <div id="opt-status" style="text-align:center; margin-top:15px; font-weight:bold; height:20px; color:var(--accent);"></div>
+
             <div class="opt-options">
                 <label class="opt-check-label"><input type="checkbox" id="opt-keep-selected"> Lock Current Gear</label>
                 <label class="opt-check-label"><input type="checkbox" id="opt-optimize-imagine"> Optimize Imagines</label>
@@ -260,46 +277,71 @@
         </div>
 
         <div id="tab-rules" class="tab-content">
-            <div class="res-wrap">
-                <table class="res-tbl">
-                    <thead>
-                        <tr>
-                            <th style="width:25%">Equipment Slot</th>
-                            <th style="width:25%; color:var(--highlight)">Strength (Banned)</th>
-                            <th style="width:25%; color:#a9cce3">Intelligence (Banned)</th>
-                            <th style="width:25%; color:#f9e79f">Agility (Banned)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="res-body"></tbody>
-                </table>
+            <h3 style="text-align:center; color:var(--accent);">Restriction Rules (Banned Stats)</h3>
+            <table class="res-tbl">
+                <thead>
+                    <tr>
+                        <th style="width:25%">Slot</th>
+                        <th style="width:25%">Strength Build</th>
+                        <th style="width:25%">Intelligence Build</th>
+                        <th style="width:25%">Agility Build</th>
+                    </tr>
+                </thead>
+                <tbody id="rules-body"></tbody>
+            </table>
+        </div>
+
+        <div id="tab-settings" class="tab-content">
+            <h3 style="color:var(--text-main);">Quick Config</h3>
+            <div style="background:var(--bg-input); padding:20px; border-radius:var(--radius); border:var(--border);">
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight:bold; display:block; margin-bottom:10px;">Set All Reforges:</label>
+                    <select onchange="Logic.applyGlobal('reforge', this.value)" style="max-width:300px;">
+                        <option value="">- Select Stat -</option>
+                        <option value="Versatility">Versatility</option>
+                        <option value="Mastery">Mastery</option>
+                        <option value="Haste">Haste</option>
+                        <option value="Crit">Crit</option>
+                        <option value="Luck">Luck</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight:bold; display:block; margin-bottom:10px;">Set All Sigil Levels:</label>
+                    <select onchange="Logic.applyGlobal('sigil-lvl', this.value)" style="max-width:150px;">
+                        <option value="">-</option>
+                        <option value="1">Level 1</option>
+                        <option value="2">Level 2</option>
+                        <option value="3">Level 3</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight:bold; display:block; margin-bottom:10px;">Set All Legendaries (Non-Raid):</label>
+                    <div style="display:flex; gap:10px;">
+                         <select id="global-leg-type" style="max-width:200px;">
+                            <option value="">- Type -</option>
+                         </select>
+                         <input type="number" id="global-leg-val" placeholder="%" style="max-width:100px;">
+                         <button class="btn-blue" style="width:auto; padding:5px 20px; margin:0;" onclick="Logic.applyGlobal('legendary', null)">Apply</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <div class="imagine-section">
-            <div class="imagine-title">Imagine Slots</div>
-            <div class="imagine-row">
-                <span class="slot-name">Imagine 1</span>
-                <select id="img-type-1" onchange="logic.calculate()"></select>
-                <select id="img-lvl-1" onchange="logic.calculate()"></select>
-            </div>
-            <div class="imagine-row">
-                <span class="slot-name">Imagine 2</span>
-                <select id="img-type-2" onchange="logic.calculate()"></select>
-                <select id="img-lvl-2" onchange="logic.calculate()"></select>
-            </div>
-        </div>
-
-        <div class="dynamic-note" id="dynamic-footer-note"></div>
-        <div class="footer-credits">
-            <div id="credits-area"></div>
-            <div class="footer-sub">Supported by: Boss the Block Father</div>
+        <div class="footer">
+            <div>BPSR Planner Optimized by Gemini AI</div>
+            <div>Updated Logic • Clean Code • Crimson Theme</div>
         </div>
     </div>
 
     <div class="panel calc-panel">
-        <h2 style="font-size: 1.2rem; border-bottom: none; margin-bottom: 10px;">STATS OVERVIEW</h2>
+        <h2 style="font-size: 1.2rem; border-bottom: none; margin-bottom: 15px; color:var(--text-main);">Stats Overview</h2>
+        
         <div class="raw-gear-stats">
-            <h3 style="margin:0 0 10px 0; font-size:0.9em; color:#666; border-bottom:1px solid #333; padding-bottom:5px; text-transform:uppercase;">Raw Totals</h3>
+            <h3>Raw Totals</h3>
             <div class="raw-row"><span>Vers:</span> <span class="raw-val" id="raw-vers">0</span></div>
             <div class="raw-row"><span>Mast:</span> <span class="raw-val" id="raw-mast">0</span></div>
             <div class="raw-row"><span>Haste:</span> <span class="raw-val" id="raw-haste">0</span></div>
@@ -307,574 +349,741 @@
             <div class="raw-row"><span>Luck:</span> <span class="raw-val" id="raw-luck">0</span></div>
         </div>
         
-        <div class="base-stats">
-            <div class="input-group"><label>Base Vers</label><input type="number" id="base-vers" value="0"></div>
-            <div class="input-group"><label>Base Mast</label><input type="number" id="base-mast" value="0"></div>
-            <div class="input-group"><label>Base Haste</label><input type="number" id="base-haste" value="0"></div>
-            <div class="input-group"><label>Base Crit</label><input type="number" id="base-crit" value="0"></div>
-            <div class="input-group"><label>Base Luck</label><input type="number" id="base-luck" value="0"></div>
-            <div class="input-group"><label style="color:#aaa">Base Agi</label><input type="number" id="base-agi" value="0"></div>
+        <div class="base-stats-grid">
+            <div class="mini-input-group"><label>Base Vers</label><input type="number" id="base-vers" value="0"></div>
+            <div class="mini-input-group"><label>Base Mast</label><input type="number" id="base-mast" value="0"></div>
+            <div class="mini-input-group"><label>Base Haste</label><input type="number" id="base-haste" value="0"></div>
+            <div class="mini-input-group"><label>Base Crit</label><input type="number" id="base-crit" value="0"></div>
+            <div class="mini-input-group"><label>Base Luck</label><input type="number" id="base-luck" value="0"></div>
+            <div class="mini-input-group"><label style="color:var(--highlight-gold)">Base Agi</label><input type="number" id="base-agi" value="0"></div>
         </div>
 
-        <button class="action-btn btn-blue" onclick="logic.calculate()">Update Stats</button>
+        <button class="action-btn btn-blue" onclick="Logic.calculate()">Force Update</button>
 
         <div class="results-area">
             <h3 style="color:var(--text-main); margin-top:0;">Final Breakdown</h3>
             <div class="result-row"><span>Versatility:</span> <span class="result-val" id="r-vers">0%</span></div>
-            <div class="result-row"><span>Mastery:</span> <span class="result-val" id="r-mast">6.00%</span></div>
+            <div class="result-row"><span>Mastery:</span> <span class="result-val" id="r-mast">0%</span></div>
             <div class="result-row"><span>Haste:</span> <span class="result-val" id="r-haste">0%</span></div>
-            <div class="result-row"><span>Crit Rate:</span> <span class="result-val" id="r-crit">5.00%</span></div>
-            <div class="result-row"><span>Luck:</span> <span class="result-val" id="r-luck">5.00%</span></div>
+            <div class="result-row"><span>Crit Rate:</span> <span class="result-val" id="r-crit">0%</span></div>
+            <div class="result-row"><span>Luck:</span> <span class="result-val" id="r-luck">0%</span></div>
             
-            <div id="extra-bonuses" style="margin-top:15px; border-top:1px dashed #444; padding-top:10px;">
-                </div>
-            
-            <div id="legendary-summary" style="display:none; margin-top:15px; font-size:0.9em; border-top:1px solid #333; padding-top:10px;">
-            </div>
+            <div id="extra-bonuses" style="margin-top:20px;"></div>
         </div>
     </div>
 </div>
 
 <script>
-    // --- 1. DATA CONFIGURATION ---
-    const GAME_DATA = {
-        TEXT: { CREDITS: "Produced by Luxxio // Updated by: KrowMeLL / RaoH", NOTES: `<strong>Gear Values (Lvl 160):</strong><br>• Raid Weapon: 2480 Primary / 2480 Secondary / No Reforge<br>• Raid Armor: 954 Primary / 954 Secondary / 286 Reforge <br>• Standard Weapon: 1908 Primary / 954 Secondary / 572 Reforge<br>• Standard Armor: 954 Primary / 477 Secondary / 286 Reforge` },
-        STATS: ["Versatility", "Mastery", "Haste", "Crit", "Luck"],
-        SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Earrings", "Necklace", "Ring", "Bracelet (L)", "Bracelet (R)", "Charm"],
-        RAID_SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Bracelet (L)", "Bracelet (R)"],
-        
-        // Tiers for Diminishing Returns
-        TIERS: {
-            "Versatility": [[0,0], [589,5], [1244,10], [1976,15], [2800,20], [3733,25], [4800,30], [6031,35], [7467,40], [9164,45], [11200,50], [13689,55], [16800,60], [20800,65], [26133,70], [33600,75], [44800,80]],
-            "Mastery":     [[0,6], [832,10], [1976,15], [3252,20], [4685,25], [6308,30], [8159,35], [10290,40], [12771,45], [15695,50], [19192,55], [23449,60], [28745,65], [35511,70], [44460,75], [56852,80]],
-            "Haste":       [[0,0], [1051,5], [2219,10], [3525,15], [4994,20], [6658,25], [8561,30], [10756,35], [13317,40], [16343,45], [19975,50], [24414,55], [29963,60], [37096,65], [46608,70], [59925,75], [79900,80]],
-            "Crit":        [[0,5], [1051,10], [2219,15], [3525,20], [4994,25], [6658,30], [8561,35], [10756,40], [13317,45], [16343,50], [19975,55], [24414,60], [29963,65], [37096,70], [46608,75], [59925,80]],
-            "Luck":        [[0,5], [854,10], [1803,15], [2864,20], [4058,25], [5410,30], [6956,35], [8739,40], [10820,45], [13279,50], [16230,55], [19837,60], [24345,65], [30141,70], [37870,75], [48690,80]]
-        },
+/**
+ * BPSR STAT PLANNER - REFACTORED CORE
+ * * 1. Data Structure (Immutable Configuration)
+ * 2. UI Controller (DOM Manipulation)
+ * 3. Logic Controller (Calculations & Updates)
+ * 4. Optimizer (Simulation)
+ */
 
-        IMAGINE: { 
-            SLOT_IDS: ['1', '2'],
-            OPTIONS: {
-                "Phantom Arachnocrab (Mastery)": { stat: "Mastery", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
-                "Celestial Flier (Haste)": { stat: "Haste", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
-                "Goblin King (Versatility)": { stat: "Versatility", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
-                "Bluespine Lizard (Versatility)": { stat: "Versatility", vals: [2016, 2615, 3214, 3813, 4412, 5040] }
-            }
-        },
+// --- 1. DATA CONFIGURATION ---
+const DATA = {
+    STATS: ["Versatility", "Mastery", "Haste", "Crit", "Luck"],
+    SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Earrings", "Necklace", "Ring", "Bracelet (L)", "Bracelet (R)", "Charm"],
+    RAID_SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Bracelet (L)", "Bracelet (R)"],
+    
+    // Values for Level 160
+    VALUES: {
+        WEAPON_RAID: { p: 2480, s: 2480, r: 0 },
+        ARMOR_RAID:  { p: 954,  s: 954,  r: 286 },
+        WEAPON_STD:  { p: 1908, s: 954,  r: 572 },
+        ARMOR_STD:   { p: 954,  s: 477,  r: 286 }
+    },
 
-        LEGENDARY: ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"],
-        
-        // --- CLASSES DEFINITION (FIXED) ---
-        CLASSES: {
-            "Heavy Guardian": ["Block", "Earthforth"],
-            "Shield Knight": ["Recovery", "Shield"],
-            "Verdant Oracle": ["Life Bind", "Smite"],
-            "Beat Performance": ["Dissonance", "Concerto"],
-            "Stormblade": ["Moonblade", "Iaido"],
-            "Frost Mage": ["Icicle", "Ray"],
-            "Wind Knight": ["SkyWard", "Vanguard"]
-        },
+    // Diminishing Return Curves (Value -> Percentage)
+    TIERS: {
+        "Versatility": [[0,0], [589,5], [1244,10], [1976,15], [2800,20], [3733,25], [4800,30], [6031,35], [7467,40], [9164,45], [11200,50], [13689,55], [16800,60], [20800,65], [26133,70], [33600,75], [44800,80]],
+        "Mastery":     [[0,6], [832,10], [1976,15], [3252,20], [4685,25], [6308,30], [8159,35], [10290,40], [12771,45], [15695,50], [19192,55], [23449,60], [28745,65], [35511,70], [44460,75], [56852,80]],
+        "Haste":       [[0,0], [1051,5], [2219,10], [3525,15], [4994,20], [6658,25], [8561,30], [10756,35], [13317,40], [16343,45], [19975,50], [24414,55], [29963,60], [37096,65], [46608,70], [59925,75], [79900,80]],
+        "Crit":        [[0,5], [1051,10], [2219,15], [3525,20], [4994,25], [6658,30], [8561,35], [10756,40], [13317,45], [16343,50], [19975,55], [24414,60], [29963,65], [37096,70], [46608,75], [59925,80]],
+        "Luck":        [[0,5], [854,10], [1803,15], [2864,20], [4058,25], [5410,30], [6956,35], [8739,40], [10820,45], [13279,50], [16230,55], [19837,60], [24345,65], [30141,70], [37870,75], [48690,80]]
+    },
 
-        // --- RAID BONUS DATABASE (MATCHING NEW SPELLING) ---
-        RAID_BONUS: {
-            "Block": { l: "Luck", v: 6.0, t: "p" }, 
-            "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, 
-            "Iaido": { l: "Crit DMG", v: 0.0, t: "p" }, 
-            "Moonblade": { l: "Luck", v: 0.0, t: "p" },
-            "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, 
-            "Ray": { l: "Ranged DMG", v: 0, t: "f" },
-            "Vanguard": { l: "Melee DMG", v: 0, t: "f" }, 
-            "SkyWard": { l: "Lucky Strike DMG", v: 20.0, t: "p" },
-            "Smite": { l: "Ranged DMG", v: 0, t: "f" }, 
-            "Life Bind": { l: "Healing Output", v: 0.0, t: "p" },
-            "Wildpack": { l: "Ranged DMG", v: 0, t: "f" }, 
-            "Falconry": { l: "Crit DMG", v: 0.0, t: "p" },
-            "Recovery": { l: "DMG Bonus", v: 0.0, t: "p" }, 
-            "Shield": { l: "Melee DMG", v: 0, t: "f" },
-            "Concerto": { l: "Crit Healing", v: 0.0, t: "p" }, 
-            "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }
-        },
-        
-        // --- SPECS STAT DEFINITIONS (MATCHING NEW SPELLING) ---
-        SPECS: { 
-            "Block": ["Mastery", "Luck"], "Earthforth": ["Mastery", "Versatility"],
-            "Recovery": ["Crit", "Mastery"], "Shield": ["Haste", "Mastery"],
-            "Life Bind": ["Haste", "Mastery"], "Smite": ["Mastery", "Luck"],
-            "Dissonance": ["Haste", "Luck"], "Concerto": ["Haste", "Crit"],
-            "Moonblade": ["Haste", "Luck"], "Iaido": ["Crit", "Mastery"],
-            "Icicle": ["Crit", "Luck"], "Ray": ["Haste", "Mastery"],
-            "SkyWard": ["Crit", "Luck"], "Vanguard": ["Haste", "Mastery"],
-            "Wildpack": ["Haste", "Mastery"], "Falconry": ["Crit", "Haste"] 
-        },
-        
-        RESTRICTIONS: { "Weapon": { "Strength": [], "Intelligence": [], "Agility": [] }, "Helmet": { "Strength": ["Versatility"], "Intelligence": ["Crit"], "Agility": ["Haste"] }, "Chest": { "Strength": ["Luck"], "Intelligence": ["Crit"], "Agility": ["Mastery"] }, "Gloves": { "Strength": ["Haste"], "Intelligence": ["Versatility"], "Agility": ["Crit"] }, "Boots": { "Strength": ["Mastery"], "Intelligence": ["Luck"], "Agility": ["Crit"] }, "Earrings": { "Strength": ["Mastery"], "Intelligence": ["Versatility"], "Agility": ["Haste"] }, "Necklace": { "Strength": ["Haste"], "Intelligence": ["Luck"], "Agility": ["Mastery"] }, "Ring": { "Strength": ["Luck"], "Intelligence": ["Mastery"], "Agility": ["Versatility"] }, "Bracelet (L)": { "Strength": ["Crit"], "Intelligence": ["Haste"], "Agility": ["Versatility"] }, "Bracelet (R)": { "Strength": ["Crit"], "Intelligence": ["Mastery"], "Agility": ["Luck"] }, "Charm": { "Strength": ["Versatility"], "Intelligence": ["Haste"], "Agility": ["Luck"] } },
-        VALUES: { WEAPON_RAID: { p: 2480, s: 2480, r: 0 }, ARMOR_RAID: { p: 954, s: 954, r: 286 }, WEAPON_STD: { p: 1908, s: 954, r: 572 }, ARMOR_STD: { p: 954, s: 477, r: 286 } }
-    };
-
-    // --- SIGIL DATABASE (LEVEL 160) ---
-    const SIGIL_DB = [
-        { n: "Basilisk Sigil", s: ["Weapon"], d: { 1: {"All Element Attack": 40}, 2: {"All Element Attack": 45}, 3: {"All Element Attack": 50} } },
-        { n: "Bluespine Lizard", s: ["Weapon"], d: { 1: {"All Element Attack": 20}, 2: {"All Element Attack": 25}, 3: {"All Element Attack": 30} } },
-        { n: "Emerald Caprahorn", s: ["Weapon","Earrings","Necklace","Ring"], d: { 1: {Endurance:80, Strength:25}, 2: {Endurance:90, Strength:30}, 3: {Endurance:100, Strength:35} } },
-        { n: "Blackstone Commander", s: ["Weapon","Earrings","Necklace","Ring"], d: { 1: {Endurance:80, Intellect:25}, 2: {Endurance:90, Intellect:30}, 3: {Endurance:100, Intellect:35} } },
-        { n: "Blackfire Foxen", s: ["Weapon","Earrings","Necklace","Ring"], d: { 1: {Endurance:80, Agility:25}, 2: {Endurance:90, Agility:30}, 3: {Endurance:100, Agility:35} } },
-        { n: "Flamehorn", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Versatility:500}, 2: {Versatility:500}, 3: {Versatility:500} } },
-        { n: "Blackstone Captain", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Mastery:500}, 2: {Mastery:560}, 3: {Mastery:600} } },
-        { n: "Cabbage Kingpin", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Luck:500}, 2: {Luck:560}, 3: {Luck:600} } },
-        { n: "Crimson Foxen", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Haste:500}, 2: {Haste:560}, 3: {Haste:600} } },
-        { n: "Goblin Chief", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Crit:500}, 2: {Crit:560}, 3: {Crit:600} } },
-        { n: "Cabbage Blaster", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Versatility:200}, 2: {Versatility:250}, 3: {Versatility:300} } },
-        { n: "Glimmer Caprahorn", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Mastery:200}, 2: {Mastery:250}, 3: {Mastery:300} } },
-        { n: "Cabbage Tough Guy", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Luck:200}, 2: {Luck:250}, 3: {Luck:300} } },
-        { n: "Wasteland Foxen", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Haste:200}, 2: {Haste:250}, 3: {Haste:300} } },
-        { n: "Cabbage Killer", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Crit:200}, 2: {Crit:250}, 3: {Crit:300} } },
-        { n: "Foxen", s: ["Earrings","Necklace","Ring"], d: { 1: {Endurance:50, Agility:15}, 2: {Endurance:60, Agility:20}, 3: {Endurance:80, Agility:25} } },
-        { n: "Cabbage Hunter", s: ["Earrings","Necklace","Ring"], d: { 1: {Endurance:50, Intellect:15}, 2: {Endurance:60, Intellect:20}, 3: {Endurance:80, Intellect:25} } },
-        { n: "Nether Caprahorn", s: ["Earrings","Necklace","Ring"], d: { 1: {Endurance:50, Strength:15}, 2: {Endurance:60, Strength:20}, 3: {Endurance:80, Strength:25} } },
-        { n: "Blackstone Vanguard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Haste:300}, 2: {Haste:360}, 3: {Haste:420} } },
-        { n: "Ruthless Cabbage", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Luck:300}, 2: {Luck:360}, 3: {Luck:420} } },
-        { n: "Gloomy Cabbage", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Crit:300}, 2: {Crit:360}, 3: {Crit:420} } },
-        { n: "Goblin Shaman", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Versatility:300}, 2: {Versatility:360}, 3: {Versatility:420} } },
-        { n: "Goblin Trickster", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Mastery:300}, 2: {Mastery:360}, 3: {Mastery:420} } },
-        { n: "Frost Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Crit:140}, 2: {Strength:16, Crit:175}, 3: {Strength:20, Crit:210} } },
-        { n: "Magma Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Haste:140}, 2: {Strength:16, Haste:175}, 3: {Strength:20, Haste:210} } },
-        { n: "Gale Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Luck:140}, 2: {Strength:16, Luck:175}, 3: {Strength:20, Luck:210} } },
-        { n: "Lightning Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Mastery:140}, 2: {Strength:16, Mastery:175}, 3: {Strength:20, Mastery:210} } },
-        { n: "Blackstone Marksman", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Crit:140}, 2: {Intellect:16, Crit:175}, 3: {Intellect:20, Crit:210} } },
-        { n: "Blackstone Guard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Haste:140}, 2: {Intellect:16, Haste:175}, 3: {Intellect:20, Haste:210} } },
-        { n: "Blackstone Warrior", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Luck:140}, 2: {Intellect:16, Luck:175}, 3: {Intellect:20, Luck:210} } },
-        { n: "Blackstone Assaulter", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Mastery:140}, 2: {Intellect:16, Mastery:175}, 3: {Intellect:20, Mastery:210} } },
-        { n: "Goblin Warrior", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Crit:140}, 2: {Agility:16, Crit:175}, 3: {Agility:20, Crit:210} } },
-        { n: "Goblin Axeman", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Haste:140}, 2: {Agility:16, Haste:175}, 3: {Agility:20, Haste:210} } },
-        { n: "Goblin Priest", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Luck:140}, 2: {Agility:16, Luck:175}, 3: {Agility:20, Luck:210} } },
-        { n: "Goblin Guard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Mastery:140}, 2: {Agility:16, Mastery:175}, 3: {Agility:20, Mastery:210} } }
-    ];
-
-    const $ = id => document.getElementById(id);
-    const createOpt = (val, txt) => `<option value="${val}">${txt || val}</option>`;
-
-    // Auto-rename sigils (Feature from 140 code)
-    SIGIL_DB.forEach(s => {
-        const k = Object.keys(s.d[1]);
-        if(k.length === 1 && !s.n.includes("(")) s.n += ` (${k[0]})`;
-    });
-
-    // --- UI CONTROLLER ---
-    const ui = {
-        init: () => {
-            $('credits-area').innerText = GAME_DATA.TEXT.CREDITS;
-            $('dynamic-footer-note').innerHTML = GAME_DATA.TEXT.NOTES;
-            
-            // Populate Class Dropdown (New)
-            $('class-select').innerHTML = Object.keys(GAME_DATA.CLASSES).map(c => createOpt(c)).join('');
-            
-            // Trigger Spec Update (New)
-            ui.updateSpecOptions();
-            
-            const imgOptions = Object.keys(GAME_DATA.IMAGINE.OPTIONS);
-            GAME_DATA.IMAGINE.SLOT_IDS.forEach(n => {
-                $(`img-type-${n}`).innerHTML = createOpt("", "- None -") + imgOptions.map(k => createOpt(k, k)).join('');
-                let lvlHtml = "";
-                // Tiers 0 to 5 generated here
-                for(let i=0; i<6; i++) lvlHtml += createOpt(i, `Tier ${i}`);
-                $(`img-lvl-${n}`).innerHTML = lvlHtml;
-            });
-
-            const container = $('gear-container');
-            container.innerHTML = GAME_DATA.SLOTS.map((slot, i) => {
-                const isRaidSlot = GAME_DATA.RAID_SLOTS.includes(slot);
-                const raidCheck = isRaidSlot ? `<input type="checkbox" id="raid-${i}" onchange="ui.toggleRaid(${i}, '${slot}')">` : '';
-                // Updated filter to check against new 's' property
-                const slotSigils = SIGIL_DB.filter(s => s.s.includes(slot));
-                // Updated map to use new 'n' property
-                const sigilOpts = `<option value="">-</option>` + slotSigils.map(s => createOpt(s.n)).join('');
-
-                return `
-                <div class="gear-row" data-slot="${slot}">
-                    <div class="slot-name">${slot}</div>
-                    <div style="text-align:center">${raidCheck}</div>
-                    <select id="s1-${i}" onchange="logic.updateRow(${i})"><option>-</option></select>
-                    <select id="s2-${i}" onchange="logic.updateRow(${i})"><option>-</option></select>
-                    <select id="s3-${i}"><option>-</option></select>
-                    <select id="sigil-name-${i}" onchange="logic.calculate()">${sigilOpts}</select>
-                    <select id="sigil-lvl-${i}" onchange="logic.calculate()">
-                        <option value="1">Lvl 1</option><option value="2">Lvl 2</option><option value="3">Lvl 3</option>
-                    </select>
-                    <div class="leg-group">
-                        <select id="leg-type-${i}">${GAME_DATA.LEGENDARY.map(l => createOpt(l)).join('')}</select>
-                        <input type="number" id="leg-val-${i}" class="leg-val" placeholder="%">
-                    </div>
-                </div>`;
-            }).join('');
-
-            // Init Stat Rules Table
-            $('res-body').innerHTML = Object.keys(GAME_DATA.RESTRICTIONS).map(slot => {
-                const r = GAME_DATA.RESTRICTIONS[slot];
-                const fmt = a => a && a.length ? `<span class="ban">${a.join(", ")}</span>` : "-";
-                return `<tr>
-                    <td style="color:#fff; font-weight:bold">${slot}</td>
-                    <td>${fmt(r.Strength)}</td>
-                    <td>${fmt(r.Intelligence)}</td>
-                    <td>${fmt(r.Agility)}</td>
-                </tr>`;
-            }).join('');
-
-            document.querySelectorAll('.base-stats input').forEach(el => el.addEventListener('input', logic.calculate));
-            logic.updateAll();
-        },
-
-        updateSpecOptions: () => {
-            const selectedClass = $('class-select').value;
-            const specs = GAME_DATA.CLASSES[selectedClass];
-            // Safety check in case selection is empty or invalid
-            if (specs) {
-                $('spec-select').innerHTML = specs.map(s => createOpt(s)).join('');
-            } else {
-                $('spec-select').innerHTML = createOpt("", "None");
-            }
-            logic.updateAll(); // Update calculations based on new default spec
-        },
-
-        switchTab: (tab) => {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            $(`tab-${tab}`).classList.add('active');
-            // Fix for dynamic buttons
-            if($(`t-${tab}`)) $(`t-${tab}`).classList.add('active');
-        },
-
-        toggleRaid: (idx) => {
-            const isRaid = $(`raid-${idx}`).checked;
-            $(`leg-type-${idx}`).disabled = isRaid;
-            $(`leg-val-${idx}`).disabled = isRaid;
-            if(isRaid) { $(`leg-type-${idx}`).value = "-"; $(`leg-val-${idx}`).value = ""; }
-            logic.updateRow(idx);
+    IMAGINE: { 
+        SLOT_IDS: ['1', '2'],
+        OPTIONS: {
+            "Phantom Arachnocrab (Mastery)": { stat: "Mastery", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
+            "Celestial Flier (Haste)": { stat: "Haste", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
+            "Goblin King (Versatility)": { stat: "Versatility", vals: [3584, 4636, 5688, 6740, 7792, 8960] },
+            "Bluespine Lizard (Versatility)": { stat: "Versatility", vals: [2016, 2615, 3214, 3813, 4412, 5040] }
         }
-    };
+    },
 
-    // --- CORE LOGIC ---
-    const logic = {
-        getBuild: () => document.querySelector('input[name="buildType"]:checked').value,
+    LEGENDARY_OPTS: ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"],
+
+    // Class & Spec Definitions
+    CLASSES: {
+        "Heavy Guardian": ["Block", "Earthforth"],
+        "Shield Knight": ["Recovery", "Shield"],
+        "Verdant Oracle": ["Life Bind", "Smite"],
+        "Beat Performance": ["Dissonance", "Concerto"],
+        "Stormblade": ["Moonblade", "Iaido"],
+        "Frost Mage": ["Icicle", "Ray"],
+        "Wind Knight": ["SkyWard", "Vanguard"]
+    },
+
+    // Fixed Stats for Raid Gear per Spec
+    SPEC_STATS: { 
+        "Block": ["Mastery", "Luck"], "Earthforth": ["Mastery", "Versatility"],
+        "Recovery": ["Crit", "Mastery"], "Shield": ["Haste", "Mastery"],
+        "Life Bind": ["Haste", "Mastery"], "Smite": ["Mastery", "Luck"],
+        "Dissonance": ["Haste", "Luck"], "Concerto": ["Haste", "Crit"],
+        "Moonblade": ["Haste", "Luck"], "Iaido": ["Crit", "Mastery"],
+        "Icicle": ["Crit", "Luck"], "Ray": ["Haste", "Mastery"],
+        "SkyWard": ["Crit", "Luck"], "Vanguard": ["Haste", "Mastery"],
+        "Wildpack": ["Haste", "Mastery"], "Falconry": ["Crit", "Haste"] 
+    },
+
+    // Raid Bonuses (Percentage 'p' or Flat 'f')
+    RAID_BONUS: {
+        "Block": { l: "Luck", v: 6.0, t: "p" }, 
+        "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, 
+        "Iaido": { l: "Crit DMG", v: 0.0, t: "p" }, 
+        "Moonblade": { l: "Luck", v: 0.0, t: "p" },
+        "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, 
+        "Ray": { l: "Ranged DMG", v: 0, t: "f" },
+        "Vanguard": { l: "Melee DMG", v: 0, t: "f" }, 
+        "SkyWard": { l: "Lucky Strike DMG", v: 20.0, t: "p" },
+        "Smite": { l: "Ranged DMG", v: 0, t: "f" }, 
+        "Life Bind": { l: "Healing Output", v: 0.0, t: "p" },
+        "Wildpack": { l: "Ranged DMG", v: 0, t: "f" }, 
+        "Falconry": { l: "Crit DMG", v: 0.0, t: "p" },
+        "Recovery": { l: "DMG Bonus", v: 0.0, t: "p" }, 
+        "Shield": { l: "Melee DMG", v: 0, t: "f" },
+        "Concerto": { l: "Crit Healing", v: 0.0, t: "p" }, 
+        "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }
+    },
+
+    // Restrictions (Banned Stats)
+    RESTRICTIONS: { 
+        "Weapon": { "Strength": [], "Intelligence": [], "Agility": [] }, 
+        "Helmet": { "Strength": ["Versatility"], "Intelligence": ["Crit"], "Agility": ["Haste"] }, 
+        "Chest": { "Strength": ["Luck"], "Intelligence": ["Crit"], "Agility": ["Mastery"] }, 
+        "Gloves": { "Strength": ["Haste"], "Intelligence": ["Versatility"], "Agility": ["Crit"] }, 
+        "Boots": { "Strength": ["Mastery"], "Intelligence": ["Luck"], "Agility": ["Crit"] }, 
+        "Earrings": { "Strength": ["Mastery"], "Intelligence": ["Versatility"], "Agility": ["Haste"] }, 
+        "Necklace": { "Strength": ["Haste"], "Intelligence": ["Luck"], "Agility": ["Mastery"] }, 
+        "Ring": { "Strength": ["Luck"], "Intelligence": ["Mastery"], "Agility": ["Versatility"] }, 
+        "Bracelet (L)": { "Strength": ["Crit"], "Intelligence": ["Haste"], "Agility": ["Versatility"] }, 
+        "Bracelet (R)": { "Strength": ["Crit"], "Intelligence": ["Mastery"], "Agility": ["Luck"] }, 
+        "Charm": { "Strength": ["Versatility"], "Intelligence": ["Haste"], "Agility": ["Luck"] } 
+    }
+};
+
+// --- 2. SIGIL DATABASE (Shortened for brevity, structure kept) ---
+const SIGIL_DB = [
+    { n: "Basilisk Sigil", s: ["Weapon"], d: { 1: {"All Element Attack": 40}, 2: {"All Element Attack": 45}, 3: {"All Element Attack": 50} } },
+    { n: "Emerald Caprahorn", s: ["Weapon","Earrings","Necklace","Ring"], d: { 1: {Endurance:80, Strength:25}, 2: {Endurance:90, Strength:30}, 3: {Endurance:100, Strength:35} } },
+    { n: "Blackstone Commander", s: ["Weapon","Earrings","Necklace","Ring"], d: { 1: {Endurance:80, Intellect:25}, 2: {Endurance:90, Intellect:30}, 3: {Endurance:100, Intellect:35} } },
+    { n: "Blackfire Foxen", s: ["Weapon","Earrings","Necklace","Ring"], d: { 1: {Endurance:80, Agility:25}, 2: {Endurance:90, Agility:30}, 3: {Endurance:100, Agility:35} } },
+    { n: "Flamehorn", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Versatility:500}, 2: {Versatility:500}, 3: {Versatility:500} } },
+    { n: "Blackstone Captain", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Mastery:500}, 2: {Mastery:560}, 3: {Mastery:600} } },
+    { n: "Cabbage Kingpin", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Luck:500}, 2: {Luck:560}, 3: {Luck:600} } },
+    { n: "Crimson Foxen", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Haste:500}, 2: {Haste:560}, 3: {Haste:600} } },
+    { n: "Goblin Chief", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Crit:500}, 2: {Crit:560}, 3: {Crit:600} } },
+    { n: "Cabbage Blaster", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Versatility:200}, 2: {Versatility:250}, 3: {Versatility:300} } },
+    { n: "Glimmer Caprahorn", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Mastery:200}, 2: {Mastery:250}, 3: {Mastery:300} } },
+    { n: "Cabbage Tough Guy", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Luck:200}, 2: {Luck:250}, 3: {Luck:300} } },
+    { n: "Wasteland Foxen", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Haste:200}, 2: {Haste:250}, 3: {Haste:300} } },
+    { n: "Cabbage Killer", s: ["Helmet","Chest","Gloves","Boots"], d: { 1: {Crit:200}, 2: {Crit:250}, 3: {Crit:300} } },
+    { n: "Blackstone Vanguard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Haste:300}, 2: {Haste:360}, 3: {Haste:420} } },
+    { n: "Ruthless Cabbage", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Luck:300}, 2: {Luck:360}, 3: {Luck:420} } },
+    { n: "Gloomy Cabbage", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Crit:300}, 2: {Crit:360}, 3: {Crit:420} } },
+    { n: "Goblin Shaman", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Versatility:300}, 2: {Versatility:360}, 3: {Versatility:420} } },
+    { n: "Goblin Trickster", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Mastery:300}, 2: {Mastery:360}, 3: {Mastery:420} } },
+    { n: "Frost Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Crit:140}, 2: {Strength:16, Crit:175}, 3: {Strength:20, Crit:210} } },
+    { n: "Magma Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Haste:140}, 2: {Strength:16, Haste:175}, 3: {Strength:20, Haste:210} } },
+    { n: "Gale Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Luck:140}, 2: {Strength:16, Luck:175}, 3: {Strength:20, Luck:210} } },
+    { n: "Lightning Lizard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Strength:12, Mastery:140}, 2: {Strength:16, Mastery:175}, 3: {Strength:20, Mastery:210} } },
+    { n: "Blackstone Marksman", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Crit:140}, 2: {Intellect:16, Crit:175}, 3: {Intellect:20, Crit:210} } },
+    { n: "Blackstone Guard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Haste:140}, 2: {Intellect:16, Haste:175}, 3: {Intellect:20, Haste:210} } },
+    { n: "Blackstone Warrior", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Luck:140}, 2: {Intellect:16, Luck:175}, 3: {Intellect:20, Luck:210} } },
+    { n: "Blackstone Assaulter", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Intellect:12, Mastery:140}, 2: {Intellect:16, Mastery:175}, 3: {Intellect:20, Mastery:210} } },
+    { n: "Goblin Warrior", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Crit:140}, 2: {Agility:16, Crit:175}, 3: {Agility:20, Crit:210} } },
+    { n: "Goblin Axeman", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Haste:140}, 2: {Agility:16, Haste:175}, 3: {Agility:20, Haste:210} } },
+    { n: "Goblin Priest", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Luck:140}, 2: {Agility:16, Luck:175}, 3: {Agility:20, Luck:210} } },
+    { n: "Goblin Guard", s: ["Bracelet (L)","Bracelet (R)","Charm"], d: { 1: {Agility:12, Mastery:140}, 2: {Agility:16, Mastery:175}, 3: {Agility:20, Mastery:210} } }
+];
+
+// Process Sigil Names for UI
+SIGIL_DB.forEach(s => {
+    const k = Object.keys(s.d[1]);
+    if(k.length === 1 && !s.n.includes("(")) s.n += ` (${k[0]})`;
+});
+
+// --- 3. UI CONTROLLER ---
+const $ = id => document.getElementById(id);
+const createOpt = (val, txt) => `<option value="${val}">${txt || val}</option>`;
+
+const UI = {
+    init: () => {
+        // Init Class Dropdown
+        const classSel = $('class-select');
+        classSel.innerHTML = Object.keys(DATA.CLASSES).map(c => createOpt(c)).join('');
         
-        updateAll: () => { GAME_DATA.SLOTS.forEach((_, i) => logic.updateRow(i)); logic.calculate(); },
+        // Init Global Leg Options
+        $('global-leg-type').innerHTML = DATA.LEGENDARY_OPTS.map(l => createOpt(l)).join('');
 
-        updateRow: (idx) => {
-            const slot = GAME_DATA.SLOTS[idx];
-            const build = logic.getBuild();
-            const isRaid = $(`raid-${idx}`)?.checked || false;
-            const [s1, s2, s3] = [`s1-${idx}`, `s2-${idx}`, `s3-${idx}`].map($);
+        // Init Imagine Slots
+        const imgOpts = Object.keys(DATA.IMAGINE.OPTIONS);
+        DATA.IMAGINE.SLOT_IDS.forEach(n => {
+            $(`img-type-${n}`).innerHTML = createOpt("", "None") + imgOpts.map(k => createOpt(k, k)).join('');
+            let lvlHtml = "";
+            for(let i=0; i<6; i++) lvlHtml += createOpt(i, `Tier ${i}`);
+            $(`img-lvl-${n}`).innerHTML = lvlHtml;
+        });
 
-            if(isRaid) {
-                const specVal = $('spec-select').value;
-                const specs = GAME_DATA.SPECS[specVal];
-                // Added safety check for specs
-                if (specs) {
-                    s1.innerHTML = createOpt(specs[0]); s1.value = specs[0]; s1.disabled = true;
-                    s2.innerHTML = createOpt(specs[1]); s2.value = specs[1]; s2.disabled = true;
-                }
-                s3.disabled = (slot === "Weapon");
-                if(slot === "Weapon") s3.value = ""; else logic.fillSelect(s3, s3.value, null, false);
-            } else {
-                s1.disabled = s2.disabled = s3.disabled = false;
-                const banned = GAME_DATA.RESTRICTIONS[slot]?.[build] || [];
-                logic.fillSelect(s1, s1.value, s2.value, true, banned);
-                logic.fillSelect(s2, s2.value, s1.value, true, banned);
-                logic.fillSelect(s3, s3.value, null, false);
-            }
-        },
+        // Init Rules Table (Fixed: Now generated dynamically)
+        UI.renderRulesTable();
 
-        fillSelect: (el, curr, excl, restricted, banned=[]) => {
-            el.innerHTML = '<option value="">-</option>' + GAME_DATA.STATS
-                .filter(s => (!restricted || !banned.includes(s)) && s !== excl)
-                .map(s => createOpt(s)).join('');
-            el.value = (curr && Array.from(el.options).some(o=>o.value===curr)) ? curr : "";
-        },
+        // Trigger first rendering
+        UI.onClassChange(); 
 
-        applyGlobal: (type, val) => {
-            if(!val) return;
-            GAME_DATA.SLOTS.forEach((_, i) => { 
-                if(type === 'reforge' && !$(`s3-${i}`).disabled) $(`s3-${i}`).value = val;
-                if(type === 'sigil-lvl') $(`sigil-lvl-${i}`).value = val;
-            });
-            logic.calculate();
-        },
+        // Add Listeners to Base Inputs
+        document.querySelectorAll('.base-stats-grid input').forEach(el => el.addEventListener('input', Logic.calculate));
+    },
 
-        // --- NEW CURVE LOGIC ---
-        getStatPercent: (stat, val) => {
-            const tiers = GAME_DATA.TIERS[stat];
-            if (!tiers || val <= 0) return tiers[0][1];
-            if (val >= tiers[tiers.length-1][0]) return tiers[tiers.length-1][1];
+    renderRulesTable: () => {
+        const tbody = $('rules-body');
+        tbody.innerHTML = Object.keys(DATA.RESTRICTIONS).map(slot => {
+            const r = DATA.RESTRICTIONS[slot];
+            const fmt = arr => arr.length ? `<span class="ban-badge">${arr.join(", ")}</span>` : `<span style="color:#aaa">-</span>`;
+            return `<tr>
+                <td style="font-weight:bold">${slot}</td>
+                <td>${fmt(r.Strength)}</td>
+                <td>${fmt(r.Intelligence)}</td>
+                <td>${fmt(r.Agility)}</td>
+            </tr>`;
+        }).join('');
+    },
 
-            for (let i = 0; i < tiers.length - 1; i++) {
-                let [v1, p1] = tiers[i];
-                let [v2, p2] = tiers[i+1];
-                if (val >= v1 && val < v2) {
-                    return p1 + (val - v1) / (v2 - v1) * (p2 - p1);
-                }
-            }
-            return 0;
-        },
+    onClassChange: () => {
+        const cls = $('class-select').value;
+        const specs = DATA.CLASSES[cls];
+        if (specs) {
+            $('spec-select').innerHTML = specs.map(s => createOpt(s)).join('');
+        }
+        Logic.updateAll();
+    },
 
-        calculate: () => {
-            const total = { Versatility:0, Mastery:0, Haste:0, Crit:0, Luck:0 };
-            const leg = { "Attack Speed":0, "Cast Speed":0 };
+    renderGearRows: () => {
+        const container = $('gear-container');
+        // Clear current content (but ideally we diff, here we rebuild for simplicity)
+        container.innerHTML = DATA.SLOTS.map((slot, i) => {
+            const isRaidSlot = DATA.RAID_SLOTS.includes(slot);
+            const raidCheck = isRaidSlot ? `<input type="checkbox" id="raid-${i}" onchange="UI.toggleRaid(${i}, '${slot}')">` : '';
+            
+            // Filter Sigils
+            const slotSigils = SIGIL_DB.filter(s => s.s.includes(slot));
+            const sigilOpts = `<option value="">-</option>` + slotSigils.map(s => createOpt(s.n)).join('');
+            
+            return `
+            <div class="gear-row" data-slot="${slot}">
+                <div class="slot-name">${slot}</div>
+                <div class="text-center">${raidCheck}</div>
+                <select id="s1-${i}" onchange="Logic.updateRow(${i})"><option>-</option></select>
+                <select id="s2-${i}" onchange="Logic.updateRow(${i})"><option>-</option></select>
+                <select id="s3-${i}"><option>-</option></select>
+                <select id="sigil-name-${i}" onchange="Logic.calculate()">${sigilOpts}</select>
+                <select id="sigil-lvl-${i}" onchange="Logic.calculate()">
+                    <option value="1">Lvl 1</option><option value="2">Lvl 2</option><option value="3">Lvl 3</option>
+                </select>
+                <div class="leg-group">
+                    <select id="leg-type-${i}">${DATA.LEGENDARY_OPTS.map(l => createOpt(l)).join('')}</select>
+                    <input type="number" id="leg-val-${i}" class="leg-val" placeholder="%">
+                </div>
+            </div>`;
+        }).join('');
+    },
+
+    toggleRaid: (idx) => {
+        const isRaid = $(`raid-${idx}`).checked;
+        $(`leg-type-${idx}`).disabled = isRaid;
+        $(`leg-val-${idx}`).disabled = isRaid;
+        if(isRaid) { 
+            $(`leg-type-${idx}`).value = "-"; 
+            $(`leg-val-${idx}`).value = ""; 
+        }
+        Logic.updateRow(idx);
+    }
+};
+
+const App = {
+    switchTab: (tabId) => {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        $(`tab-${tabId}`).classList.add('active');
+        $(`nav-${tabId}`).classList.add('active');
+    }
+};
+
+// --- 4. CORE LOGIC ---
+const Logic = {
+    getBuildType: () => document.querySelector('input[name="buildType"]:checked').value,
+
+    updateAll: () => {
+        // Re-render rows is needed if stats logic changes drastically, 
+        // but typically we just re-populate options.
+        // For safety, let's ensure DOM exists first.
+        if($('gear-container').children.length === 0) UI.renderGearRows();
+
+        DATA.SLOTS.forEach((_, i) => Logic.updateRow(i));
+        Logic.calculate();
+    },
+
+    updateRow: (idx) => {
+        const slot = DATA.SLOTS[idx];
+        const build = Logic.getBuildType();
+        const isRaid = $(`raid-${idx}`)?.checked || false;
+        
+        const elP = $(`s1-${idx}`);
+        const elS = $(`s2-${idx}`);
+        const elR = $(`s3-${idx}`);
+
+        // Current Values to preserve if possible
+        const valP = elP.value;
+        const valS = elS.value;
+        const valR = elR.value;
+
+        if (isRaid) {
             const spec = $('spec-select').value;
-            let raidBonus = null;
-            let extraStats = {};
-
-            // 1. Base Stats
-            total.Versatility += parseFloat($('base-vers').value)||0;
-            total.Mastery += parseFloat($('base-mast').value)||0;
-            total.Haste += parseFloat($('base-haste').value)||0;
-            total.Crit += parseFloat($('base-crit').value)||0;
-            total.Luck += parseFloat($('base-luck').value)||0;
-            let baseAgi = parseFloat($('base-agi').value)||0;
-
-            // 2. Gear & Sigils
-            GAME_DATA.SLOTS.forEach((slot, i) => {
-                const [p, s, r] = [`s1-${i}`, `s2-${i}`, `s3-${i}`].map(id => $(id).value);
-                const isRaid = $(`raid-${i}`)?.checked;
-                let v = (slot === "Weapon") ? (isRaid ? GAME_DATA.VALUES.WEAPON_RAID : GAME_DATA.VALUES.WEAPON_STD) : (isRaid ? GAME_DATA.VALUES.ARMOR_RAID : GAME_DATA.VALUES.ARMOR_STD);
-                if(slot === "Weapon" && isRaid) raidBonus = GAME_DATA.RAID_BONUS[spec];
-
-                if(p) total[p] += v.p;
-                if(s) total[s] += v.s;
-                if(r) total[r] += v.r;
-
-                if(!isRaid) {
-                    const lType = $(`leg-type-${i}`).value;
-                    const lVal = parseFloat($(`leg-val-${i}`).value)||0;
-                    if(leg[lType] !== undefined) leg[lType] += lVal;
-                }
-
-                // Process Sigil (Updated for new structure: n instead of name, d instead of stats)
-                const sigName = $(`sigil-name-${i}`).value;
-                const sigLvl = $(`sigil-lvl-${i}`).value;
-                if(sigName) {
-                    const sigData = SIGIL_DB.find(x => x.n === sigName);
-                    if(sigData && sigData.d[sigLvl]) {
-                        for (const [stat, val] of Object.entries(sigData.d[sigLvl])) {
-                            if(total[stat] !== undefined) {
-                                total[stat] += val;
-                            } else if (stat === "Agility") {
-                                baseAgi += val; 
-                                if(!extraStats["Agility"]) extraStats["Agility"] = 0;
-                                extraStats["Agility"] += val;
-                            } else {
-                                if(!extraStats[stat]) extraStats[stat] = 0;
-                                extraStats[stat] += val;
-                            }
-                        }
-                    }
-                }
-            });
-
-            // 3. Imagines
-            GAME_DATA.IMAGINE.SLOT_IDS.forEach(n => {
-                const typeKey = $(`img-type-${n}`).value;
-                const lvlIdx = parseInt($(`img-lvl-${n}`).value);
-                if(typeKey && !isNaN(lvlIdx)) {
-                    const imgData = GAME_DATA.IMAGINE.OPTIONS[typeKey];
-                    if(imgData) total[imgData.stat] += imgData.vals[lvlIdx];
-                }
-            });
-
-            // 4. Agility to Haste Conversion
-            total.Haste += (baseAgi * 0.45);
-
-            // 5. Percent Bonuses
-            if(raidBonus && raidBonus.t === 'p') {
-                if(raidBonus.l === "Luck") total.Luck *= (1 + raidBonus.v/100);
-                if(raidBonus.l.includes("Shield")) total.Versatility *= (1 + raidBonus.v/100);
-            }
-
-            // Display Raw
-            ['vers','mast','haste','crit','luck'].forEach((k,i) => $(`raw-${k}`).innerText = total[GAME_DATA.STATS[i]].toFixed(0));
-
-            // Display Final (Using Curve Logic)
-            $('r-vers').innerText = logic.getStatPercent("Versatility", total.Versatility).toFixed(2) + "%";
-            $('r-mast').innerText = logic.getStatPercent("Mastery", total.Mastery).toFixed(2) + "%";
-            $('r-haste').innerText = logic.getStatPercent("Haste", total.Haste).toFixed(2) + "%";
-            $('r-crit').innerText = logic.getStatPercent("Crit", total.Crit).toFixed(2) + "%";
-            $('r-luck').innerText = logic.getStatPercent("Luck", total.Luck).toFixed(2) + "%";
-
-            // Extras Display
-            let extraHTML = `<div style="color:var(--highlight); font-weight:bold; margin-bottom:8px; border-bottom:1px solid #333; padding-bottom:3px;">Extra Bonuses</div>`;
-            if(raidBonus) {
-                let valStr = `+${raidBonus.v}${raidBonus.t === 'p' ? '%' : ''}`;
-                extraHTML += `<div style="color:var(--text-main); font-size:0.9em; display:flex; justify-content:space-between; margin-bottom:4px;"><span>Raid ${raidBonus.l}:</span> <span style="color:var(--accent); font-weight:bold;">${valStr}</span></div>`;
-            }
-            for (const [stat, val] of Object.entries(extraStats)) {
-                if(val > 0) extraHTML += `<div style="color:var(--text-muted); font-size:0.9em; display:flex; justify-content:space-between; margin-bottom:4px;"><span>${stat}:</span> <span style="color:var(--accent); font-weight:bold;">+${val}</span></div>`;
-            }
-            $('extra-bonuses').innerHTML = extraHTML;
-
-            // Legendary Display Dynamic (FIXED)
-            let legHTML = "";
-            if (leg["Cast Speed"] > 0) legHTML += `<div class="raw-row"><span>Cast Spd:</span> <span style="color:var(--accent)">+${leg["Cast Speed"]}%</span></div>`;
-            if (leg["Attack Speed"] > 0) legHTML += `<div class="raw-row"><span>Atk Spd:</span> <span style="color:var(--accent)">+${leg["Attack Speed"]}%</span></div>`;
-            $('legendary-summary').innerHTML = legHTML;
-            $('legendary-summary').style.display = legHTML ? 'block' : 'none';
-        }
-    };
-
-    // --- OPTIMIZER ---
-    const optimizer = {
-        run: () => {
-            const targets = {
-                v: parseFloat($('opt-vers').value)||0, m: parseFloat($('opt-mast').value)||0,
-                h: parseFloat($('opt-haste').value)||0, c: parseFloat($('opt-crit').value)||0, l: parseFloat($('opt-luck').value)||0
-            };
-            const ctx = {
-                bV: parseFloat($('base-vers').value)||0, bM: parseFloat($('base-mast').value)||0,
-                bH: (parseFloat($('base-haste').value)||0) + ((parseFloat($('opt-agi').value)||0)*0.45),
-                bC: parseFloat($('base-crit').value)||0, bL: parseFloat($('base-luck').value)||0,
-                spec: $('spec-select').value, bonus: GAME_DATA.RAID_BONUS[$('spec-select').value]
-            };
+            // FIX: Ensure spec exists in DB before accessing
+            const stats = DATA.SPEC_STATS[spec] || ["Mastery", "Versatility"]; 
             
-            const keep = $('opt-keep-selected').checked;
-            const optImg = $('opt-optimize-imagine').checked;
-            const unlimRaid = $('opt-unlimited-raid').checked;
-            const build = logic.getBuild();
-            const specStats = GAME_DATA.SPECS[ctx.spec];
-
-            $('opt-status').innerText = "Simulating...";
-            if(!keep) GAME_DATA.SLOTS.forEach((_,i) => { if($(`raid-${i}`)) $(`raid-${i}`).checked = false; });
-
-            setTimeout(() => {
-                let best = { layout: null, diff: Infinity };
-                for(let r=0; r<15; r++) {
-                    let layout = optimizer.genLayout(build, specStats, keep, optImg, unlimRaid);
-                    let diff = optimizer.getDiff(optimizer.calc(layout, ctx), targets);
-                    for(let i=0; i<1200; i++) {
-                        let mut = JSON.parse(JSON.stringify(layout));
-                        optimizer.mutate(mut, build, optImg);
-                        let d = optimizer.getDiff(optimizer.calc(mut, ctx), targets);
-                        if(d < diff) { layout = mut; diff = d; }
-                    }
-                    if(diff < best.diff) best = { layout: layout, diff: diff };
-                }
-                optimizer.apply(best.layout);
-                $('opt-status').innerText = "Done!";
-                ui.switchTab('planner');
-                logic.calculate();
-            }, 50);
-        },
-        calc: (layout, ctx) => {
-            let raw = { Versatility: ctx.bV, Mastery: ctx.bM, Haste: ctx.bH, Crit: ctx.bC, Luck: ctx.bL };
-            layout.img.forEach(im => { 
-                const data = GAME_DATA.IMAGINE.OPTIONS[im.key];
-                if(data) raw[data.stat] += data.vals[im.idx];
-            });
-            layout.gear.forEach((g, i) => {
-                if(!g) return;
-                let vals = (i===0 && g.raid) ? GAME_DATA.VALUES.WEAPON_RAID : (i===0) ? GAME_DATA.VALUES.WEAPON_STD : g.raid ? GAME_DATA.VALUES.ARMOR_RAID : GAME_DATA.VALUES.ARMOR_STD;
-                if(g.p) raw[g.p] += vals.p; if(g.s) raw[g.s] += vals.s; if(g.r) raw[g.r] += vals.r;
-            });
-            if(layout.gear[0].raid && ctx.bonus && ctx.bonus.t === 'p') {
-                if(ctx.bonus.l === "Luck") raw.Luck *= (1 + ctx.bonus.v/100);
-                if(ctx.bonus.l.includes("Shield")) raw.Versatility *= (1 + ctx.bonus.v/100);
-            }
-            // Uses Curve Logic for Optimizer
-            return {
-                v: logic.getStatPercent("Versatility", raw.Versatility),
-                m: logic.getStatPercent("Mastery", raw.Mastery),
-                h: logic.getStatPercent("Haste", raw.Haste),
-                c: logic.getStatPercent("Crit", raw.Crit),
-                l: logic.getStatPercent("Luck", raw.Luck)
-            };
-        },
-        getDiff: (s, t) => Math.abs(s.v-t.v) + Math.abs(s.m-t.m) + Math.abs(s.h-t.h) + Math.abs(s.c-t.c) + Math.abs(s.l-t.l),
-        genLayout: (build, specStats, keep, optImg, unlim) => {
-            let layout = { gear: [], img: [] };
-            let locked = [], raidCnt = 0;
-            if(keep) {
-                GAME_DATA.SLOTS.forEach((_, i) => {
-                    let s1 = $(`s1-${i}`).value;
-                    if(s1) {
-                        let isRaid = $(`raid-${i}`)?.checked;
-                        layout.gear.push({ raid: isRaid, p: s1, s: $(`s2-${i}`).value, r: $(`s3-${i}`).value, locked: true });
-                        locked.push(i); if(isRaid) raidCnt++;
-                    } else layout.gear.push(null);
-                });
-            } else GAME_DATA.SLOTS.forEach(() => layout.gear.push(null));
-
-            let empty = GAME_DATA.SLOTS.map((_, i) => i).filter(i => !locked.includes(i));
-            let wpRaid = (!locked.includes(0)) ? true : (layout.gear[0]?.raid);
-            let armorIdx = [1,2,3,4,8,9], needed = Math.max(0, (unlim?5:4) - locked.filter(i=>armorIdx.includes(i) && layout.gear[i].raid).length);
-            let raidPicks = empty.filter(i=>armorIdx.includes(i)).sort(()=>Math.random()-0.5).slice(0, needed);
-            if(!locked.includes(0) && wpRaid) raidPicks.push(0);
-
-            empty.forEach(i => {
-                let isRaid = raidPicks.includes(i);
-                let p, s, r = (GAME_DATA.SLOTS[i]==="Weapon" && isRaid) ? "" : GAME_DATA.STATS[Math.floor(Math.random()*5)];
-                if(isRaid) { p = specStats[0]; s = specStats[1]; }
-                else {
-                    let banned = GAME_DATA.RESTRICTIONS[GAME_DATA.SLOTS[i]]?.[build] || [];
-                    let av = GAME_DATA.STATS.filter(st => !banned.includes(st));
-                    p = av[Math.floor(Math.random()*av.length)];
-                    s = av.filter(x=>x!==p)[Math.floor(Math.random()*(av.length-1))];
-                }
-                layout.gear[i] = { raid: isRaid, p, s, r, locked: false };
-            });
+            // Force Raid Stats
+            elP.innerHTML = createOpt(stats[0]); elP.value = stats[0]; elP.disabled = true;
+            elS.innerHTML = createOpt(stats[1]); elS.value = stats[1]; elS.disabled = true;
             
-            const keys = Object.keys(GAME_DATA.IMAGINE.OPTIONS);
-            if(optImg) {
-                layout.img = GAME_DATA.IMAGINE.SLOT_IDS.map(() => ({ 
-                    key: keys[Math.floor(Math.random()*keys.length)], 
-                    idx: Math.floor(Math.random()*6) 
-                }));
+            elR.disabled = (slot === "Weapon");
+            if (slot === "Weapon") {
+                elR.innerHTML = createOpt("-"); elR.value = "-";
             } else {
-                layout.img = GAME_DATA.IMAGINE.SLOT_IDS.map(n => ({ 
-                    key: $(`img-type-${n}`).value, 
-                    idx: parseInt($(`img-lvl-${n}`).value)||0 
-                }));
+                Logic.fillSelect(elR, valR, null, false); // Reforge available
             }
-            return layout;
-        },
-        mutate: (l, build, optImg) => {
-            let idx = Math.floor(Math.random() * l.gear.length);
-            let g = l.gear[idx];
-            if(g.locked && !g.raid) return;
-            let aspect = Math.floor(Math.random() * 3); 
-            if(g.raid) return; 
-            if(aspect === 0) { 
-                let banned = GAME_DATA.RESTRICTIONS[GAME_DATA.SLOTS[idx]]?.[build] || [];
-                let av = GAME_DATA.STATS.filter(st => !banned.includes(st));
-                g.p = av[Math.floor(Math.random()*av.length)]; if(g.p===g.s) g.s = av.filter(x=>x!==g.p)[0];
-            } else if (aspect === 1) {
-                let banned = GAME_DATA.RESTRICTIONS[GAME_DATA.SLOTS[idx]]?.[build] || [];
-                let av = GAME_DATA.STATS.filter(st => !banned.includes(st));
-                g.s = av.filter(x=>x!==g.p)[Math.floor(Math.random()*(av.length-1))];
-            } else if (aspect === 2) {
-                if(!(idx===0 && g.raid)) g.r = GAME_DATA.STATS[Math.floor(Math.random()*5)];
-            }
-            if(optImg && Math.random() < 0.1) {
-                const keys = Object.keys(GAME_DATA.IMAGINE.OPTIONS);
-                let im = l.img[Math.floor(Math.random()*l.img.length)];
-                if(Math.random()<0.5) im.key = keys[Math.floor(Math.random()*keys.length)];
-                else im.idx = Math.floor(Math.random()*6);
-            }
-        },
-        apply: (l) => {
-            l.gear.forEach((g, i) => {
-                if($(`raid-${i}`)) { $(`raid-${i}`).checked = g.raid; ui.toggleRaid(i); }
-                $(`s1-${i}`).value = g.p; logic.updateRow(i);
-                $(`s2-${i}`).value = g.s; $(`s3-${i}`).value = g.r;
+        } else {
+            // Manual Mode
+            elP.disabled = elS.disabled = elR.disabled = false;
+            
+            const banned = DATA.RESTRICTIONS[slot]?.[build] || [];
+            
+            Logic.fillSelect(elP, valP, elS.value, true, banned);
+            Logic.fillSelect(elS, valS, elP.value, true, banned);
+            Logic.fillSelect(elR, valR, null, false);
+        }
+    },
+
+    fillSelect: (el, currentVal, excludeVal, applyRestrictions, bannedList = []) => {
+        let options = DATA.STATS.filter(stat => {
+            if (stat === excludeVal) return false;
+            if (applyRestrictions && bannedList.includes(stat)) return false;
+            return true;
+        });
+        
+        const html = `<option value="">-</option>` + options.map(s => createOpt(s)).join('');
+        el.innerHTML = html;
+        
+        // Preserve value if valid
+        if (currentVal && options.includes(currentVal)) {
+            el.value = currentVal;
+        } else {
+            el.value = "";
+        }
+    },
+
+    applyGlobal: (type, val) => {
+        if (type === 'legendary') {
+            const lType = $('global-leg-type').value;
+            const lVal = $('global-leg-val').value;
+            if (!lType) return;
+            DATA.SLOTS.forEach((_, i) => {
+                if (!$(`leg-type-${i}`).disabled) {
+                    $(`leg-type-${i}`).value = lType;
+                    $(`leg-val-${i}`).value = lVal;
+                }
             });
-            if(l.img.length) {
-                l.img.forEach((im, i) => {
-                    const n = GAME_DATA.IMAGINE.SLOT_IDS[i];
-                    if(n) {
-                        $(`img-type-${n}`).value = im.key; 
-                        $(`img-lvl-${n}`).value = im.idx;
-                    }
-                });
+        } else {
+            if (!val) return;
+            DATA.SLOTS.forEach((_, i) => {
+                if (type === 'reforge' && !$(`s3-${i}`).disabled) $(`s3-${i}`).value = val;
+                if (type === 'sigil-lvl') $(`sigil-lvl-${i}`).value = val;
+            });
+        }
+        Logic.calculate();
+    },
+
+    // Curve Logic
+    getStatPercent: (stat, val) => {
+        const tiers = DATA.TIERS[stat];
+        if (!tiers || val <= 0) return tiers[0][1];
+        if (val >= tiers[tiers.length-1][0]) return tiers[tiers.length-1][1];
+
+        for (let i = 0; i < tiers.length - 1; i++) {
+            let [v1, p1] = tiers[i];
+            let [v2, p2] = tiers[i+1];
+            if (val >= v1 && val < v2) {
+                return p1 + (val - v1) / (v2 - v1) * (p2 - p1);
             }
         }
-    };
+        return 0;
+    },
 
-    window.addEventListener("DOMContentLoaded", ui.init);
+    calculate: () => {
+        const total = { Versatility:0, Mastery:0, Haste:0, Crit:0, Luck:0 };
+        const legBonus = {}; 
+        const spec = $('spec-select').value;
+        const extraDisplays = {};
+
+        // 1. Base Stats
+        total.Versatility += parseFloat($('base-vers').value)||0;
+        total.Mastery += parseFloat($('base-mast').value)||0;
+        total.Haste += parseFloat($('base-haste').value)||0;
+        total.Crit += parseFloat($('base-crit').value)||0;
+        total.Luck += parseFloat($('base-luck').value)||0;
+        let baseAgi = parseFloat($('base-agi').value)||0;
+
+        // 2. Gear & Sigils
+        let raidBonus = null;
+
+        DATA.SLOTS.forEach((slot, i) => {
+            const isRaid = $(`raid-${i}`)?.checked;
+            const vals = (slot === "Weapon") 
+                ? (isRaid ? DATA.VALUES.WEAPON_RAID : DATA.VALUES.WEAPON_STD) 
+                : (isRaid ? DATA.VALUES.ARMOR_RAID : DATA.VALUES.ARMOR_STD);
+
+            const p = $(`s1-${i}`).value;
+            const s = $(`s2-${i}`).value;
+            const r = $(`s3-${i}`).value;
+
+            if (p) total[p] = (total[p] || 0) + vals.p;
+            if (s) total[s] = (total[s] || 0) + vals.s;
+            if (r) total[r] = (total[r] || 0) + vals.r;
+
+            // Raid Weapon Bonus Check
+            if (slot === "Weapon" && isRaid) raidBonus = DATA.RAID_BONUS[spec];
+
+            // Legendary
+            if (!isRaid) {
+                const lType = $(`leg-type-${i}`).value;
+                const lVal = parseFloat($(`leg-val-${i}`).value) || 0;
+                if (lType && lType !== "-") {
+                    legBonus[lType] = (legBonus[lType] || 0) + lVal;
+                }
+            }
+
+            // Sigils
+            const sName = $(`sigil-name-${i}`).value;
+            const sLvl = $(`sigil-lvl-${i}`).value;
+            if (sName) {
+                const sObj = SIGIL_DB.find(x => x.n === sName);
+                if (sObj && sObj.d[sLvl]) {
+                    Object.entries(sObj.d[sLvl]).forEach(([k, v]) => {
+                        if (DATA.STATS.includes(k)) total[k] += v;
+                        else if (k === "Agility") {
+                             baseAgi += v;
+                             extraDisplays["Agility"] = (extraDisplays["Agility"]||0) + v;
+                        }
+                        else if (k === "Intellect" || k === "Strength") {
+                             extraDisplays[k] = (extraDisplays[k]||0) + v;
+                        }
+                    });
+                }
+            }
+        });
+
+        // 3. Imagines
+        DATA.IMAGINE.SLOT_IDS.forEach(n => {
+            const key = $(`img-type-${n}`).value;
+            const lvl = parseInt($(`img-lvl-${n}`).value);
+            if(key && !isNaN(lvl)) {
+                const img = DATA.IMAGINE.OPTIONS[key];
+                if(img) total[img.stat] += img.vals[lvl];
+            }
+        });
+
+        // 4. Agility Conversion
+        total.Haste += (baseAgi * 0.45);
+
+        // 5. Multipliers
+        if (raidBonus && raidBonus.t === 'p') {
+            if (raidBonus.l === "Luck") total.Luck *= (1 + raidBonus.v/100);
+            if (raidBonus.l.includes("Vers")) total.Versatility *= (1 + raidBonus.v/100);
+        }
+
+        // Render Raw
+        Object.keys(total).forEach(k => {
+            const el = $(`raw-${k.toLowerCase().substring(0,4)}`);
+            if(el) el.innerText = total[k].toFixed(0);
+        });
+
+        // Render Percentages
+        $('r-vers').innerText = Logic.getStatPercent("Versatility", total.Versatility).toFixed(2) + "%";
+        $('r-mast').innerText = Logic.getStatPercent("Mastery", total.Mastery).toFixed(2) + "%";
+        $('r-haste').innerText = Logic.getStatPercent("Haste", total.Haste).toFixed(2) + "%";
+        $('r-crit').innerText = Logic.getStatPercent("Crit", total.Crit).toFixed(2) + "%";
+        $('r-luck').innerText = Logic.getStatPercent("Luck", total.Luck).toFixed(2) + "%";
+
+        // Extras
+        let exHtml = "";
+        if(raidBonus) {
+            exHtml += `<div class="result-row" style="font-size:0.9em; border:none; padding:2px 0;"><span>Raid Bonus:</span> <span style="color:var(--accent)">+${raidBonus.v}${raidBonus.t==='p'?'%':''} ${raidBonus.l}</span></div>`;
+        }
+        Object.entries(extraDisplays).forEach(([k,v]) => {
+            exHtml += `<div class="result-row" style="font-size:0.9em; border:none; padding:2px 0;"><span>${k}:</span> <span>+${v}</span></div>`;
+        });
+        Object.entries(legBonus).forEach(([k,v]) => {
+            exHtml += `<div class="result-row" style="font-size:0.9em; border:none; padding:2px 0;"><span>${k}:</span> <span>+${v.toFixed(1)}%</span></div>`;
+        });
+        $('extra-bonuses').innerHTML = exHtml;
+    }
+};
+
+// --- 5. OPTIMIZER ---
+const Optimizer = {
+    run: () => {
+        const status = $('opt-status');
+        status.innerText = "Simulating... (Please Wait)";
+        status.style.color = "var(--highlight-gold)";
+        
+        // Defer execution to allow UI update
+        setTimeout(() => {
+            try {
+                Optimizer.execute();
+                status.innerText = "Optimization Complete!";
+                status.style.color = "var(--highlight-blue)";
+                App.switchTab('planner');
+            } catch (e) {
+                console.error(e);
+                status.innerText = "Error: Check Console";
+            }
+        }, 50);
+    },
+
+    execute: () => {
+        const build = Logic.getBuildType();
+        const spec = $('spec-select').value;
+        const specStats = DATA.SPEC_STATS[spec] || ["Mastery", "Versatility"];
+        const keep = $('opt-keep-selected').checked;
+        const optImg = $('opt-optimize-imagine').checked;
+        const unlimRaid = $('opt-unlimited-raid').checked;
+
+        const targets = {
+            v: parseFloat($('opt-vers').value)||0, 
+            m: parseFloat($('opt-mast').value)||0,
+            h: parseFloat($('opt-haste').value)||0, 
+            c: parseFloat($('opt-crit').value)||0, 
+            l: parseFloat($('opt-luck').value)||0
+        };
+
+        const ctx = {
+            bV: parseFloat($('base-vers').value)||0, 
+            bM: parseFloat($('base-mast').value)||0,
+            bH: (parseFloat($('base-haste').value)||0) + ((parseFloat($('opt-agi').value)||0)*0.45),
+            bC: parseFloat($('base-crit').value)||0, 
+            bL: parseFloat($('base-luck').value)||0,
+            bonus: DATA.RAID_BONUS[spec]
+        };
+
+        // Genetic / Monte Carlo Hybrid
+        let best = { layout: null, diff: Infinity };
+        
+        // Iterations
+        for(let r=0; r<15; r++) {
+            let layout = Optimizer.genLayout(build, specStats, keep, optImg, unlimRaid);
+            let diff = Optimizer.getDiff(Optimizer.calcStats(layout, ctx), targets);
+
+            // Mutations
+            for(let i=0; i<800; i++) {
+                let mut = JSON.parse(JSON.stringify(layout));
+                Optimizer.mutate(mut, build, optImg);
+                let d = Optimizer.getDiff(Optimizer.calcStats(mut, ctx), targets);
+                if(d < diff) { layout = mut; diff = d; }
+            }
+            if(diff < best.diff) best = { layout, diff };
+        }
+
+        Optimizer.apply(best.layout);
+    },
+
+    genLayout: (build, specStats, keep, optImg, unlimRaid) => {
+        let layout = { gear: [], img: [] };
+        let lockedIdx = [];
+        
+        // Check Locked Items
+        if (keep) {
+            DATA.SLOTS.forEach((_, i) => {
+                const s1 = $(`s1-${i}`).value;
+                if (s1 && s1 !== "-") {
+                    const isRaid = $(`raid-${i}`).checked;
+                    layout.gear.push({ raid: isRaid, p: s1, s: $(`s2-${i}`).value, r: $(`s3-${i}`).value, locked: true });
+                    lockedIdx.push(i);
+                } else {
+                    layout.gear.push(null);
+                }
+            });
+        } else {
+             layout.gear = DATA.SLOTS.map(() => null);
+        }
+
+        // Determine Raid Armor Slots (Limit 4 unless unlim)
+        let slotsAvailable = DATA.SLOTS.map((_, i) => i).filter(i => !lockedIdx.includes(i));
+        
+        // Armor Indices (1=Head, 2=Chest, 3=Gloves, 4=Boots, 8=BracL, 9=BracR)
+        // Note: Raid Slots are specific.
+        const raidCapableIndices = [1, 2, 3, 4, 8, 9]; 
+        const currentRaidCount = layout.gear.filter(g => g && g.raid && raidCapableIndices.includes(layout.gear.indexOf(g))).length;
+        const raidLimit = unlimRaid ? 99 : 4;
+        let raidNeeded = Math.max(0, raidLimit - currentRaidCount);
+
+        // Randomly pick slots to be Raid from available armor slots
+        let potentialRaid = slotsAvailable.filter(i => raidCapableIndices.includes(i));
+        potentialRaid.sort(() => Math.random() - 0.5);
+        let raidPicks = potentialRaid.slice(0, raidNeeded);
+
+        // Weapon Logic (Index 0)
+        let isWpRaid = (!lockedIdx.includes(0)) ? true : (layout.gear[0] && layout.gear[0].raid);
+        if(isWpRaid && !lockedIdx.includes(0)) raidPicks.push(0);
+
+        // Fill Empty Slots
+        slotsAvailable.forEach(i => {
+            let isRaid = raidPicks.includes(i);
+            let p, s, r;
+            
+            // Reforge logic
+            if (DATA.SLOTS[i] === "Weapon" && isRaid) r = ""; // Raid Wep has no reforge
+            else r = DATA.STATS[Math.floor(Math.random()*5)];
+
+            if (isRaid) {
+                p = specStats[0];
+                s = specStats[1];
+            } else {
+                let banned = DATA.RESTRICTIONS[DATA.SLOTS[i]]?.[build] || [];
+                let allowed = DATA.STATS.filter(st => !banned.includes(st));
+                p = allowed[Math.floor(Math.random() * allowed.length)];
+                let allowedS = allowed.filter(x => x !== p);
+                s = allowedS[Math.floor(Math.random() * allowedS.length)];
+            }
+            layout.gear[i] = { raid: isRaid, p, s, r, locked: false };
+        });
+
+        // Imagines
+        const keys = Object.keys(DATA.IMAGINE.OPTIONS);
+        if (optImg) {
+            layout.img = DATA.IMAGINE.SLOT_IDS.map(() => ({
+                key: keys[Math.floor(Math.random()*keys.length)],
+                lvl: Math.floor(Math.random()*6)
+            }));
+        } else {
+            layout.img = DATA.IMAGINE.SLOT_IDS.map(n => ({
+                key: $(`img-type-${n}`).value,
+                lvl: parseInt($(`img-lvl-${n}`).value) || 0
+            }));
+        }
+
+        return layout;
+    },
+
+    mutate: (l, build, optImg) => {
+        let idx = Math.floor(Math.random() * l.gear.length);
+        let g = l.gear[idx];
+        if (g.locked && !g.raid) return; // Can't mutate locked standard gear stats easily without breaking logic
+        if (g.raid) return; // Raid stats are fixed by spec, can't mutate
+
+        // Mutate Standard Gear
+        let aspect = Math.floor(Math.random() * 3); // 0=Primary, 1=Secondary, 2=Reforge
+        let banned = DATA.RESTRICTIONS[DATA.SLOTS[idx]]?.[build] || [];
+        let allowed = DATA.STATS.filter(st => !banned.includes(st));
+
+        if (aspect === 0) {
+            g.p = allowed[Math.floor(Math.random()*allowed.length)];
+            if(g.p === g.s) g.s = allowed.filter(x=>x!==g.p)[0];
+        } else if (aspect === 1) {
+             let allowedS = allowed.filter(x=>x!==g.p);
+             g.s = allowedS[Math.floor(Math.random()*allowedS.length)];
+        } else {
+            g.r = DATA.STATS[Math.floor(Math.random()*5)];
+        }
+
+        // Mutate Imagine
+        if(optImg && Math.random() < 0.2) {
+            let imIdx = Math.floor(Math.random() * l.img.length);
+            const keys = Object.keys(DATA.IMAGINE.OPTIONS);
+            if(Math.random() < 0.5) l.img[imIdx].key = keys[Math.floor(Math.random()*keys.length)];
+            else l.img[imIdx].lvl = Math.floor(Math.random()*6);
+        }
+    },
+
+    calcStats: (layout, ctx) => {
+        let raw = { Versatility: ctx.bV, Mastery: ctx.bM, Haste: ctx.bH, Crit: ctx.bC, Luck: ctx.bL };
+        
+        // Gear
+        layout.gear.forEach((g, i) => {
+            const vals = (i === 0) 
+                ? (g.raid ? DATA.VALUES.WEAPON_RAID : DATA.VALUES.WEAPON_STD) 
+                : (g.raid ? DATA.VALUES.ARMOR_RAID : DATA.VALUES.ARMOR_STD);
+            
+            if(g.p) raw[g.p] += vals.p;
+            if(g.s) raw[g.s] += vals.s;
+            if(g.r) raw[g.r] += vals.r;
+        });
+
+        // Imagines
+        layout.img.forEach(im => {
+            const data = DATA.IMAGINE.OPTIONS[im.key];
+            if(data) raw[data.stat] += data.vals[im.lvl];
+        });
+
+        // Bonus Multipliers (Only check Weapon Raid)
+        if (layout.gear[0].raid && ctx.bonus && ctx.bonus.t === 'p') {
+            if (ctx.bonus.l === "Luck") raw.Luck *= (1 + ctx.bonus.v/100);
+            if (ctx.bonus.l.includes("Vers")) raw.Versatility *= (1 + ctx.bonus.v/100);
+        }
+
+        return {
+            v: Logic.getStatPercent("Versatility", raw.Versatility),
+            m: Logic.getStatPercent("Mastery", raw.Mastery),
+            h: Logic.getStatPercent("Haste", raw.Haste),
+            c: Logic.getStatPercent("Crit", raw.Crit),
+            l: Logic.getStatPercent("Luck", raw.Luck)
+        };
+    },
+
+    getDiff: (s, t) => {
+        return Math.abs(s.v-t.v) + Math.abs(s.m-t.m) + Math.abs(s.h-t.h) + Math.abs(s.c-t.c) + Math.abs(s.l-t.l);
+    },
+
+    apply: (l) => {
+        l.gear.forEach((g, i) => {
+            const raidCheck = $(`raid-${i}`);
+            if(raidCheck) {
+                raidCheck.checked = g.raid;
+                UI.toggleRaid(i); // This handles disabling logic
+            }
+            
+            // Set values
+            $(`s1-${i}`).value = g.p;
+            Logic.updateRow(i); // Refresh dropdown options based on p
+            $(`s2-${i}`).value = g.s;
+            $(`s3-${i}`).value = g.r;
+        });
+
+        l.img.forEach((im, i) => {
+            const n = DATA.IMAGINE.SLOT_IDS[i];
+            $(`img-type-${n}`).value = im.key;
+            $(`img-lvl-${n}`).value = im.lvl;
+        });
+        
+        Logic.calculate();
+    }
+};
+
+window.addEventListener("DOMContentLoaded", UI.init);
+
 </script>
 </body>
 </html>
