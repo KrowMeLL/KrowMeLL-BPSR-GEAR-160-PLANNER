@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPSR | GEAR STAT PLANNER | ABYSSAL CRIMSON</title>
+    <title>BPSR | GEAR STAT PLANNER | SEASON 2</title>
     <style>
         /* =========================================
-           VISUAL THEME: ABYSSAL CRIMSON (DARK MODE)
+           VISUAL THEME: ROYAL CRIMSON (LIGHT/CLEAN)
            ========================================= */
         :root {
-            --bg-body: #0b0c10;          /* Fundo da página (quase preto) */
-            --bg-panel: #15171e;         /* Fundo dos painéis */
-            --bg-input: #1f222b;         /* Fundo dos inputs */
-            --bg-header: #242730;        /* Cabeçalhos */
+            --bg-body: #f0f2f5;          /* Cinza Gelo Suave */
+            --bg-panel: #ffffff;         /* Branco Puro */
+            --bg-input: #f8f9fa;         /* Off-white para inputs */
+            --bg-header: #ececec;        /* Cinza claro para headers */
             
-            --accent: #DC143C;           /* Crimson (Carmesim) */
-            --accent-hover: #ff2e5b;     /* Carmesim mais brilhante no hover */
-            --accent-dim: rgba(220, 20, 60, 0.15); 
+            --accent: #b71540;           /* Carmesim Profundo (Legível) */
+            --accent-hover: #da2d56;     /* Carmesim Vibrante */
             
-            --text-main: #e0e6ed;        /* Texto claro */
-            --text-muted: #8b9bb4;       /* Texto secundário azulado */
-            --border: 1px solid #2d323e; /* Bordas escuras sutis */
+            --text-main: #2d3436;        /* Cinza Chumbo (Alto Contraste) */
+            --text-muted: #636e72;       /* Cinza Médio */
+            --border: 1px solid #dfe6e9; /* Bordas sutis */
             
-            --highlight-gold: #e67e22;   
-            --highlight-blue: #3498db;   
+            --highlight-gold: #e17055;   /* Terracota (Destaque Secundário) */
+            --highlight-blue: #0984e3;   /* Azul Real (Ações) */
             
-            --radius: 4px;
-            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --radius: 6px;
+            --shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         body { 
@@ -34,10 +33,8 @@
             background-color: var(--bg-body); 
             color: var(--text-main); 
             padding: 20px; 
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh; 
-            margin: 0;
+            display: flex; justify-content: center; 
+            min-height: 100vh; margin: 0;
         }
 
         /* Layout */
@@ -53,41 +50,40 @@
         }
         .planner-panel { flex: 4; min-width: 950px; }
         .calc-panel { 
-            flex: 1; min-width: 300px; 
+            flex: 1; min-width: 320px; 
             position: sticky; top: 20px; 
             height: fit-content; 
-            background: #121318;
-            border: 1px solid var(--accent);
+            background: #fff;
+            border-top: 5px solid var(--accent);
         }
 
         /* Tipografia */
         h2 { 
             text-align: center; color: var(--accent); margin: 0 0 25px 0; 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
             border-bottom: 2px solid var(--bg-header); padding-bottom: 15px;
-            text-shadow: 0 0 10px rgba(220, 20, 60, 0.3);
         }
-        h3 { font-size: 0.9em; text-transform: uppercase; margin-bottom: 15px; color: var(--text-muted); letter-spacing: 1px; }
+        h3 { font-size: 0.9em; text-transform: uppercase; margin-bottom: 10px; color: var(--text-main); font-weight: 800; letter-spacing: 0.5px; }
 
-        /* Navegação Tabs */
+        /* Tabs */
         .tab-container { display: flex; justify-content: center; margin-bottom: 25px; gap: 10px; }
         .tab-btn {
-            background: transparent; border: 1px solid #444; color: var(--text-muted); 
+            background: #fff; border: 1px solid #b2bec3; color: var(--text-muted); 
             padding: 10px 30px; font-size: 1rem; font-weight: 600; cursor: pointer;
             transition: 0.2s; border-radius: var(--radius);
         }
-        .tab-btn:hover { border-color: var(--accent); color: #fff; }
+        .tab-btn:hover { background-color: var(--bg-input); color: var(--accent); border-color: var(--accent); }
         .tab-btn.active { 
             background-color: var(--accent); color: #fff; border-color: var(--accent); 
-            box-shadow: 0 0 15px rgba(220, 20, 60, 0.4);
+            box-shadow: 0 4px 6px rgba(183, 21, 64, 0.2);
         }
         .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Controles Principais */
+        /* Controles */
         .controls-row {
-            background: var(--bg-input); padding: 25px; 
+            background: var(--bg-input); padding: 20px; 
             border-radius: var(--radius); border: var(--border);
             display: flex; flex-direction: column; align-items: center; gap: 20px; 
             margin-bottom: 20px;
@@ -96,30 +92,30 @@
         .build-selector { display: flex; gap: 15px; }
         .build-selector input[type="radio"] { display: none; }
         .build-label {
-            background: #15171e; border: 1px solid #333; 
+            background: #fff; border: 1px solid #b2bec3; 
             padding: 10px 25px; border-radius: var(--radius); 
             cursor: pointer; font-weight: bold; color: var(--text-muted);
             transition: all 0.2s; min-width: 80px; text-align: center;
-            text-transform: uppercase; letter-spacing: 1px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .build-label:hover { border-color: var(--accent); color: #fff; }
         .build-selector input[type="radio"]:checked + .build-label {
             background-color: var(--accent); color: #fff; border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(220, 20, 60, 0.4);
+            box-shadow: 0 4px 6px rgba(183, 21, 64, 0.2);
         }
 
         .class-spec-row {
-            display: flex; gap: 30px; align-items: center; justify-content: center;
-            width: 100%; border-top: 1px solid #333; padding-top: 20px;
+            display: flex; gap: 20px; align-items: center; justify-content: center;
+            width: 100%; border-top: 1px dashed #b2bec3; padding-top: 20px;
         }
-        .spec-wrapper label { font-weight: bold; color: var(--text-muted); margin-right: 10px;}
+        .spec-wrapper { display: flex; align-items: center; gap: 10px; }
+        .spec-wrapper label { font-weight: bold; color: var(--text-main); }
 
-        /* Configurações Rápidas (Settings dentro do Planner) */
+        /* Quick Settings */
         .quick-settings {
-            background: #1a1c24; border: 1px dashed #444;
+            background: #fff; border: 1px solid #b2bec3;
             padding: 15px; border-radius: var(--radius);
             display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .qs-group { display: flex; flex-direction: column; gap: 5px; min-width: 150px; }
         .qs-group label { font-size: 0.75em; color: var(--accent); font-weight: bold; text-transform: uppercase; }
@@ -127,67 +123,66 @@
 
         /* Inputs */
         select, input[type="number"], input[type="text"] { 
-            background: #0f1015; border: 1px solid #333; color: #fff; 
+            background: #fff; border: 1px solid #b2bec3; color: var(--text-main); 
             padding: 8px 10px; border-radius: var(--radius); width: 100%; 
             font-size: 0.9em; transition: 0.2s; box-sizing: border-box; font-family: inherit;
         }
-        select:focus, input:focus { border-color: var(--accent); outline: none; }
-        select:disabled, input:disabled { opacity: 0.3; cursor: not-allowed; border-color: transparent; }
+        select:focus, input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px rgba(183, 21, 64, 0.1); }
+        select:disabled, input:disabled { background: #dfe6e9; cursor: not-allowed; opacity: 0.6; }
         .select-high { border-color: var(--accent); color: var(--accent); font-weight: 700; }
 
-        /* Tabela Gear */
+        /* Gear Table */
         .gear-header { 
-            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.2fr; gap: 10px;
-            background: #1f222b; color: var(--accent); padding: 12px 10px; 
+            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.6fr; gap: 10px;
+            background: var(--text-main); color: #fff; padding: 12px 10px; 
             border-radius: var(--radius); font-weight: bold; text-transform: uppercase; font-size: 0.8em;
-            margin-bottom: 10px; border-bottom: 2px solid var(--accent);
+            margin-bottom: 10px;
         }
         .gear-row { 
-            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.2fr; gap: 10px;
-            align-items: center; padding: 10px; border-bottom: 1px solid #23252e;
-            background: transparent; transition: background 0.2s;
+            display: grid; grid-template-columns: 0.8fr 0.3fr 0.7fr 0.7fr 0.7fr 1.3fr 0.4fr 1.6fr; gap: 10px;
+            align-items: center; padding: 10px; border-bottom: 1px solid #eee;
+            background: #fff; transition: background 0.2s;
         }
-        .gear-row:hover { background-color: rgba(255,255,255,0.03); }
-        .slot-name { font-weight: 700; color: #ccc; font-size: 0.9em; }
-        .leg-group { display: grid; grid-template-columns: 2fr 1fr; gap: 5px; }
+        .gear-row:hover { background-color: #fafafa; }
+        .slot-name { font-weight: 700; color: var(--text-main); font-size: 0.9em; }
+        .leg-group { display: grid; grid-template-columns: 1.5fr 1fr; gap: 5px; }
 
-        /* Optimizer */
+        /* Optimizer & Rules */
         .opt-input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
         .opt-input-group label { display: block; font-size: 0.8em; font-weight: bold; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
         .opt-options { background: var(--bg-input); padding: 15px; border-radius: var(--radius); display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
-        .opt-check-label { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; color: #ccc; }
+        .opt-check-label { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
 
-        /* Rules Table */
-        .res-tbl { width: 100%; border-collapse: collapse; background: var(--bg-input); border: var(--border); border-radius: var(--radius); overflow: hidden; }
-        .res-tbl th { background: #23252e; color: var(--text-main); padding: 12px; text-transform: uppercase; font-size: 0.85em; text-align: left; }
-        .res-tbl td { padding: 10px 12px; border-bottom: 1px solid #2d323e; font-size: 0.9em; color: #ccc; }
-        .ban-badge { color: var(--accent); font-weight: bold; }
+        .res-tbl { width: 100%; border-collapse: collapse; background: #fff; border: var(--border); border-radius: var(--radius); overflow: hidden; }
+        .res-tbl th { background: var(--text-main); color: #fff; padding: 12px; text-transform: uppercase; font-size: 0.85em; text-align: left; }
+        .res-tbl td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 0.9em; color: var(--text-main); }
+        .ban-badge { background: #ff7675; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
 
-        /* Values Reference Table */
-        .values-section { margin-top: 30px; background: #121318; padding: 20px; border-radius: var(--radius); border: 1px solid #333; }
+        /* Values Reference */
+        .values-section { margin-top: 30px; background: #fff; padding: 20px; border-radius: var(--radius); border: 1px solid #eee; box-shadow: var(--shadow); }
         .val-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .val-card { background: #1a1c24; padding: 15px; border-radius: var(--radius); border-left: 3px solid var(--accent); }
-        .val-title { font-weight: bold; color: #fff; margin-bottom: 10px; font-size: 1em; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 5px;}
-        .val-line { display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 5px; color: #aaa; }
-        .val-num { color: var(--highlight-gold); font-weight: bold; }
+        .val-card { background: var(--bg-input); padding: 15px; border-radius: var(--radius); border-left: 4px solid var(--accent); }
+        .val-title { font-weight: bold; color: var(--text-main); margin-bottom: 10px; font-size: 1em; text-transform: uppercase; border-bottom: 1px solid #ddd; padding-bottom: 5px;}
+        .val-line { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 5px; color: var(--text-muted); }
+        .val-num { color: var(--accent); font-weight: bold; }
 
         /* Imagine */
         .imagine-section { margin-top: 30px; background: var(--bg-input); padding: 20px; border-radius: var(--radius); border: var(--border); }
         .imagine-row { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px; align-items: center; margin-bottom: 10px; }
 
-        /* Resultados */
-        .raw-gear-stats { background: #121318; padding: 15px; border-radius: var(--radius); margin-bottom: 20px; border: 1px solid #333; }
-        .raw-row { display: flex; justify-content: space-between; font-size: 0.9em; padding: 6px 0; border-bottom: 1px solid #23252e; color: #bbb; }
-        .raw-val { color: var(--accent); font-weight: bold; }
+        /* Results Panel */
+        .raw-gear-stats { background: var(--bg-input); padding: 15px; border-radius: var(--radius); margin-bottom: 20px; border: 1px solid #ddd; }
+        .raw-row { display: flex; justify-content: space-between; font-size: 0.9em; padding: 6px 0; border-bottom: 1px solid #eee; color: var(--text-muted); }
+        .raw-val { color: var(--text-main); font-weight: bold; }
 
         .base-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .mini-input-group label { display: block; font-size: 0.7em; font-weight: bold; color: #666; text-transform: uppercase; }
+        .mini-input-group label { display: block; font-size: 0.7em; font-weight: bold; color: #b2bec3; text-transform: uppercase; }
 
         .results-area { margin-top: 20px; border-top: 2px solid var(--accent); padding-top: 15px; }
-        .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #23252e; font-size: 1.1em; color: #fff; }
+        .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc; font-size: 1.1em; color: var(--text-main); }
         .result-val { color: var(--accent); font-weight: 800; }
 
-        /* Botões */
+        /* Buttons */
         .action-btn { 
             width: 100%; padding: 12px; border: none; border-radius: var(--radius); 
             font-weight: bold; text-transform: uppercase; cursor: pointer; color: #fff; 
@@ -195,9 +190,9 @@
         }
         .btn-crimson { background: var(--accent); }
         .btn-blue { background: var(--highlight-blue); }
-        .btn-crimson:hover, .btn-blue:hover { transform: translateY(-2px); filter: brightness(1.2); }
+        .btn-crimson:hover, .btn-blue:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-        .footer { text-align: center; margin-top: 40px; color: #555; font-size: 0.75em; border-top: 1px solid #222; padding-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer { text-align: center; margin-top: 40px; color: #b2bec3; font-size: 0.8em; border-top: 1px solid #ddd; padding-top: 20px; }
         .text-center { text-align: center; }
     </style>
 </head>
@@ -205,7 +200,7 @@
 
 <div class="main-wrapper">
     <div class="panel planner-panel">
-        <h2>BPSR | Gear Stat Planner | Level 160</h2>
+        <h2>BPSR | Gear Stat Planner | Season 2</h2>
         
         <div class="tab-container">
             <button id="nav-planner" class="tab-btn active" onclick="App.switchTab('planner')">Manual Planner</button>
@@ -236,7 +231,7 @@
             
             <div class="quick-settings">
                 <div class="qs-group">
-                    <label>Set Global Reforge</label>
+                    <label>Global Reforge</label>
                     <select onchange="Logic.applyGlobal('reforge', this.value)">
                         <option value="">- Select -</option>
                         <option value="Versatility">Versatility</option>
@@ -247,21 +242,13 @@
                     </select>
                 </div>
                 <div class="qs-group">
-                    <label>Set Global Sigil Lvl</label>
+                    <label>Global Sigil Lvl</label>
                     <select onchange="Logic.applyGlobal('sigil-lvl', this.value)">
                         <option value="">-</option>
                         <option value="1">Level 1</option>
                         <option value="2">Level 2</option>
                         <option value="3">Level 3</option>
                     </select>
-                </div>
-                <div class="qs-group" style="min-width: 250px;">
-                    <label>Set Global Legendary</label>
-                    <div class="qs-row">
-                        <select id="global-leg-type"><option value="">- Type -</option></select>
-                        <input type="number" id="global-leg-val" placeholder="%" style="width: 70px;">
-                        <button class="btn-blue" style="width:auto; padding:5px 15px; margin:0; border-radius: var(--radius);" onclick="Logic.applyGlobal('legendary', null)">Set</button>
-                    </div>
                 </div>
             </div>
 
@@ -273,7 +260,7 @@
                 <div>Reforge</div>
                 <div>Sigil Name</div>
                 <div>Sigil Lvl</div>
-                <div>Legendary</div>
+                <div>Legendary WIP</div>
             </div>
             <div id="gear-container"></div>
             
@@ -293,14 +280,13 @@
 
             <div class="values-section">
                 <h3>Gear Stat Reference (Lvl 160)</h3>
-                <div class="val-grid" id="values-grid">
-                    </div>
+                <div class="val-grid" id="values-grid"></div>
             </div>
         </div>
 
         <div id="tab-optimizer" class="tab-content">
             <div class="text-center" style="margin-bottom:20px; color:var(--text-muted);">
-                Define target percentages. System simulates combinations to find best match.
+                Define target percentages. System simulates combinations.
             </div>
             <div class="opt-input-grid">
                 <div class="opt-input-group"><label>Target Vers %</label><input type="number" id="opt-vers" placeholder="e.g. 10"></div>
@@ -338,7 +324,7 @@
 
         <div class="footer">
             <div>BPSR Planner by KrowMeLL</div>
-            <div>Season 2 • Gear Level 160 • Abyssal Edition</div>
+            <div>Season 2 • Gear Level 160</div>
         </div>
     </div>
 
@@ -346,7 +332,7 @@
         <h2 style="font-size: 1.2rem; border-bottom: none; margin-bottom: 15px; color:var(--text-main);">Stats Overview</h2>
         
         <div class="raw-gear-stats">
-            <h3>Raw Totals</h3>
+            <h3>Raw Gear Totals</h3>
             <div class="raw-row"><span>Vers:</span> <span class="raw-val" id="raw-vers">0</span></div>
             <div class="raw-row"><span>Mast:</span> <span class="raw-val" id="raw-mast">0</span></div>
             <div class="raw-row"><span>Haste:</span> <span class="raw-val" id="raw-haste">0</span></div>
@@ -385,7 +371,12 @@ const DATA = {
     SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Earrings", "Necklace", "Ring", "Bracelet (L)", "Bracelet (R)", "Charm"],
     RAID_SLOTS: ["Weapon", "Helmet", "Chest", "Gloves", "Boots", "Bracelet (L)", "Bracelet (R)"],
     
-    // Values for Level 160
+    // Categorization for Legendary
+    SLOT_CATS: {
+        ARMOR: ["Helmet", "Chest", "Gloves", "Boots", "Bracelet (L)", "Bracelet (R)", "Weapon"], 
+        ACC: ["Necklace", "Earrings", "Ring", "Charm"]
+    },
+
     VALUES: {
         WEAPON_RAID: { p: 2480, s: 2480, r: 0 },
         ARMOR_RAID:  { p: 954,  s: 954,  r: 286 },
@@ -411,7 +402,26 @@ const DATA = {
         }
     },
 
-    LEGENDARY_OPTS: ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"],
+    // LEGENDARY WIP DEFINITIONS
+    LEGENDARY_DATA: {
+        ARMOR: {
+            opts: [
+                { n: "Main Stat %", v: [0.5, 1.0, 1.5], u: "%" }, // Dyn name
+                { n: "Max HP", v: [1500, 1875, 2250, 2625, 3000], u: "" },
+                { n: "Armor", v: [48, 96, 144], u: "" },
+                { n: "All Elem Res", v: [36, 72, 108], u: "" }
+            ]
+        },
+        ACC: {
+            opts: [
+                { n: "ATK/MATK", v: [1.0, 1.5, 2.0], u: "%" },
+                { n: "Attack Speed", v: [1.0, 1.5, 2.0], u: "%" },
+                { n: "Res. Break", v: [3.0, 6.0, 9.0], u: "%" },
+                { n: "Cast Speed", v: [2.0, 3.0, 4.0], u: "%", req: "Intelligence" },
+                { n: "DMG Bonus", v: [1.0, 1.5, 2.0], u: "%" }
+            ]
+        }
+    },
 
     CLASSES: {
         "Heavy Guardian": ["Block", "Earthforth"],
@@ -435,25 +445,16 @@ const DATA = {
     },
 
     RAID_BONUS: {
-        "Block": { l: "Luck", v: 6.0, t: "p" }, 
-        "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, 
-        "Iaido": { l: "Crit DMG", v: 0.0, t: "p" }, 
-        "Moonblade": { l: "Luck", v: 0.0, t: "p" },
-        "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, 
-        "Ray": { l: "Ranged DMG", v: 0, t: "f" },
-        "Vanguard": { l: "Melee DMG", v: 0, t: "f" }, 
-        "SkyWard": { l: "Lucky Strike DMG", v: 20.0, t: "p" },
-        "Smite": { l: "Ranged DMG", v: 0, t: "f" }, 
-        "Life Bind": { l: "Healing Output", v: 0.0, t: "p" },
-        "Wildpack": { l: "Ranged DMG", v: 0, t: "f" }, 
-        "Falconry": { l: "Crit DMG", v: 0.0, t: "p" },
-        "Recovery": { l: "DMG Bonus", v: 0.0, t: "p" }, 
-        "Shield": { l: "Melee DMG", v: 0, t: "f" },
-        "Concerto": { l: "Crit Healing", v: 0.0, t: "p" }, 
-        "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }
+        "Block": { l: "Luck", v: 6.0, t: "p" }, "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, 
+        "Iaido": { l: "Crit DMG", v: 0.0, t: "p" }, "Moonblade": { l: "Luck", v: 0.0, t: "p" },
+        "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, "Ray": { l: "Ranged DMG", v: 0, t: "f" },
+        "Vanguard": { l: "Melee DMG", v: 0, t: "f" }, "SkyWard": { l: "Lucky Strike DMG", v: 20.0, t: "p" },
+        "Smite": { l: "Ranged DMG", v: 0, t: "f" }, "Life Bind": { l: "Healing Output", v: 0.0, t: "p" },
+        "Wildpack": { l: "Ranged DMG", v: 0, t: "f" }, "Falconry": { l: "Crit DMG", v: 0.0, t: "p" },
+        "Recovery": { l: "DMG Bonus", v: 0.0, t: "p" }, "Shield": { l: "Melee DMG", v: 0, t: "f" },
+        "Concerto": { l: "Crit Healing", v: 0.0, t: "p" }, "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }
     },
 
-    // REQ: Weapon Removed from Stat Rules
     RESTRICTIONS: { 
         "Helmet": { "Strength": ["Versatility"], "Intelligence": ["Crit"], "Agility": ["Haste"] }, 
         "Chest": { "Strength": ["Luck"], "Intelligence": ["Crit"], "Agility": ["Mastery"] }, 
@@ -507,7 +508,6 @@ SIGIL_DB.forEach(s => {
     if(k.length === 1 && !s.n.includes("(")) s.n += ` (${k[0]})`;
 });
 
-// --- 3. UI CONTROLLER ---
 const $ = id => document.getElementById(id);
 const createOpt = (val, txt) => `<option value="${val}">${txt || val}</option>`;
 
@@ -516,8 +516,6 @@ const UI = {
         const classSel = $('class-select');
         classSel.innerHTML = Object.keys(DATA.CLASSES).map(c => createOpt(c)).join('');
         
-        $('global-leg-type').innerHTML = DATA.LEGENDARY_OPTS.map(l => createOpt(l)).join('');
-
         const imgOpts = Object.keys(DATA.IMAGINE.OPTIONS);
         DATA.IMAGINE.SLOT_IDS.forEach(n => {
             $(`img-type-${n}`).innerHTML = createOpt("", "None") + imgOpts.map(k => createOpt(k, k)).join('');
@@ -527,7 +525,7 @@ const UI = {
         });
 
         UI.renderRulesTable();
-        UI.renderValuesTable(); // REQ: Values Table
+        UI.renderValuesTable(); 
         UI.onClassChange(); 
 
         document.querySelectorAll('.base-stats-grid input').forEach(el => el.addEventListener('input', Logic.calculate));
@@ -537,9 +535,9 @@ const UI = {
         const tbody = $('rules-body');
         tbody.innerHTML = Object.keys(DATA.RESTRICTIONS).map(slot => {
             const r = DATA.RESTRICTIONS[slot];
-            const fmt = arr => arr.length ? `<span class="ban-badge">${arr.join(", ")}</span>` : `<span style="color:#666">-</span>`;
+            const fmt = arr => arr.length ? `<span class="ban-badge">${arr.join(", ")}</span>` : `<span style="color:#aaa">-</span>`;
             return `<tr>
-                <td style="font-weight:bold; color:#ddd;">${slot}</td>
+                <td style="font-weight:bold; color:var(--text-main);">${slot}</td>
                 <td>${fmt(r.Strength)}</td>
                 <td>${fmt(r.Intelligence)}</td>
                 <td>${fmt(r.Agility)}</td>
@@ -556,8 +554,8 @@ const UI = {
                 <div class="val-line"><span>Weapon (Primary):</span> <span class="val-num">${v.WEAPON_RAID.p}</span></div>
                 <div class="val-line"><span>Weapon (Secondary):</span> <span class="val-num">${v.WEAPON_RAID.s}</span></div>
                 <div class="val-line"><span>Weapon Bonus:</span> <span class="val-num" style="color:var(--accent)">+ Raid Effect</span></div>
-                <div class="val-line"><span>Weapon Reforge:</span> <span class="val-num" style="color:#666">None</span></div>
-                <hr style="border:0; border-top:1px dashed #333; margin:8px 0;">
+                <div class="val-line"><span>Weapon Reforge:</span> <span class="val-num" style="color:#aaa">None</span></div>
+                <hr style="border:0; border-top:1px dashed #ddd; margin:8px 0;">
                 <div class="val-line"><span>Armor (Primary):</span> <span class="val-num">${v.ARMOR_RAID.p}</span></div>
                 <div class="val-line"><span>Armor (Secondary):</span> <span class="val-num">${v.ARMOR_RAID.s}</span></div>
                 <div class="val-line"><span>Armor Reforge:</span> <span class="val-num">${v.ARMOR_RAID.r}</span></div>
@@ -568,7 +566,7 @@ const UI = {
                 <div class="val-line"><span>Weapon (Secondary):</span> <span class="val-num">${v.WEAPON_STD.s}</span></div>
                 <div class="val-line"><span>Weapon Reforge:</span> <span class="val-num">${v.WEAPON_STD.r}</span></div>
                 <div class="val-line"><span>Legendary Slot:</span> <span class="val-num" style="color:var(--highlight-blue)">Available</span></div>
-                <hr style="border:0; border-top:1px dashed #333; margin:8px 0;">
+                <hr style="border:0; border-top:1px dashed #ddd; margin:8px 0;">
                 <div class="val-line"><span>Armor (Primary):</span> <span class="val-num">${v.ARMOR_STD.p}</span></div>
                 <div class="val-line"><span>Armor (Secondary):</span> <span class="val-num">${v.ARMOR_STD.s}</span></div>
                 <div class="val-line"><span>Armor Reforge:</span> <span class="val-num">${v.ARMOR_STD.r}</span></div>
@@ -587,6 +585,8 @@ const UI = {
 
     renderGearRows: () => {
         const container = $('gear-container');
+        const build = Logic.getBuildType();
+
         container.innerHTML = DATA.SLOTS.map((slot, i) => {
             const isRaidSlot = DATA.RAID_SLOTS.includes(slot);
             const raidCheck = isRaidSlot ? `<input type="checkbox" id="raid-${i}" onchange="UI.toggleRaid(${i}, '${slot}')">` : '';
@@ -594,6 +594,17 @@ const UI = {
             const slotSigils = SIGIL_DB.filter(s => s.s.includes(slot));
             const sigilOpts = `<option value="">-</option>` + slotSigils.map(s => createOpt(s.n)).join('');
             
+            // Generate Legendary Options based on slot type
+            const isArmorGroup = DATA.SLOT_CATS.ARMOR.includes(slot);
+            const legGroup = isArmorGroup ? DATA.LEGENDARY_DATA.ARMOR : DATA.LEGENDARY_DATA.ACC;
+            
+            let legTypeOpts = `<option value="">-</option>`;
+            legGroup.opts.forEach(opt => {
+                if (opt.req && opt.req !== build) return; // Skip cast speed for non-int
+                const name = opt.n === "Main Stat %" ? `${build} %` : opt.n;
+                legTypeOpts += `<option value="${opt.n}">${name}</option>`;
+            });
+
             return `
             <div class="gear-row" data-slot="${slot}">
                 <div class="slot-name">${slot}</div>
@@ -606,11 +617,31 @@ const UI = {
                     <option value="1">Lvl 1</option><option value="2">Lvl 2</option><option value="3">Lvl 3</option>
                 </select>
                 <div class="leg-group">
-                    <select id="leg-type-${i}">${DATA.LEGENDARY_OPTS.map(l => createOpt(l)).join('')}</select>
-                    <input type="number" id="leg-val-${i}" class="leg-val" placeholder="%">
+                    <select id="leg-type-${i}" onchange="UI.updateLegValues(${i})">${legTypeOpts}</select>
+                    <select id="leg-val-${i}" onchange="Logic.calculate()"><option value="0">-</option></select>
                 </div>
             </div>`;
         }).join('');
+    },
+
+    updateLegValues: (idx) => {
+        const slot = DATA.SLOTS[idx];
+        const type = $(`leg-type-${idx}`).value;
+        const valSelect = $(`leg-val-${idx}`);
+        
+        if (!type) {
+            valSelect.innerHTML = `<option value="0">-</option>`;
+            return;
+        }
+
+        const isArmorGroup = DATA.SLOT_CATS.ARMOR.includes(slot);
+        const legGroup = isArmorGroup ? DATA.LEGENDARY_DATA.ARMOR : DATA.LEGENDARY_DATA.ACC;
+        const optData = legGroup.opts.find(o => o.n === type);
+
+        if (optData) {
+            valSelect.innerHTML = optData.v.map(val => `<option value="${val}">${val}${optData.u}</option>`).join('');
+        }
+        Logic.calculate();
     },
 
     toggleRaid: (idx) => {
@@ -618,8 +649,8 @@ const UI = {
         $(`leg-type-${idx}`).disabled = isRaid;
         $(`leg-val-${idx}`).disabled = isRaid;
         if(isRaid) { 
-            $(`leg-type-${idx}`).value = "-"; 
-            $(`leg-val-${idx}`).value = ""; 
+            $(`leg-type-${idx}`).value = ""; 
+            UI.updateLegValues(idx); // Clear values
         }
         Logic.updateRow(idx);
     }
@@ -639,7 +670,7 @@ const Logic = {
     getBuildType: () => document.querySelector('input[name="buildType"]:checked').value,
 
     updateAll: () => {
-        if($('gear-container').children.length === 0) UI.renderGearRows();
+        UI.renderGearRows(); // Re-render to update Legendary options based on Build (Int/Str/Agi)
         DATA.SLOTS.forEach((_, i) => Logic.updateRow(i));
         Logic.calculate();
     },
@@ -672,9 +703,7 @@ const Logic = {
             }
         } else {
             elP.disabled = elS.disabled = elR.disabled = false;
-            
             const banned = DATA.RESTRICTIONS[slot]?.[build] || [];
-            
             Logic.fillSelect(elP, valP, elS.value, true, banned);
             Logic.fillSelect(elS, valS, elP.value, true, banned);
             Logic.fillSelect(elR, valR, null, false);
@@ -687,35 +716,18 @@ const Logic = {
             if (applyRestrictions && bannedList.includes(stat)) return false;
             return true;
         });
-        
         const html = `<option value="">-</option>` + options.map(s => createOpt(s)).join('');
         el.innerHTML = html;
-        
-        if (currentVal && options.includes(currentVal)) {
-            el.value = currentVal;
-        } else {
-            el.value = "";
-        }
+        if (currentVal && options.includes(currentVal)) el.value = currentVal;
+        else el.value = "";
     },
 
     applyGlobal: (type, val) => {
-        if (type === 'legendary') {
-            const lType = $('global-leg-type').value;
-            const lVal = $('global-leg-val').value;
-            if (!lType) return;
-            DATA.SLOTS.forEach((_, i) => {
-                if (!$(`leg-type-${i}`).disabled) {
-                    $(`leg-type-${i}`).value = lType;
-                    $(`leg-val-${i}`).value = lVal;
-                }
-            });
-        } else {
-            if (!val) return;
-            DATA.SLOTS.forEach((_, i) => {
-                if (type === 'reforge' && !$(`s3-${i}`).disabled) $(`s3-${i}`).value = val;
-                if (type === 'sigil-lvl') $(`sigil-lvl-${i}`).value = val;
-            });
-        }
+        if (!val) return;
+        DATA.SLOTS.forEach((_, i) => {
+            if (type === 'reforge' && !$(`s3-${i}`).disabled) $(`s3-${i}`).value = val;
+            if (type === 'sigil-lvl') $(`sigil-lvl-${i}`).value = val;
+        });
         Logic.calculate();
     },
 
@@ -727,15 +739,14 @@ const Logic = {
         for (let i = 0; i < tiers.length - 1; i++) {
             let [v1, p1] = tiers[i];
             let [v2, p2] = tiers[i+1];
-            if (val >= v1 && val < v2) {
-                return p1 + (val - v1) / (v2 - v1) * (p2 - p1);
-            }
+            if (val >= v1 && val < v2) return p1 + (val - v1) / (v2 - v1) * (p2 - p1);
         }
         return 0;
     },
 
     calculate: () => {
         const total = { Versatility:0, Mastery:0, Haste:0, Crit:0, Luck:0 };
+        const build = Logic.getBuildType();
         const legBonus = {}; 
         const spec = $('spec-select').value;
         const extraDisplays = {};
@@ -765,11 +776,18 @@ const Logic = {
 
             if (slot === "Weapon" && isRaid) raidBonus = DATA.RAID_BONUS[spec];
 
+            // Legendary Calc
             if (!isRaid) {
                 const lType = $(`leg-type-${i}`).value;
                 const lVal = parseFloat($(`leg-val-${i}`).value) || 0;
-                if (lType && lType !== "-") {
-                    legBonus[lType] = (legBonus[lType] || 0) + lVal;
+                if (lType) {
+                    let displayName = lType === "Main Stat %" ? `${build}` : lType;
+                    // Aggregate percentage vs flat
+                    if (["Max HP", "Armor", "All Elem Res"].includes(lType)) {
+                        extraDisplays[displayName] = (extraDisplays[displayName] || 0) + lVal;
+                    } else {
+                        legBonus[displayName] = (legBonus[displayName] || 0) + lVal;
+                    }
                 }
             }
 
@@ -784,9 +802,7 @@ const Logic = {
                              baseAgi += v;
                              extraDisplays["Agility"] = (extraDisplays["Agility"]||0) + v;
                         }
-                        else if (k === "Intellect" || k === "Strength") {
-                             extraDisplays[k] = (extraDisplays[k]||0) + v;
-                        }
+                        else extraDisplays[k] = (extraDisplays[k]||0) + v;
                     });
                 }
             }
@@ -838,7 +854,6 @@ const Optimizer = {
         const status = $('opt-status');
         status.innerText = "Simulating... (Please Wait)";
         status.style.color = "var(--highlight-gold)";
-        
         setTimeout(() => {
             try {
                 Optimizer.execute();
@@ -891,7 +906,6 @@ const Optimizer = {
             }
             if(diff < best.diff) best = { layout, diff };
         }
-
         Optimizer.apply(best.layout);
     },
 
@@ -930,7 +944,6 @@ const Optimizer = {
         slotsAvailable.forEach(i => {
             let isRaid = raidPicks.includes(i);
             let p, s, r;
-            
             if (DATA.SLOTS[i] === "Weapon" && isRaid) r = ""; 
             else r = DATA.STATS[Math.floor(Math.random()*5)];
 
@@ -959,7 +972,6 @@ const Optimizer = {
                 lvl: parseInt($(`img-lvl-${n}`).value) || 0
             }));
         }
-
         return layout;
     },
 
@@ -993,27 +1005,22 @@ const Optimizer = {
 
     calcStats: (layout, ctx) => {
         let raw = { Versatility: ctx.bV, Mastery: ctx.bM, Haste: ctx.bH, Crit: ctx.bC, Luck: ctx.bL };
-        
         layout.gear.forEach((g, i) => {
             const vals = (i === 0) 
                 ? (g.raid ? DATA.VALUES.WEAPON_RAID : DATA.VALUES.WEAPON_STD) 
                 : (g.raid ? DATA.VALUES.ARMOR_RAID : DATA.VALUES.ARMOR_STD);
-            
             if(g.p) raw[g.p] += vals.p;
             if(g.s) raw[g.s] += vals.s;
             if(g.r) raw[g.r] += vals.r;
         });
-
         layout.img.forEach(im => {
             const data = DATA.IMAGINE.OPTIONS[im.key];
             if(data) raw[data.stat] += data.vals[im.lvl];
         });
-
         if (layout.gear[0].raid && ctx.bonus && ctx.bonus.t === 'p') {
             if (ctx.bonus.l === "Luck") raw.Luck *= (1 + ctx.bonus.v/100);
             if (ctx.bonus.l.includes("Vers")) raw.Versatility *= (1 + ctx.bonus.v/100);
         }
-
         return {
             v: Logic.getStatPercent("Versatility", raw.Versatility),
             m: Logic.getStatPercent("Mastery", raw.Mastery),
@@ -1023,9 +1030,7 @@ const Optimizer = {
         };
     },
 
-    getDiff: (s, t) => {
-        return Math.abs(s.v-t.v) + Math.abs(s.m-t.m) + Math.abs(s.h-t.h) + Math.abs(s.c-t.c) + Math.abs(s.l-t.l);
-    },
+    getDiff: (s, t) => Math.abs(s.v-t.v) + Math.abs(s.m-t.m) + Math.abs(s.h-t.h) + Math.abs(s.c-t.c) + Math.abs(s.l-t.l),
 
     apply: (l) => {
         l.gear.forEach((g, i) => {
@@ -1039,7 +1044,6 @@ const Optimizer = {
             $(`s2-${i}`).value = g.s;
             $(`s3-${i}`).value = g.r;
         });
-
         l.img.forEach((im, i) => {
             const n = DATA.IMAGINE.SLOT_IDS[i];
             $(`img-type-${n}`).value = im.key;
