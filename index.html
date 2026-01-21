@@ -56,7 +56,7 @@
         .controls-row {
             background: #1c1e26; padding: 25px; border-radius: var(--radius); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            gap: 30px; /* Aumentado para descer o texto */
+            gap: 25px; /* Espaçamento entre os blocos */
             margin-bottom: 20px; border: var(--border);
         }
         
@@ -75,9 +75,12 @@
             box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
         }
 
+        /* LINHA DE CLASSE/SPEC (Centralizada e separada) */
         .class-spec-row {
             display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap;
-            margin-top: 5px; /* Ajuste fino de posicionamento */
+            width: 100%;
+            padding-top: 15px;
+            border-top: 1px dashed #333; /* Separador visual sutil */
         }
         .spec-wrapper { display: flex; align-items: center; gap: 10px; }
 
@@ -195,7 +198,7 @@
             <div class="class-spec-row">
                 <div class="spec-wrapper">
                     <label style="color:var(--text-muted); font-weight:bold;">Class:</label>
-                    <select id="class-select" onchange="ui.updateSpecOptions()" style="width:200px;"></select>
+                    <select id="class-select" onchange="ui.updateSpecOptions()" style="width:200px; border-color: var(--primary); color: var(--primary); font-weight: bold;"></select>
                 </div>
                 <div class="spec-wrapper">
                     <label style="color:var(--text-muted); font-weight:bold;">Spec:</label>
@@ -358,18 +361,6 @@
         },
 
         LEGENDARY: ["-", "Attack Speed", "Cast Speed", "ATK/MATK", "Dmg Bonus", "Shield", "Healing Output", "Res Break", "All Res", "Armor", "Max HP"],
-        RAID_BONUS: {
-            "Block": { l: "Luck", v: 6.0, t: "p" }, "Earthfort": { l: "Shield (Vers)", v: 0.0, t: "p" },
-            "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, // Alias for safety
-            "Iaido": { l: "Crit DMG", v: 0.0, t: "p" }, 
-            "Moonblade": { l: "Luck", v: 0.0, t: "p" },
-            "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, "Ray": { l: "Ranged DMG", v: 0, t: "f" },
-            "Vanguard": { l: "Melee DMG", v: 0, t: "f" }, "SkyWard": { l: "Lucky Strike DMG", v: 20.0, t: "p" },
-            "Smite": { l: "Ranged DMG", v: 0, t: "f" }, "Life Bind": { l: "Healing Output", v: 0.0, t: "p" },
-            "Wildpack": { l: "Ranged DMG", v: 0, t: "f" }, "Falconry": { l: "Crit DMG", v: 0.0, t: "p" },
-            "Recovery": { l: "DMG Bonus", v: 0.0, t: "p" }, "Shield": { l: "Melee DMG", v: 0, t: "f" },
-            "Concerto": { l: "Crit Healing", v: 0.0, t: "p" }, "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }
-        },
         
         // --- CLASSES AND SPECS MAPPING ---
         CLASSES: {
@@ -381,7 +372,26 @@
             "Frost Mage": ["Icicle", "Ray"],
             "Wind Knight": ["SkyWard", "Vanguard"]
         },
-        // Stats associated with each Spec (Based on provided data and game logic)
+        
+        // --- RAID BONUS DATABASE (MATCHING NEW SPELLING) ---
+        RAID_BONUS: {
+            "Block": { l: "Luck", v: 6.0, t: "p" }, 
+            "Earthforth": { l: "Shield (Vers)", v: 0.0, t: "p" }, // Updated spelling
+            "Recovery": { l: "DMG Bonus", v: 0.0, t: "p" }, 
+            "Shield": { l: "Melee DMG", v: 0, t: "f" },
+            "Life Bind": { l: "Healing Output", v: 0.0, t: "p" }, 
+            "Smite": { l: "Ranged DMG", v: 0, t: "f" },
+            "Dissonance": { l: "Luck Effect DMG", v: 0, t: "f" }, 
+            "Concerto": { l: "Crit Healing", v: 0.0, t: "p" },
+            "Moonblade": { l: "Luck", v: 0.0, t: "p" }, 
+            "Iaido": { l: "Crit DMG", v: 0.0, t: "p" }, // Updated spelling
+            "Icicle": { l: "Crit DMG", v: 0.0, t: "p" }, 
+            "Ray": { l: "Ranged DMG", v: 0, t: "f" },
+            "SkyWard": { l: "Lucky Strike DMG", v: 20.0, t: "p" }, // Updated Capital W
+            "Vanguard": { l: "Melee DMG", v: 0, t: "f" }
+        },
+        
+        // --- SPECS STAT DEFINITIONS (MATCHING NEW SPELLING) ---
         SPECS: { 
             "Block": ["Mastery", "Luck"], "Earthforth": ["Mastery", "Versatility"],
             "Recovery": ["Crit", "Mastery"], "Shield": ["Haste", "Mastery"],
